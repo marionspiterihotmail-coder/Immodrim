@@ -79,7 +79,8 @@
       setStatus('Envoi en cours…', '');
       var v = function (n) { return (form.elements[n] && form.elements[n].value || '').trim(); };
       var projet = form.elements.projet ? form.elements.projet.options[form.elements.projet.selectedIndex].text : '';
-      var msg = 'Projet : ' + projet + (v('message') ? '\n\n' + v('message') : '');
+      var ville = form.getAttribute('data-ville');
+      var msg = 'Projet : ' + projet + (ville ? '\nVille recherchée : ' + ville : '') + (v('message') ? '\n\n' + v('message') : '');
       var payload = {
         fields: [
           { name: 'firstname', value: v('prenom') },
