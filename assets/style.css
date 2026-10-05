@@ -319,3 +319,40 @@ section.logos { padding: 2rem 0 2.2rem; }
 .js .estim-step { display: none; }
 .js .estim-step.is-active { display: block; }
 .estim-card .field.invalid input, .estim-card .field.invalid select { border-color: var(--err); }
+
+/* ===== Typographie Figtree (auto-hébergée) ===== */
+@font-face { font-family: "Figtree"; font-style: normal; font-weight: 700; font-display: swap; src: url("/assets/fonts/figtree-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Figtree"; font-style: normal; font-weight: 800; font-display: swap; src: url("/assets/fonts/figtree-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Figtree"; font-style: normal; font-weight: 900; font-display: swap; src: url("/assets/fonts/figtree-latin-900-normal.woff2") format("woff2"); }
+h1, h2, h3 { font-family: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+h1 { font-size: clamp(2.4rem, 4.6vw, 3.6rem); font-weight: 900; line-height: 1.05; letter-spacing: -.04em; }
+h2 { font-size: clamp(2.1rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; letter-spacing: -.03em; }
+.hero-home h1 { font-size: clamp(2.9rem, 5.4vw, 5.1rem); }
+.contact h2, .section-head h2 { text-wrap: balance; }
+
+/* ===== Hero : vidéo en fond + mot qui défile ===== */
+.hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.hero-video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(247, 251, 255, .78), rgba(247, 251, 255, .25)); }
+.rotator { display: grid; margin-top: .05em; }
+.rotator > .sr-only { grid-area: 1 / 1; }
+.rot-words { display: grid; grid-area: 1 / 1; }
+.rot-words > span {
+  grid-area: 1 / 1; opacity: 0; transform: translateY(60%);
+  color: var(--brand);
+  background: linear-gradient(100deg, #4b3be0, #2f7bf0 60%, #7fd6ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  animation: rot-word 12s infinite;
+}
+.rot-words > span:nth-child(1) { animation-delay: 0s; }
+.rot-words > span:nth-child(2) { animation-delay: 3s; }
+.rot-words > span:nth-child(3) { animation-delay: 6s; }
+.rot-words > span:nth-child(4) { animation-delay: 9s; }
+@keyframes rot-word {
+  0% { opacity: 0; transform: translateY(60%); }
+  4%, 22% { opacity: 1; transform: translateY(0); }
+  26%, 100% { opacity: 0; transform: translateY(-60%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rot-words > span { animation: none; }
+  .rot-words > span:nth-child(1) { opacity: 1; transform: none; }
+}

@@ -48,6 +48,15 @@
     });
   });
 
+  /* ===== Vidéo du hero : désactivée si l'utilisateur préfère moins d'animations ou économise des données ===== */
+  var hv = document.querySelector('.hero-video');
+  if (hv) {
+    var conn = navigator.connection || {};
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || conn.saveData) {
+      hv.removeAttribute('autoplay'); hv.pause();
+    }
+  }
+
   /* ===== Formulaire de contact ===== */
   var HUBSPOT_URL = 'https://api-eu1.hsforms.com/submissions/v3/integration/submit/149488423/6660e385-b2ea-47ee-ad42-4515968c87e8';
   var form = document.getElementById('contact-form');
