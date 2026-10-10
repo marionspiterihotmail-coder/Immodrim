@@ -368,7 +368,7 @@ h2 { font-size: clamp(2.1rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; 
 .home { overflow-x: clip; }
 .home .hero-bg .hero-video { transform: translate3d(0, var(--hy, 0px), 0) scale(1.12); will-change: transform; }
 
-/* Projets : trois grandes tuiles décalées */
+/* Projets : trois grandes tuiles côte à côte */
 .projects { padding-bottom: clamp(4rem, 9vw, 7rem); }
 .tiles { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); align-items: start; }
 .tile { position: relative; overflow: hidden; border-radius: 28px; min-height: 460px; display: flex; align-items: flex-end; color: #fff; isolation: isolate; box-shadow: var(--shadow); }
@@ -382,9 +382,6 @@ h2 { font-size: clamp(2.1rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; 
 .tile-link:hover { color: var(--frost); }
 @media (min-width: 900px) {
   .tile { min-height: 540px; }
-  .tile:nth-child(2) { margin-top: 3.5rem; }
-  .tile:nth-child(3) { margin-top: 7rem; }
-  .projects { padding-bottom: clamp(8rem, 14vw, 11rem); }
 }
 
 /* Chiffres : bande sombre */
