@@ -361,3 +361,5 @@ h2 { font-size: clamp(2.1rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; 
 .card p, .steps p, .stat span, .faq .answer, .prose p { color: var(--muted); }
 .card h3, .steps h3 { color: var(--ink); }
 .stat span { font-weight: 500; }
+
+.site-version { display: block; margin-top: .6rem; font-size: .72rem; opacity: .6; letter-spacing: .02em; }

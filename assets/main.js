@@ -9,6 +9,16 @@
     consentMonths: 6    // recommandation CNIL : renouveler le choix au plus tard tous les 6 mois
   };
 
+  /* ===== Numéro de version (discret, pied de page) : à mettre à jour à chaque mise en ligne ===== */
+  var VERSION = 'v1.1 · 10 oct. 2026';
+  var note = document.querySelector('.legal-note');
+  if (note) {
+    var ver = document.createElement('span');
+    ver.className = 'site-version';
+    ver.textContent = ' ' + VERSION;
+    note.appendChild(ver);
+  }
+
   /* ===== Apparition douce au scroll (désactivée si l'utilisateur préfère moins d'animations) ===== */
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if ('IntersectionObserver' in window && !reduce) {
