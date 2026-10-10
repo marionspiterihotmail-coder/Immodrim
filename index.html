@@ -22,8 +22,8 @@
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="preload" as="image" href="/assets/img/hero-salon-700.webp" imagesrcset="/assets/img/hero-salon-700.webp 700w, /assets/img/hero-salon-1200.webp 1200w" imagesizes="(min-width: 900px) 480px, 92vw">
-  <link rel="stylesheet" href="/assets/style.css?v=13">
-  <script src="/assets/main.js?v=13" defer></script>
+  <link rel="stylesheet" href="/assets/style.css?v=14">
+  <script src="/assets/main.js?v=14" defer></script>
 
   <script type="application/ld+json">
   {
@@ -319,8 +319,54 @@
       </div>
     </section>
 
-    <!-- AVIS CLIENTS : le site actuel affiche 5 avis (Isabelle D., Marc A., Sophie T., Bruno L., Frédéric M.).
-         À remettre ici uniquement s'il s'agit de vrais avis, avec l'accord des clients. -->
+    <section id="avis" class="reviews" aria-labelledby="titre-avis">
+      <div class="container">
+        <div class="section-head reviews-head">
+          <h2 id="titre-avis">Ce sont eux qui en parlent le mieux…</h2>
+          <div class="review-nav">
+            <button class="review-btn" id="review-prev" type="button" aria-label="Avis précédent"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+            <button class="review-btn" id="review-next" type="button" aria-label="Avis suivant"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+          </div>
+        </div>
+        <div class="review-track" id="review-track" role="region" aria-label="Avis clients" aria-roledescription="carrousel">
+          <article class="review" tabindex="0" aria-label="Avis de Isabelle D.">
+            <p class="review-stars" role="img" aria-label="5 étoiles sur 5">★★★★★</p>
+            <h3>« Professionnel et réactif »</h3>
+            <p class="review-text">Nous avons eu la chance de croiser Immodrim qui a su nous mettre en confiance dès le premier rendez-vous. L'équipe nous a orientés vers le neuf et le suivi notaire a été impeccable.</p>
+            <button class="review-more" type="button" hidden aria-expanded="false">Lire la suite</button>
+            <footer><span class="review-avatar" aria-hidden="true">I</span><span><strong>Isabelle D.</strong><br>Acheteur RP</span></footer>
+          </article>
+          <article class="review" tabindex="0" aria-label="Avis de Marc A.">
+            <p class="review-stars" role="img" aria-label="5 étoiles sur 5">★★★★★</p>
+            <h3>« Une vraie transparence »</h3>
+            <p class="review-text">J'étais fatigué des discours commerciaux formatés. Ici, on m'a parlé rentabilité nette réelle, sans cacher les charges. J'ai signé pour un T2 à Bordeaux et je ne regrette pas.</p>
+            <button class="review-more" type="button" hidden aria-expanded="false">Lire la suite</button>
+            <footer><span class="review-avatar" aria-hidden="true">M</span><span><strong>Marc A.</strong><br>Investisseur LMNP</span></footer>
+          </article>
+          <article class="review" tabindex="0" aria-label="Avis de Sophie T.">
+            <p class="review-stars" role="img" aria-label="5 étoiles sur 5">★★★★★</p>
+            <h3>« Parfait pour une première »</h3>
+            <p class="review-text">Premier achat pour moi. J'avais peur des retards de livraison dans le neuf. Immodrim m'a orienté vers un promoteur fiable. Livraison avec 1 mois d'avance et zéro réserves.</p>
+            <button class="review-more" type="button" hidden aria-expanded="false">Lire la suite</button>
+            <footer><span class="review-avatar" aria-hidden="true">S</span><span><strong>Sophie T.</strong><br>Primo-accédant</span></footer>
+          </article>
+          <article class="review" tabindex="0" aria-label="Avis de Bruno L.">
+            <p class="review-stars" role="img" aria-label="5 étoiles sur 5">★★★★★</p>
+            <h3>« Un accompagnement total »</h3>
+            <p class="review-text">Je n'osais pas franchir le pas. Cédric a su me rassurer. Il m'a accompagné avant la vente sans jamais me presser. Une vente rapide au prix estimé.</p>
+            <button class="review-more" type="button" hidden aria-expanded="false">Lire la suite</button>
+            <footer><span class="review-avatar" aria-hidden="true">B</span><span><strong>Bruno L.</strong><br>Vendeur à Lyon</span></footer>
+          </article>
+          <article class="review" tabindex="0" aria-label="Avis de Frédéric M.">
+            <p class="review-stars" role="img" aria-label="5 étoiles sur 5">★★★★★</p>
+            <h3>« Rentabilité au rendez-vous »</h3>
+            <p class="review-text">Avant de me lancer dans l'investissement locatif, je me posais pas mal de questions sur la gestion, les risques et les impôts. Mon interlocuteur a su bien cerner mon besoin et a tout géré de A à Z avec le promoteur.</p>
+            <button class="review-more" type="button" hidden aria-expanded="false">Lire la suite</button>
+            <footer><span class="review-avatar" aria-hidden="true">F</span><span><strong>Frédéric M.</strong><br>Investisseur Pinel</span></footer>
+          </article>
+        </div>
+      </div>
+    </section>
 
     <section id="faq" class="alt" aria-labelledby="titre-faq">
       <div class="container">

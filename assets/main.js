@@ -10,7 +10,7 @@
   };
 
   /* ===== Numéro de version (discret, pied de page) : à mettre à jour à chaque mise en ligne ===== */
-  var VERSION = 'v1.3 · 10 oct. 2026';
+  var VERSION = 'v1.4 · 10 oct. 2026';
   var note = document.querySelector('.legal-note');
   if (note) {
     var ver = document.createElement('span');
@@ -105,6 +105,33 @@
       }, { threshold: 0.6 });
       counters.forEach(function (el) { co.observe(el); });
     }
+  }
+
+  /* ===== Avis clients : carrousel (défilement natif + boutons) ===== */
+  var rTrack = document.getElementById('review-track');
+  if (rTrack) {
+    var rStep = function () { var c = rTrack.querySelector('.review'); return c ? c.offsetWidth + 20 : 300; };
+    var rPrev = document.getElementById('review-prev'), rNext = document.getElementById('review-next');
+    var rGo = function (dir) {
+      var max = rTrack.scrollWidth - rTrack.clientWidth - 4;
+      if (dir > 0 && rTrack.scrollLeft >= max) { rTrack.scrollTo({ left: 0, behavior: reduce ? 'auto' : 'smooth' }); return; }
+      if (dir < 0 && rTrack.scrollLeft <= 4) { rTrack.scrollTo({ left: max, behavior: reduce ? 'auto' : 'smooth' }); return; }
+      rTrack.scrollBy({ left: dir * rStep(), behavior: reduce ? 'auto' : 'smooth' });
+    };
+    if (rPrev) { rPrev.addEventListener('click', function () { rGo(-1); }); }
+    if (rNext) { rNext.addEventListener('click', function () { rGo(1); }); }
+    rTrack.querySelectorAll('.review').forEach(function (card) {
+      var text = card.querySelector('.review-text'), btn = card.querySelector('.review-more');
+      if (text.scrollHeight > text.clientHeight + 2) { btn.hidden = false; }
+      btn.addEventListener('click', function () {
+        var open = card.classList.toggle('open');
+        btn.textContent = open ? 'Réduire' : 'Lire la suite';
+        btn.setAttribute('aria-expanded', String(open));
+      });
+    });
+    rTrack.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { rGo(1); } else if (e.key === 'ArrowLeft') { rGo(-1); }
+    });
   }
 
   /* ===== Menu mobile ===== */
