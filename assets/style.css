@@ -363,3 +363,90 @@ h2 { font-size: clamp(2.1rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; 
 .stat span { font-weight: 500; }
 
 .site-version { display: block; margin-top: .6rem; font-size: .72rem; opacity: .6; letter-spacing: .02em; }
+
+/* ===== Accueil : mouvement au scroll ===== */
+.home { overflow-x: clip; }
+.home .hero-bg .hero-video { transform: translate3d(0, var(--hy, 0px), 0) scale(1.12); will-change: transform; }
+
+/* Projets : trois grandes tuiles décalées */
+.projects { padding-bottom: clamp(4rem, 9vw, 7rem); }
+.tiles { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); align-items: start; }
+.tile { position: relative; overflow: hidden; border-radius: 28px; min-height: 460px; display: flex; align-items: flex-end; color: #fff; isolation: isolate; box-shadow: var(--shadow); }
+.tile-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transform: translate3d(0, var(--py, 0px), 0) scale(1.18); }
+.tile::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(20, 18, 43, 0) 25%, rgba(20, 18, 43, .55) 62%, rgba(20, 18, 43, .92)); }
+.tile-body { padding: 1.8rem; display: grid; gap: .5rem; }
+.tile h3 { font-size: 1.7rem; font-weight: 800; color: #fff; margin: 0; }
+.tile p { margin: 0 0 .6rem; color: #fff; font-weight: 500; }
+.tile-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1.2rem; }
+.tile-link { color: #fff; font-weight: 700; text-underline-offset: 4px; }
+.tile-link:hover { color: var(--frost); }
+@media (min-width: 900px) {
+  .tile { min-height: 540px; }
+  .tile:nth-child(2) { margin-top: 3.5rem; }
+  .tile:nth-child(3) { margin-top: 7rem; }
+  .projects { padding-bottom: clamp(8rem, 14vw, 11rem); }
+}
+
+/* Chiffres : bande sombre */
+.band { position: relative; overflow: hidden; color: #fff; padding: clamp(3.5rem, 8vw, 6rem) 0; background: linear-gradient(160deg, #14122b 0%, #2e2394 75%, #4b3be0 140%); }
+.band-grid { position: relative; display: grid; gap: 2.2rem 2rem; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+.band-stat strong { display: block; font: 900 clamp(2.8rem, 6.4vw, 4.8rem)/1 "Figtree", system-ui, sans-serif; letter-spacing: -.04em; color: #fff; font-variant-numeric: tabular-nums; }
+.band-stat > span { display: block; margin-top: .7rem; max-width: 17rem; color: #e6ecff; font-weight: 500; }
+.orb { position: absolute; border-radius: 50%; filter: blur(60px); opacity: .55; pointer-events: none; transform: translate3d(0, var(--py, 0px), 0); }
+.orb-a { width: 380px; height: 380px; right: -80px; top: -120px; background: #7fd6ff; }
+.orb-b { width: 320px; height: 320px; left: -100px; bottom: -140px; background: #5b4bf0; }
+
+/* Pourquoi le neuf : cartes qui s'empilent */
+.why { padding-block: clamp(4rem, 9vw, 7rem); }
+.why-grid { display: grid; gap: 2rem; align-items: start; }
+.why-head h2 { margin-bottom: .6em; }
+.why-head p { color: var(--ink); font-size: 1.12rem; font-weight: 500; }
+.why-stack { display: grid; gap: 1.5rem; padding-bottom: 2rem; }
+.why-card {
+  position: sticky; top: calc(5.5rem + var(--i) * 3.2rem); min-height: 15rem; padding: 1.4rem 2rem 2rem; border-radius: 28px;
+  display: flex; flex-direction: column; justify-content: flex-start; gap: .5rem; overflow: hidden; isolation: isolate;
+  transform: scale(var(--s, 1)); transform-origin: 50% 0; box-shadow: var(--shadow);
+}
+.why-card h3 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; margin: 0; }
+.why-card p { margin: 0; max-width: 28rem; font-size: 1.05rem; font-weight: 500; }
+.why-card::after { content: ""; position: absolute; width: 220px; height: 220px; right: -60px; top: -70px; border-radius: 50%; z-index: -1; opacity: .5; background: radial-gradient(circle, currentColor, transparent 68%); }
+.tone-white { background: #fff; color: var(--ink); } .tone-white::after { color: var(--ice-200); }
+.tone-violet { background: linear-gradient(135deg, #4b3be0, #2e2394); color: #fff; } .tone-violet::after { color: var(--frost); }
+.tone-ice { background: var(--ice-200); color: var(--ink); } .tone-ice::after { color: #fff; }
+.tone-ink { background: var(--ink); color: #fff; } .tone-ink::after { color: #5b4bf0; }
+.tone-frost { background: linear-gradient(135deg, #7fd6ff, #cfe5ff); color: var(--ink); } .tone-frost::after { color: #fff; }
+@media (min-width: 900px) {
+  .why-grid { grid-template-columns: 1fr 1.15fr; gap: 4rem; }
+  .why-head { position: sticky; top: 7rem; }
+}
+
+/* Accompagnement : ligne de temps qui se dessine */
+.journey .section-head { margin-bottom: 3rem; }
+.timeline { --p: 0; list-style: none; counter-reset: step; margin: 0; padding: 0 0 0 3.6rem; display: grid; gap: 3rem; position: relative; max-width: 46rem; }
+.timeline::before, .timeline::after { content: ""; position: absolute; left: 1.2rem; top: .5rem; bottom: .5rem; width: 4px; border-radius: 4px; }
+.timeline::before { background: var(--brand-line); }
+.timeline::after { background: linear-gradient(180deg, var(--frost), var(--brand)); transform-origin: top; transform: scaleY(var(--p)); }
+.timeline li { counter-increment: step; position: relative; }
+.timeline li::before {
+  content: counter(step); position: absolute; left: -3.6rem; top: -.2rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; z-index: 1;
+  display: grid; place-items: center; font-weight: 800; background: #fff; color: var(--brand-dark); border: 3px solid var(--brand-line); transition: background .35s, color .35s, border-color .35s, transform .35s;
+}
+.timeline li.on::before { background: var(--brand); color: #fff; border-color: var(--brand); transform: scale(1.12); }
+.timeline h3 { font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 800; margin: 0 0 .3rem; }
+.timeline p { margin: 0; font-size: 1.08rem; color: var(--muted); font-weight: 500; }
+
+/* Fondateur : la citation se révèle mot à mot */
+.founder .quote { font-size: clamp(1.35rem, 2.6vw, 1.9rem); line-height: 1.4; font-weight: 700; font-family: "Figtree", system-ui, sans-serif; letter-spacing: -.01em; }
+.js-words .w { color: #b9c6e6; transition: color .25s linear; }
+.js-words .w.on { color: var(--ink); }
+
+/* Titres de section : apparition par masque */
+.js .home .section-head h2, .js .home .why-head h2 { clip-path: inset(0 0 100% 0); transform: translateY(.5em); transition: clip-path .8s cubic-bezier(.2, .7, .2, 1), transform .8s cubic-bezier(.2, .7, .2, 1); }
+.js .home .section-head.in h2, .js .home .why-head.in h2 { clip-path: inset(0 0 -20% 0); transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .home .hero-bg .hero-video, .tile-img, .orb { transform: none; }
+  .tile-img { transform: scale(1.05); }
+  .why-card { transform: none; }
+  .js .home .section-head h2, .js .home .why-head h2 { clip-path: none; transform: none; transition: none; }
+}
