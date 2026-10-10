@@ -438,14 +438,14 @@ h2 { font-size: clamp(2.1rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; 
 .js-words .w.on { color: var(--ink); }
 
 /* Titres de section : apparition par masque */
-.js .home .section-head h2, .js .home .why-head h2 { clip-path: inset(0 0 100% 0); transform: translateY(.5em); transition: clip-path .8s cubic-bezier(.2, .7, .2, 1), transform .8s cubic-bezier(.2, .7, .2, 1); }
-.js .home .section-head.in h2, .js .home .why-head.in h2 { clip-path: inset(0 0 -20% 0); transform: none; }
+.js .section-head h2, .js .why-head h2 { clip-path: inset(0 0 100% 0); transform: translateY(.5em); transition: clip-path .8s cubic-bezier(.2, .7, .2, 1), transform .8s cubic-bezier(.2, .7, .2, 1); }
+.js .section-head.in h2, .js .why-head.in h2 { clip-path: inset(0 0 -20% 0); transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .home .hero-bg .hero-video, .tile-img, .orb { transform: none; }
   .tile-img { transform: scale(1.05); }
   .why-card { transform: none; }
-  .js .home .section-head h2, .js .home .why-head h2 { clip-path: none; transform: none; transition: none; }
+  .js .section-head h2, .js .why-head h2 { clip-path: none; transform: none; transition: none; }
 }
 
 /* Avis clients : carrousel */
@@ -468,3 +468,31 @@ h2 { font-size: clamp(2.1rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; 
 .review-avatar { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; color: #fff; font-weight: 800; background: linear-gradient(135deg, var(--frost), var(--brand)); }
 @media (min-width: 900px) { .review { flex-basis: calc((100% - 2.5rem) / 3); } }
 @media (max-width: 560px) { .reviews-head { align-items: flex-start; flex-direction: column; } }
+
+/* Avis : flèches latérales + points */
+.review-hint { margin: 0; color: var(--muted); font-weight: 700; flex-shrink: 0; }
+.review-wrap { position: relative; }
+.review-side { position: absolute; top: 42%; z-index: 3; transform: translateY(-50%); box-shadow: 0 8px 22px rgba(30, 40, 120, .22); }
+.review-side-prev { left: -8px; }
+.review-side-next { right: -8px; }
+@media (min-width: 1200px) { .review-side-prev { left: -24px; } .review-side-next { right: -24px; } }
+.reviews { overflow: hidden; }
+.reviews .container { overflow: visible; }
+.review-dots { display: flex; justify-content: center; gap: .55rem; margin-top: -.6rem; }
+.review-dots button { width: 10px; height: 10px; padding: 0; border-radius: 50%; border: 0; background: var(--brand-line); cursor: pointer; transition: background .2s, transform .2s; }
+.review-dots button.on { background: var(--brand); transform: scale(1.35); }
+
+/* Pages intérieures : mouvement au scroll */
+.js .card.reveal, .js .steps li.reveal { transition-delay: calc(var(--d, 0) * 90ms); }
+.js .card.reveal:not(.in), .js .steps li.reveal:not(.in) { transform: translateY(28px) scale(.97); }
+.steps li::before { transition: transform .5s cubic-bezier(.3, 1.6, .5, 1) .15s, box-shadow .5s; }
+.js .steps li.reveal:not(.in)::before { transform: scale(.4); }
+.steps li.in::before { box-shadow: 0 0 0 6px rgba(75, 59, 224, .14); }
+.glass-frame img.page-photo { transform: translate3d(0, var(--py, 0px), 0) scale(1.1); clip-path: inset(0 round 22px); will-change: transform; }
+.js .checks li { opacity: 0; transform: translateX(-14px); transition: opacity .5s ease, transform .5s ease; transition-delay: calc(var(--d, 0) * 110ms); }
+.js .callout.in .checks li, .js .checks.in li { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .glass-frame img.page-photo { transform: scale(1.03); }
+  .js .checks li { opacity: 1; transform: none; transition: none; }
+  .js .card.reveal:not(.in), .js .steps li.reveal:not(.in) { transform: none; }
+}

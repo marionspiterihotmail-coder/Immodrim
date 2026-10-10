@@ -10,7 +10,7 @@
   };
 
   /* ===== Numéro de version (discret, pied de page) : à mettre à jour à chaque mise en ligne ===== */
-  var VERSION = 'v1.4 · 10 oct. 2026';
+  var VERSION = 'v1.5 · 10 oct. 2026';
   var note = document.querySelector('.legal-note');
   if (note) {
     var ver = document.createElement('span');
@@ -28,6 +28,8 @@
         if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    document.querySelectorAll('.grid, .steps, .checks').forEach(function (g) { Array.prototype.forEach.call(g.children, function (ch, n) { ch.style.setProperty('--d', n % 4); }); });
+    document.querySelectorAll('.callout').forEach(function (el) { el.classList.add('reveal'); io.observe(el); });
     document.querySelectorAll('.section-head, .why-head, .card, .steps li, .faq details, .panel').forEach(function (el) {
       el.classList.add('reveal');
       io.observe(el);
@@ -37,6 +39,7 @@
   /* ===== Mouvement au scroll (accueil) : parallaxe, cartes empilées, ligne de temps, citation, compteurs ===== */
   var clamp = function (v, lo, hi) { return Math.min(hi, Math.max(lo, v)); };
   var heroVideo = document.querySelector('.home .hero-video');
+  document.querySelectorAll('.page-photo').forEach(function (p) { p.setAttribute('data-parallax', ''); });
   var parallax = document.querySelectorAll('[data-parallax], [data-parallax-orb]');
   var timelines = document.querySelectorAll('[data-progress]');
   var quote = document.querySelector('[data-words]');
@@ -129,6 +132,17 @@
         btn.setAttribute('aria-expanded', String(open));
       });
     });
+    var dotsBox = document.getElementById('review-dots'), cards = rTrack.querySelectorAll('.review');
+    if (dotsBox) {
+      cards.forEach(function (c, n) { var b = document.createElement('button'); b.type = 'button'; b.tabIndex = -1; b.addEventListener('click', function () { rTrack.scrollTo({ left: c.offsetLeft - cards[0].offsetLeft, behavior: reduce ? 'auto' : 'smooth' }); }); dotsBox.appendChild(b); });
+      var dots = dotsBox.children, setDot = function () {
+        var max = rTrack.scrollWidth - rTrack.clientWidth, idx = 0;
+        if (rTrack.scrollLeft >= max - 4) { idx = cards.length - 1; } else { idx = Math.round(rTrack.scrollLeft / rStep()); }
+        for (var i = 0; i < dots.length; i++) { dots[i].classList.toggle('on', i === idx); }
+      };
+      rTrack.addEventListener('scroll', function () { window.requestAnimationFrame(setDot); }, { passive: true });
+      setDot();
+    }
     rTrack.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowRight') { rGo(1); } else if (e.key === 'ArrowLeft') { rGo(-1); }
     });
