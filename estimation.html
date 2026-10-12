@@ -17,8 +17,8 @@
   <meta property="og:url" content="https://immodrim.com/estimation">
   <meta property="og:image" content="https://immodrim.com/assets/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="/assets/style.css?v=16">
-  <script src="/assets/main.js?v=16" defer></script>
+  <link rel="stylesheet" href="/assets/style.css?v=17">
+  <script src="/assets/main.js?v=17" defer></script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -138,73 +138,76 @@
 
         <div class="form-card estim-card">
           <form id="estim-form" method="post" novalidate>
-            <ol class="estim-progress" aria-label="Étapes">
-              <li class="is-current" data-step-dot="1">Votre bien</li>
-              <li data-step-dot="2">Détails</li>
-              <li data-step-dot="3">Vos coordonnées</li>
-            </ol>
+            <div class="estim-head"><p class="estim-count" id="estim-count" aria-live="polite">Étape 1 sur 7</p><div class="estim-bar" aria-hidden="true"><span></span></div></div>
 
             <fieldset class="estim-step" data-step="1">
-              <legend>1. Votre bien</legend>
-              <div class="field"><label for="e-type">Type de bien *</label>
-                <select id="e-type" name="type" required><option value="">Choisir…</option><option>Appartement</option><option>Maison</option></select></div>
-              <div class="field"><label for="e-adresse">Adresse du bien *</label>
-                <input id="e-adresse" name="adresse" type="text" autocomplete="street-address" placeholder="Numéro et rue" required></div>
-              <div class="form-row">
-                <div class="field"><label for="e-cp">Code postal *</label><input id="e-cp" name="cp" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" required></div>
-                <div class="field"><label for="e-ville">Ville *</label><input id="e-ville" name="ville" type="text" autocomplete="address-level2" required></div>
-              </div>
-              <div class="form-row">
-                <div class="field"><label for="e-surface">Surface (m²) *</label><input id="e-surface" name="surface" type="number" inputmode="numeric" min="5" max="1000" required></div>
-                <div class="field"><label for="e-pieces">Nombre de pièces *</label>
-                  <select id="e-pieces" name="pieces" required><option value="">Choisir…</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6 et plus</option></select></div>
-              </div>
-              <button class="btn btn-primary" type="button" data-next>Continuer</button>
+              <legend>Quelle est l’adresse du bien à estimer ?</legend>
+              <div class="field ac"><label for="e-adresse" class="sr-only">Adresse du bien</label>
+                <input id="e-adresse" name="adresse" type="text" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="ac-list" aria-autocomplete="list" placeholder="Ex : 12 rue Saint-Denis, 75011 Paris" required>
+                <ul id="ac-list" class="ac-list" role="listbox" hidden></ul>
+                <input type="hidden" name="cp"><input type="hidden" name="ville"></div>
+              <ul class="estim-assure"><li>Rapide</li><li>Sans engagement</li><li>Données protégées</li></ul>
+              <div class="estim-actions"><button class="btn btn-primary" type="button" data-next>Commencer l’estimation</button></div>
             </fieldset>
 
             <fieldset class="estim-step" data-step="2">
-              <legend>2. Détails</legend>
-              <div class="form-row">
-                <div class="field"><label for="e-etat">État général *</label>
-                  <select id="e-etat" name="etat" required><option value="">Choisir…</option><option>Neuf ou récent</option><option>Bon état</option><option>À rafraîchir</option><option>À rénover</option></select></div>
-                <div class="field"><label for="e-annee">Période de construction</label>
-                  <select id="e-annee" name="annee"><option value="">Je ne sais pas</option><option>Avant 1948</option><option>1948 - 1974</option><option>1975 - 2000</option><option>Après 2000</option></select></div>
-              </div>
-              <div class="form-row">
-                <div class="field"><label for="e-etage">Étage</label>
-                  <select id="e-etage" name="etage"><option value="">Non concerné</option><option>Rez-de-chaussée</option><option>1er - 3e</option><option>4e et plus</option><option>Dernier étage</option></select></div>
-                <div class="field"><label for="e-ext">Extérieur</label>
-                  <select id="e-ext" name="exterieur"><option value="">Aucun</option><option>Balcon</option><option>Terrasse</option><option>Jardin</option></select></div>
-              </div>
-              <div class="field"><label for="e-delai">Votre projet de vente *</label>
-                <select id="e-delai" name="delai" required><option value="">Choisir…</option><option>Le plus tôt possible</option><option>Dans les 3 mois</option><option>Dans les 6 mois</option><option>Je me renseigne simplement</option></select></div>
-              <div class="estim-actions">
-                <button class="btn btn-ghost" type="button" data-prev>Retour</button>
-                <button class="btn btn-primary" type="button" data-next>Continuer</button>
-              </div>
+              <legend>Quel type de bien souhaitez-vous estimer ?</legend>
+              <div class="opts opts-2"><label class="opt"><input type="radio" name="type" value="Appartement" required><span><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2M11 21v-3h2v3"/></svg>Un appartement</span></label><label class="opt"><input type="radio" name="type" value="Maison"><span><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/><path d="M10 20v-5h4v5"/></svg>Une maison</span></label></div>
+              <div class="estim-actions"><button class="btn btn-ghost" type="button" data-prev>Retour</button><button class="btn btn-primary" type="button" data-next>Étape suivante</button></div>
             </fieldset>
 
             <fieldset class="estim-step" data-step="3">
-              <legend>3. Vos coordonnées</legend>
+              <legend>Vérifions ensemble les informations de votre bien</legend>
+              <div class="field"><label for="e-surface">Surface (loi Carrez, en m²)</label><input id="e-surface" name="surface" type="text" inputmode="numeric" placeholder="Ex : 55" required></div>
+              <div class="form-row"><div class="field stp"><label for="e-pieces">Nombre de pièces</label><div class="stepper" data-stepper data-min="1" data-max="20"><button type="button" data-dec aria-label="Diminuer">−</button><input id="e-pieces" name="pieces" type="text" inputmode="numeric" value="" placeholder="0" required><button type="button" data-inc aria-label="Augmenter">+</button></div><small class="hint">Sans la cuisine, les salles de bains ni les toilettes.</small></div><div class="field stp"><label for="e-chambres">Nombre de chambres</label><div class="stepper" data-stepper data-min="0" data-max="20"><button type="button" data-dec aria-label="Diminuer">−</button><input id="e-chambres" name="chambres" type="text" inputmode="numeric" value="" placeholder="0" required><button type="button" data-inc aria-label="Augmenter">+</button></div></div></div>
+              <div class="form-row"><div class="field stp"><label for="e-etage">Étage du bien</label><div class="stepper" data-stepper data-min="0" data-max="60"><button type="button" data-dec aria-label="Diminuer">−</button><input id="e-etage" name="etage" type="text" inputmode="numeric" value="" placeholder="0" required><button type="button" data-inc aria-label="Augmenter">+</button></div><small class="hint">0 pour un rez-de-chaussée.</small></div><div class="field stp"><label for="e-etages">Étages de l’immeuble</label><div class="stepper" data-stepper data-min="0" data-max="60"><button type="button" data-dec aria-label="Diminuer">−</button><input id="e-etages" name="etages" type="text" inputmode="numeric" value="" placeholder="0" required><button type="button" data-inc aria-label="Augmenter">+</button></div></div></div>
+              <div class="form-row">
+                <div class="field"><label for="e-annee">Période de construction</label>
+                  <select id="e-annee" name="annee"><option value="">Je ne sais pas</option><option>Avant 1850</option><option>1850 à 1913</option><option>1914 à 1947</option><option>1948 à 1974</option><option>1975 à 2000</option><option>Après 2000</option></select></div>
+                <div class="field"><label for="e-etat">État général du bien</label>
+                  <select id="e-etat" name="etat" required><option value="">Choisir…</option><option>À rénover</option><option>À rafraîchir</option><option>Bon état</option><option>Neuf ou refait à neuf (moins de 3 ans)</option></select></div>
+              </div>
+              <div class="estim-actions"><button class="btn btn-ghost" type="button" data-prev>Retour</button><button class="btn btn-primary" type="button" data-next>Étape suivante</button></div>
+            </fieldset>
+
+            <fieldset class="estim-step" data-step="4">
+              <legend>Votre logement comporte-t-il une de ces spécificités ?</legend>
+              <div class="opts opts-list"><label class="opt"><input type="checkbox" name="spec" value="Ascenseur"><span>Ascenseur</span></label><label class="opt"><input type="checkbox" name="spec" value="Balcon"><span>Balcon</span></label><label class="opt"><input type="checkbox" name="spec" value="Terrasse"><span>Terrasse</span></label><label class="opt"><input type="checkbox" name="spec" value="Jardin"><span>Jardin</span></label><label class="opt"><input type="checkbox" name="spec" value="Cave"><span>Cave</span></label><label class="opt"><input type="checkbox" name="spec" value="Gardien"><span>Gardien</span></label><label class="opt"><input type="checkbox" name="spec" value="Parking"><span>Parking</span></label><label class="opt"><input type="checkbox" name="spec" value="Parking box"><span>Parking box</span></label></div>
+              <div class="estim-actions"><button class="btn btn-ghost" type="button" data-prev>Retour</button><button class="btn btn-primary" type="button" data-next>Étape suivante</button></div>
+            </fieldset>
+
+            <fieldset class="estim-step" data-step="5">
+              <legend>Quel serait votre prix de vente idéal ?</legend>
+              <div class="field"><label for="e-prix" class="sr-only">Prix de vente idéal en euros</label><div class="with-unit"><input id="e-prix" name="prix" type="text" inputmode="numeric" placeholder="Facultatif"><span aria-hidden="true">€</span></div></div>
+              <div class="estim-actions"><button class="btn btn-ghost" type="button" data-prev>Retour</button><button class="btn btn-primary" type="button" data-next>Étape suivante</button></div>
+            </fieldset>
+
+            <fieldset class="estim-step" data-step="6">
+              <legend>Quand souhaitez-vous vendre ce bien ?</legend>
+              <div class="opts opts-list"><label class="opt"><input type="radio" name="delai" value="Dès que possible" required><span>Dès que possible</span></label><label class="opt"><input type="radio" name="delai" value="Dans les 6 prochains mois"><span>Dans les 6 prochains mois</span></label><label class="opt"><input type="radio" name="delai" value="Dans plus de 6 mois"><span>Dans plus de 6 mois</span></label><label class="opt"><input type="radio" name="delai" value="Je démarre seulement ma réflexion"><span>Je démarre seulement ma réflexion</span></label><label class="opt"><input type="radio" name="delai" value="Je n’ai pas de projet de vente"><span>Je n’ai pas de projet de vente</span></label></div>
+              <div class="estim-actions"><button class="btn btn-ghost" type="button" data-prev>Retour</button><button class="btn btn-primary" type="button" data-next>Étape suivante</button></div>
+            </fieldset>
+
+            <fieldset class="estim-step" data-step="7">
+              <legend>Votre demande est prête !</legend>
+              <p class="estim-sub">Renseignez vos coordonnées : un conseiller Immodrim vous envoie une estimation argumentée sous 24 h ouvrées.</p>
+              <div class="opts opts-2 opts-civ"><label class="opt"><input type="radio" name="civilite" value="Monsieur"><span>Monsieur</span></label><label class="opt"><input type="radio" name="civilite" value="Madame"><span>Madame</span></label></div>
               <div class="form-row">
                 <div class="field"><label for="e-prenom">Prénom *</label><input id="e-prenom" name="prenom" type="text" autocomplete="given-name" required></div>
                 <div class="field"><label for="e-nom">Nom *</label><input id="e-nom" name="nom" type="text" autocomplete="family-name" required></div>
               </div>
-              <div class="field"><label for="e-email">E-mail *</label><input id="e-email" name="email" type="email" autocomplete="email" required></div>
-              <div class="field"><label for="e-tel">Téléphone *</label><input id="e-tel" name="telephone" type="tel" autocomplete="tel" required></div>
+              <div class="field"><label for="e-email">Adresse e-mail *</label><input id="e-email" name="email" type="email" autocomplete="email" required></div>
+              <div class="field"><label for="e-tel">Téléphone (facultatif, pour être rappelé plus vite)</label><input id="e-tel" name="telephone" type="tel" autocomplete="tel"></div>
               <div class="hp" aria-hidden="true"><label>Ne pas remplir <input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
               <div class="consent">
                 <input id="e-rgpd" name="consentement" type="checkbox" required>
-                <label for="e-rgpd">J'accepte que mes données soient utilisées pour recevoir mon estimation et être recontacté(e) à ce sujet par Immodrim. Voir la <a href="/confidentialite">politique de confidentialité</a>. *</label>
+                <label for="e-rgpd">J’accepte que mes données soient utilisées pour recevoir mon estimation et être recontacté(e) à ce sujet par Immodrim. Voir la <a href="/confidentialite">politique de confidentialité</a>.</label>
               </div>
-              <div class="estim-actions">
-                <button class="btn btn-ghost" type="button" data-prev>Retour</button>
-                <button class="btn btn-primary" type="submit">Recevoir mon estimation</button>
-              </div>
+              <div class="estim-actions"><button class="btn btn-ghost" type="button" data-prev>Retour</button><button class="btn btn-primary" type="submit">Recevoir mon estimation</button></div>
             </fieldset>
 
             <p id="estim-status" class="form-status" role="status" aria-live="polite"></p>
-            <p class="form-note">* Champs obligatoires. Estimation gratuite et sans engagement.</p>
+            <p class="form-note">Estimation gratuite et sans engagement. Adresses suggérées par la Base Adresse Nationale (api-adresse.data.gouv.fr).</p>
           </form>
 
           <div id="estim-thanks" class="estim-thanks" hidden tabindex="-1">

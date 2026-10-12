@@ -10,7 +10,7 @@
   };
 
   /* ===== Numéro de version (discret, pied de page) : à mettre à jour à chaque mise en ligne ===== */
-  var VERSION = 'v1.6 · 12 oct. 2026';
+  var VERSION = 'v1.7 · 12 oct. 2026';
   var note = document.querySelector('.legal-note');
   if (note) {
     var ver = document.createElement('span');
@@ -230,32 +230,89 @@
     });
   }
 
-  /* ===== Simulateur d'estimation (formulaire en 3 étapes -> HubSpot) ===== */
+  /* ===== Simulateur d'estimation (parcours en 7 écrans -> HubSpot) ===== */
   var est = document.getElementById('estim-form');
   if (est) {
     var steps = est.querySelectorAll('.estim-step');
-    var dots = est.querySelectorAll('[data-step-dot]');
     var estStatus = document.getElementById('estim-status');
+    var estCount = document.getElementById('estim-count');
     var cur = 0;
     var show = function (i) {
       cur = i;
       steps.forEach(function (st, k) { st.classList.toggle('is-active', k === i); });
-      dots.forEach(function (d, k) { d.classList.toggle('is-current', k === i); d.classList.toggle('is-done', k < i); });
+      estCount.textContent = 'Étape ' + (i + 1) + ' sur ' + steps.length;
+      est.style.setProperty('--sp', i + 1);
       estStatus.textContent = '';
-      var first = steps[i].querySelector('input,select');
+      var first = steps[i].querySelector('input[type="text"],input[type="email"]');
       if (first && window.matchMedia('(min-width: 800px)').matches) { first.focus(); }
     };
     var validStep = function (i) {
       var ok = true;
       steps[i].querySelectorAll('input,select').forEach(function (el) {
+        if (el.type === 'hidden') { return; }
         var bad = !el.checkValidity();
-        if (el.parentNode.classList) { el.parentNode.classList.toggle('invalid', bad); }
-        if (bad && ok) { el.reportValidity(); ok = false; }
+        var box = el.closest('.field') || el.closest('.opts');
+        if (box) { box.classList.toggle('invalid', bad); }
+        if (bad && ok) {
+          ok = false;
+          if (el.type === 'radio') { estStatus.textContent = 'Merci de choisir une réponse.'; estStatus.className = 'form-status err'; }
+          else { el.reportValidity(); }
+        }
       });
       return ok;
     };
     est.querySelectorAll('[data-next]').forEach(function (b) { b.addEventListener('click', function () { if (validStep(cur)) { show(cur + 1); } }); });
     est.querySelectorAll('[data-prev]').forEach(function (b) { b.addEventListener('click', function () { show(cur - 1); }); });
+    est.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.type !== 'checkbox' && cur < steps.length - 1) { e.preventDefault(); if (validStep(cur)) { show(cur + 1); } }
+    });
+    est.querySelectorAll('[data-stepper]').forEach(function (s) {
+      var inp = s.querySelector('input'), mn = +s.dataset.min, mx = +s.dataset.max;
+      var set = function (v) { inp.value = Math.max(mn, Math.min(mx, v)); };
+      s.querySelector('[data-inc]').addEventListener('click', function () { set((parseInt(inp.value, 10) || (mn - 1)) + 1); });
+      s.querySelector('[data-dec]').addEventListener('click', function () { set((parseInt(inp.value, 10) || mn + 1) - 1); });
+      inp.addEventListener('input', function () { inp.value = inp.value.replace(/[^0-9]/g, ''); });
+    });
+    ['surface', 'prix'].forEach(function (n) { est.elements[n].addEventListener('input', function (e) { e.target.value = e.target.value.replace(/[^0-9]/g, ''); }); });
+
+    /* Suggestions d'adresse : Base Adresse Nationale (service public) */
+    var adr = est.elements.adresse, list = document.getElementById('ac-list'), acT, acI = -1;
+    var acClose = function () { list.hidden = true; adr.setAttribute('aria-expanded', 'false'); acI = -1; };
+    var acPick = function (li) {
+      adr.value = li.dataset.label; est.elements.cp.value = li.dataset.cp; est.elements.ville.value = li.dataset.city; acClose();
+    };
+    adr.addEventListener('input', function () {
+      est.elements.cp.value = ''; est.elements.ville.value = '';
+      clearTimeout(acT);
+      var q = adr.value.trim();
+      if (q.length < 4) { acClose(); return; }
+      acT = setTimeout(function () {
+        fetch('https://api-adresse.data.gouv.fr/search/?limit=5&autocomplete=1&q=' + encodeURIComponent(q))
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            list.innerHTML = '';
+            (d.features || []).forEach(function (f) {
+              var li = document.createElement('li'); li.setAttribute('role', 'option');
+              li.textContent = f.properties.label; li.dataset.label = f.properties.label;
+              li.dataset.cp = f.properties.postcode || ''; li.dataset.city = f.properties.city || '';
+              li.addEventListener('mousedown', function (e) { e.preventDefault(); acPick(li); });
+              list.appendChild(li);
+            });
+            list.hidden = !list.children.length; adr.setAttribute('aria-expanded', String(!list.hidden));
+          }).catch(acClose);
+      }, 250);
+    });
+    adr.addEventListener('keydown', function (e) {
+      var items = list.children;
+      if (list.hidden || !items.length) { return; }
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault(); acI = (acI + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+        for (var k = 0; k < items.length; k++) { items[k].setAttribute('aria-selected', String(k === acI)); }
+      } else if (e.key === 'Enter' && acI >= 0) { e.preventDefault(); e.stopPropagation(); acPick(items[acI]); }
+      else if (e.key === 'Escape') { acClose(); }
+    }, true);
+    adr.addEventListener('blur', function () { setTimeout(acClose, 150); });
+
     show(0);
     est.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -264,22 +321,24 @@
       var btn = est.querySelector('button[type="submit"]');
       btn.disabled = true;
       estStatus.textContent = 'Envoi en cours…'; estStatus.className = 'form-status';
-      var g = function (n) { return (est.elements[n] && est.elements[n].value || '').trim(); };
+      var g = function (n) { var el = est.elements[n]; return el ? (el.value || '').trim() : ''; };
+      var specs = Array.prototype.map.call(est.querySelectorAll('input[name="spec"]:checked'), function (x) { return x.value; });
       var lines = [
-        'DEMANDE D\'ESTIMATION (simulateur)',
-        'Type : ' + g('type'), 'Adresse : ' + g('adresse') + ', ' + g('cp') + ' ' + g('ville'),
-        'Surface : ' + g('surface') + ' m²', 'Pièces : ' + g('pieces'), 'État : ' + g('etat'),
-        'Construction : ' + (g('annee') || 'non précisé'), 'Étage : ' + (g('etage') || 'non précisé'),
-        'Extérieur : ' + (g('exterieur') || 'aucun'), 'Projet de vente : ' + g('delai')
+        "DEMANDE D'ESTIMATION (simulateur)",
+        'Type : ' + g('type'), 'Adresse : ' + g('adresse'),
+        'Surface : ' + g('surface') + ' m²', 'Pièces : ' + g('pieces') + ' · Chambres : ' + g('chambres'),
+        'Étage : ' + g('etage') + ' (immeuble de ' + g('etages') + ' étages)',
+        'Construction : ' + (g('annee') || 'non précisé'), 'État : ' + g('etat'),
+        'Spécificités : ' + (specs.join(', ') || 'aucune'),
+        'Prix souhaité : ' + (g('prix') ? g('prix') + ' €' : 'non précisé'),
+        'Projet de vente : ' + g('delai'), 'Civilité : ' + (g('civilite') || 'non précisée')
       ];
-      var payload = {
-        fields: [
-          { name: 'firstname', value: g('prenom') }, { name: 'lastname', value: g('nom') },
-          { name: 'email', value: g('email') }, { name: 'phone', value: g('telephone') },
-          { name: 'message', value: lines.join('\n') }
-        ],
-        context: { pageUri: location.href, pageName: document.title }
-      };
+      var fields = [
+        { name: 'firstname', value: g('prenom') }, { name: 'lastname', value: g('nom') },
+        { name: 'email', value: g('email') }, { name: 'message', value: lines.join('\n') }
+      ];
+      if (g('telephone')) { fields.push({ name: 'phone', value: g('telephone') }); }
+      var payload = { fields: fields, context: { pageUri: location.href, pageName: document.title } };
       fetch(HUBSPOT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
         .then(function (r) {
           if (!r.ok) { throw new Error('http ' + r.status); }

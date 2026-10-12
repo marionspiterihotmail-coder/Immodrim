@@ -496,3 +496,44 @@ h2 { font-size: clamp(2.1rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; 
   .js .checks li { opacity: 1; transform: none; transition: none; }
   .js .card.reveal:not(.in), .js .steps li.reveal:not(.in) { transform: none; }
 }
+
+/* Estimation : parcours une question par écran */
+.estim-head { margin-bottom: 1.4rem; }
+.estim-count { margin: 0 0 .5rem; font-weight: 800; color: var(--brand-dark); font-size: .95rem; }
+.estim-bar { height: 8px; border-radius: 8px; background: #d5def0; overflow: hidden; }
+.estim-bar span { display: block; height: 100%; width: calc(var(--sp, 1) / 7 * 100%); background: linear-gradient(90deg, var(--frost), var(--brand)); border-radius: 8px; transition: width .4s ease; }
+.estim-card legend { font-size: 1.45rem; line-height: 1.25; color: var(--ink); }
+.estim-sub { margin: -.4rem 0 1rem; color: var(--muted); font-weight: 500; }
+.estim-assure { list-style: none; display: flex; flex-wrap: wrap; gap: .4rem 1rem; padding: 0; margin: 0 0 1.2rem; font-weight: 700; color: var(--brand-dark); font-size: .92rem; }
+.estim-assure li::before { content: "✓ "; color: var(--brand); }
+.opts { display: grid; gap: .6rem; margin-bottom: 1.4rem; }
+.opts-2 { grid-template-columns: 1fr 1fr; }
+.opt { position: relative; display: block; cursor: pointer; }
+.opt input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.opt span { display: flex; align-items: center; gap: .7rem; padding: .95rem 1.1rem; border: 2px solid var(--brand-line); border-radius: 16px; background: #fff; font-weight: 700; color: var(--ink); transition: border-color .15s, background .15s, box-shadow .15s; }
+.opts-2:not(.opts-civ) .opt span { flex-direction: column; justify-content: center; text-align: center; padding: 1.4rem 1rem; color: var(--brand-dark); }
+.opt input:checked + span { border-color: var(--brand); background: var(--ice-50); box-shadow: 0 0 0 3px rgba(75, 59, 224, .15); }
+.opt input:focus-visible + span { outline: 3px solid var(--brand); outline-offset: 2px; }
+.opts-list .opt span::before { content: ""; flex: 0 0 22px; height: 22px; border: 2px solid var(--brand-line); border-radius: 6px; background: #fff; }
+.opts-list .opt input[type="radio"] + span::before { border-radius: 50%; }
+.opts-list .opt input:checked + span::before { background: var(--brand) center / 14px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 5 5 9-10'/%3E%3C/svg%3E"); border-color: var(--brand); }
+.stepper { display: flex; }
+.stepper input { text-align: center; border-radius: 0 !important; min-width: 0; flex: 1; }
+.stepper button { flex: 0 0 46px; border: 1px solid var(--brand-line); background: #fff; color: var(--brand); font-size: 1.3rem; font-weight: 800; cursor: pointer; }
+.stepper button:first-child { border-radius: 12px 0 0 12px; }
+.stepper button:last-child { border-radius: 0 12px 12px 0; }
+.stepper button:hover { background: var(--ice-50); }
+.hint { display: block; margin-top: .3rem; color: var(--muted); font-size: .85rem; }
+.with-unit { position: relative; }
+.with-unit span { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); font-weight: 800; color: var(--muted); }
+.ac { position: relative; }
+.ac-list { position: absolute; z-index: 20; left: 0; right: 0; top: 100%; margin: .3rem 0 0; padding: .3rem; list-style: none; background: #fff; border: 1px solid var(--brand-line); border-radius: 14px; box-shadow: var(--shadow-soft); max-height: 16rem; overflow: auto; }
+.ac-list li { padding: .65rem .8rem; border-radius: 10px; cursor: pointer; font-weight: 500; color: var(--ink); }
+.ac-list li:hover, .ac-list li[aria-selected="true"] { background: var(--ice-50); }
+.estim-card .field.invalid .opt span, .opts.invalid .opt span { border-color: var(--err); }
+@media (max-width: 480px) { .opts-2 { gap: .5rem; } .estim-card legend { font-size: 1.25rem; } }
+.estim-card .form-row { align-items: start; }
+.stepper input { margin: 0; border-left: 0; border-right: 0; height: 52px; }
+.stepper button { height: 52px; }
+.estim-actions { flex-wrap: nowrap; }
+.estim-actions .btn { flex: 1 1 0; min-width: 0; padding-left: .8rem; padding-right: .8rem; }
