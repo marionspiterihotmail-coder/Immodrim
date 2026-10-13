@@ -59,3 +59,8 @@ table.cmp{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeri
 #map{height:360px;border-radius:16px;margin-top:16px;border:1px solid var(--line);z-index:0}
 .leaflet-popup-content{font:14px/1.4 Figtree,system-ui,sans-serif;color:#14122b}
 .leaflet-popup-content b{display:block;font-size:16px}
+
+.cmp td.r,.cmp th.r{white-space:nowrap}
+.cmp td:first-child{min-width:190px}
+.cmp th{white-space:nowrap}
+table.cmp{min-width:700px}

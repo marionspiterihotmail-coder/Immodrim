@@ -127,6 +127,15 @@
     doc.hidden = false;
   }
 
+  function suggest() {
+    if (low.value || high.value || !compsEl) { return; }
+    var sf = num(data.surface), pm = compsEl._cp.items.map(function (o) { return o.prix / o.sb; }).sort(function (a, b) { return a - b; });
+    if (!sf || !pm.length) { return; }
+    var mid = pm.length % 2 ? pm[(pm.length - 1) / 2] : (pm[pm.length / 2 - 1] + pm[pm.length / 2]) / 2;
+    var r5 = function (v) { return Math.round(v / 5000) * 5000; };
+    low.value = r5(mid * sf * 0.95); high.value = r5(mid * sf * 1.05);
+    document.getElementById('hint').textContent = 'Première estimation calculée à partir des ' + pm.length + ' ventes les plus proches (médiane ' + eur(mid) + ' / m² de surface habitable). Elle ne tient pas compte du terrain ni de l’état exact : ajustez-la avant de valider.';
+  }
   function setStatus(t, cls) { status.textContent = t; status.className = 'status' + (cls ? ' ' + cls : ''); }
 
   var isDemo = qs.get('demo') === '1';
@@ -136,6 +145,7 @@
       if (d.error) { msg.textContent = d.error === 'forbidden' ? 'Accès refusé.' : 'Fiche introuvable.'; return; }
       data = d; msg.hidden = true;
       low.value = d.fourchette_basse || ''; high.value = d.fourchette_haute || ''; note.value = d.note_cedric || '';
+      suggest();
       if (!viewOnly) { panel.hidden = false; }
       buildComps();
       if (d.statut === 'Validée') { setStatus('Estimation déjà validée. Vous pouvez la modifier et la valider de nouveau.', 'ok'); }
