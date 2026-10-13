@@ -53,7 +53,7 @@
     }
     var s1 = el('section', 's', null, doc); el('h2', null, 'Votre bien en un coup d’œil', s1);
     var gr = el('div', 'grid', null, s1);
-    [['Surface', surf ? surf + ' m²' : ''], ['Terrain', data.terrain ? data.terrain + ' m²' : ''], ['Pièces', data.pieces], ['Chambres', data.chambres], ['Étage', data.etage && data.etages ? data.etage + ' / ' + data.etages : data.etage], ['Année', data.annee], ['État', data.etat], ['Atouts', data.specs]].forEach(function (p) {
+    [['Surface', surf ? surf + ' m²' : ''], ['Terrain', data.terrain ? data.terrain + ' m²' : ''], ['Pièces', data.pieces], ['Chambres', data.chambres], ['Étage', data.terrain ? '' : (data.etage && data.etages ? data.etage + ' / ' + data.etages : data.etage)], ['Année', data.annee], ['État', data.etat], ['Atouts', data.specs]].forEach(function (p) {
       if (!p[1]) { return; }
       var kx = el('div', 'k', null, gr); el('span', null, p[0], kx); el('b', null, p[1], kx);
     });
