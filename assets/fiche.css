@@ -64,3 +64,11 @@ table.cmp{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeri
 .cmp td:first-child{min-width:190px}
 .cmp th{white-space:nowrap}
 table.cmp{min-width:700px}
+
+.callout{background:var(--soft);border-top:0 !important;padding-block:18px !important}
+.callout p{margin:0;font-weight:600;color:var(--brand-d)}
+.avis-opts{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.avis-btn{background:var(--soft);color:var(--ink);border:1.5px solid var(--line);padding:10px 16px}
+.avis-btn[aria-pressed="true"]{background:var(--brand);color:var(--paper);border-color:var(--brand)}
+section.s textarea{margin-bottom:12px}
+[hidden]{display:none !important}

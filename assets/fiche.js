@@ -2,7 +2,8 @@
   'use strict';
   var SHEET_URL = 'https://script.google.com/macros/s/AKfycbygs1WZYLfGrk5Ck1CdbRle-MC4G7F86mM_5bEAir6wjYl6URcg-rRpKQ6EBS6LEHeM/exec';
   var qs = new URLSearchParams(location.search);
-  var id = qs.get('id') || '', k = qs.get('k') || '', viewOnly = qs.get('vue') === '1';
+  var id = qs.get('id') || '', k = qs.get('k') || '', tok = qs.get('t') || '';
+  var clientMode = (!!tok && !k) || qs.get('client') === '1', viewOnly = qs.get('vue') === '1' || clientMode;
   var msg = document.getElementById('msg'), panel = document.getElementById('panel'), doc = document.getElementById('doc');
   var low = document.getElementById('low'), high = document.getElementById('high'), note = document.getElementById('note');
   var save = document.getElementById('save'), status = document.getElementById('status');
@@ -71,6 +72,29 @@
     map.fitBounds(pts, { padding: [30, 30], maxZoom: 18 });
   }
 
+
+  function avisBlock() {
+    var s = el('section', 's', null, doc); el('h2', null, 'Que pensez-vous de cette estimation ?', s);
+    if (data.avis) { el('p', 'note', 'Merci, votre réponse a bien été transmise à Cédric : « ' + data.avis + ' ».', s); return; }
+    var opts = ['Elle me semble juste', 'Je m’attendais à plus', 'Je m’attendais à moins'], chosen = '', row = el('div', 'avis-opts', null, s);
+    opts.forEach(function (t) {
+      var b = el('button', 'avis-btn', t, row); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', function () { chosen = t; row.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); }); send.disabled = false; });
+    });
+    var ta = el('textarea', null, null, s); ta.rows = 3; ta.maxLength = 1000; ta.placeholder = 'Un commentaire pour Cédric (facultatif)'; ta.setAttribute('aria-label', 'Commentaire');
+    var send = el('button', null, 'Envoyer mon avis', s); send.type = 'button'; send.disabled = true;
+    var st = el('p', 'status', null, s); st.setAttribute('role', 'status');
+    send.addEventListener('click', function () {
+      send.disabled = true; st.textContent = 'Envoi…'; st.className = 'status';
+      var done = function () { data.avis = chosen; render(); };
+      if (isDemo) { done(); return; }
+      fetch(SHEET_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'avis', id: id, t: tok, avis: chosen, commentaire: ta.value }) })
+        .then(function (r) { return r.json(); })
+        .then(function (d) { if (d && d.ok) { done(); } else { throw new Error('x'); } })
+        .catch(function () { st.textContent = 'Envoi impossible pour le moment. Réessayez dans un instant.'; st.className = 'status err'; send.disabled = false; });
+    });
+  }
+
   function render() {
     var lo = num(low.value), hi = num(high.value), ok = lo > 0 && hi >= lo;
     var surf = num(data.surface);
@@ -100,6 +124,10 @@
       el('div', 'val pending', 'En cours d’établissement', price);
     }
 
+    var ban = el('section', 's callout', null, doc);
+    el('p', null, !ok ? 'Cédric Brachet, votre interlocuteur Immodrim, va vous contacter pour établir votre estimation avec vous.'
+      : (data.statut === 'Validée' ? 'Estimation validée par Cédric Brachet, votre interlocuteur Immodrim. Il reste à votre disposition pour la préciser lors d’une visite.'
+      : 'Estimation indicative, calculée à partir des ventes proches de chez vous. Cédric Brachet, votre interlocuteur Immodrim, va vous contacter pour l’affiner avec vous.'), ban);
     if (ok && data.note_cedric) {
       var sn = el('section', 's', null, doc); el('h2', null, 'Le mot de Cédric', sn); el('p', 'note', data.note_cedric, sn);
     }
@@ -116,6 +144,7 @@
     var s3 = el('section', 's', null, doc); el('h2', null, 'Pour aller plus loin', s3);
     var ol = el('ol', 'next', null, s3);
     ['Visite de votre bien pour affiner l’estimation.', 'Avis de valeur définitif et stratégie de mise en vente.', 'Diffusion et accompagnement jusqu’à la signature.'].forEach(function (t) { el('li', null, t, ol); });
+    if (clientMode) { avisBlock(); }
     var s4 = el('section', 's', null, doc); var ced = el('div', 'ced', null, s4);
     var ph = el('img', null, null, ced); ph.src = '/assets/img/cedric-brachet.webp'; ph.alt = 'Cédric Brachet';
     var cd = el('div', null, null, ced);
@@ -139,8 +168,8 @@
   function setStatus(t, cls) { status.textContent = t; status.className = 'status' + (cls ? ' ' + cls : ''); }
 
   var isDemo = qs.get('demo') === '1';
-  if (!isDemo && (!id || !k)) { msg.textContent = 'Lien incomplet.'; return; }
-  (isDemo ? Promise.resolve(DEMO) : fetch(SHEET_URL + '?id=' + encodeURIComponent(id) + '&k=' + encodeURIComponent(k)).then(function (r) { return r.json(); }))
+  if (!isDemo && (!id || !(k || tok))) { msg.textContent = 'Lien incomplet.'; return; }
+  (isDemo ? Promise.resolve(DEMO) : fetch(SHEET_URL + '?id=' + encodeURIComponent(id) + (k ? '&k=' + encodeURIComponent(k) : '&t=' + encodeURIComponent(tok))).then(function (r) { return r.json(); }))
     .then(function (d) {
       if (d.error) { msg.textContent = d.error === 'forbidden' ? 'Accès refusé.' : 'Fiche introuvable.'; return; }
       data = d; msg.hidden = true;
@@ -164,7 +193,7 @@
       .then(function () { return new Promise(function (res) { setTimeout(res, 1500); }); })
       .then(function () { return fetch(SHEET_URL + '?id=' + encodeURIComponent(id) + '&k=' + encodeURIComponent(k)).then(function (r) { return r.json(); }); })
       .then(function (d) {
-        if (d.statut === 'Validée') { setStatus('Estimation validée. Le lien client est la même page avec « &vue=1 » à la fin.', 'ok'); }
+        if (d.statut === 'Validée') { setStatus('Estimation validée : le client voit la nouvelle fourchette sur son lien.', 'ok'); }
         else { setStatus('Enregistrement non confirmé. Réessayez.', 'err'); }
       })
       .catch(function () { setStatus('Échec de l’enregistrement.', 'err'); })

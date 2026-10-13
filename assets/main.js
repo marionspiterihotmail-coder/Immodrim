@@ -10,7 +10,7 @@
   };
 
   /* ===== Numéro de version (discret, pied de page) : à mettre à jour à chaque mise en ligne ===== */
-  var VERSION = 'v2.5 · 13 oct. 2026';
+  var VERSION = 'v2.6 · 13 oct. 2026';
   var note = document.querySelector('.legal-note');
   if (note) {
     var ver = document.createElement('span');
@@ -349,18 +349,26 @@
       ];
       fields.push({ name: 'phone', value: g('telephone') });
       var payload = { fields: fields, context: { pageUri: location.href, pageName: document.title } };
+      var sheetP = Promise.resolve(null);
       if (SHEET_URL) {
         var row = { id: 'EST-' + Date.now().toString(36).toUpperCase(), date: new Date().toISOString(), civilite: g('civilite'), prenom: g('prenom'), nom: g('nom'), email: g('email'), telephone: g('telephone'), type: g('type'), adresse: g('adresse'), cp: g('cp'), ville: g('ville'), surface: g('surface'), terrain: g('terrain'), pieces: g('pieces'), chambres: g('chambres'), etage: g('etage'), etages: g('etages'), annee: g('annee'), etat: g('etat'), specs: specs.join(', '), prix: g('prix'), delai: g('delai') };
-        try { fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(row) }); } catch (x) {}
+        estStatus.textContent = 'Calcul de votre estimation en cours… (jusqu\u2019à 20 secondes)';
+        sheetP = Promise.race([
+          fetch(SHEET_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(row) }).then(function (r) { return r.json(); }),
+          new Promise(function (res) { setTimeout(function () { res(null); }, 28000); })
+        ]).catch(function () { return null; });
       }
-      fetch(HUBSPOT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-        .then(function (r) {
-          if (!r.ok) { throw new Error('http ' + r.status); }
+      var hubP = fetch(HUBSPOT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+        .then(function (r) { if (!r.ok) { throw new Error('http ' + r.status); } return true; });
+      Promise.all([hubP, sheetP])
+        .then(function (res) {
+          if (window.fbq && getConsent().ads) { window.fbq('track', 'Lead'); }
+          if (window.gtag && getConsent().audience) { window.gtag('event', 'generate_lead', { form: 'estimation' }); }
+          var s = res[1];
+          if (s && s.ok && s.id && s.t) { location.href = '/fiche?id=' + encodeURIComponent(s.id) + '&t=' + encodeURIComponent(s.t); return; }
           est.hidden = true;
           var t = document.getElementById('estim-thanks');
           t.hidden = false; t.focus();
-          if (window.fbq && getConsent().ads) { window.fbq('track', 'Lead'); }
-          if (window.gtag && getConsent().audience) { window.gtag('event', 'generate_lead', { form: 'estimation' }); }
         })
         .catch(function () { estStatus.textContent = "L'envoi a échoué. Merci de réessayer dans un instant."; estStatus.className = 'form-status err'; })
         .then(function () { btn.disabled = false; });
