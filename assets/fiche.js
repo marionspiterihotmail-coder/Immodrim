@@ -19,6 +19,58 @@
   function num(v) { var n = parseFloat(String(v).replace(/\s/g, '').replace(',', '.')); return isNaN(n) ? 0 : n; }
   function dateFr(iso) { var d = new Date(iso); return isNaN(d) ? '' : d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }); }
 
+
+  var DEMO = { id: 'EST-MV6JBVET', date: '2026-10-13T10:25:26.213Z', statut: 'À estimer', adresse: "77bis Rue des Sablons 78620 L'Étang-la-Ville", type: 'Maison', surface: '115', terrain: '500', pieces: '4', chambres: '3', etage: '0', etages: '0', annee: 'Après 2000', etat: 'Neuf ou refait à neuf (moins de 3 ans)', specs: 'Terrasse, Jardin',
+    fourchette_basse: '720000', fourchette_haute: '800000', note_cedric: 'Belle maison récente avec jardin, très recherchée sur ce secteur. Je vous propose une visite pour affiner cette estimation.',
+    comparables: JSON.stringify({ x: 2.070289, y: 48.874643, items: [
+      { date: '2021-08-13', prix: 652866, sb: 115, terr: 536, x: 2.0703673, y: 48.8747243, dist: 11, adresse: "77 Rue des Sablons, 78620 L'Étang-la-Ville" },
+      { date: '2022-06-23', prix: 826000, sb: 115, terr: 678, x: 2.0701716, y: 48.8747199, dist: 12, adresse: "77ter Rue des Sablons, 78620 L'Étang-la-Ville" },
+      { date: '2022-10-27', prix: 904690, sb: 86, terr: 865, x: 2.070176, y: 48.8751439, dist: 56, adresse: "75 Rue des Sablons, 78620 L'Étang-la-Ville" },
+      { date: '2022-11-30', prix: 1105010, sb: 156, terr: 1674, x: 2.0711827, y: 48.8735638, dist: 137, adresse: "3 Clos de la Tournelle, 78620 L'Étang-la-Ville" },
+      { date: '2020-09-04', prix: 651750, sb: 110, terr: 1072, x: 2.0721049, y: 48.8742277, dist: 141, adresse: "7 Clos de la Tournelle, 78620 L'Étang-la-Ville" } ] }) };
+  var compsEl = null, map = null;
+  function moisFr(iso) { var d = new Date(iso); return isNaN(d) ? '' : d.toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' }); }
+  function buildComps() {
+    var cp = null;
+    try { cp = data.comparables ? JSON.parse(data.comparables) : null; } catch (e) { cp = null; }
+    if (!cp || !cp.items || !cp.items.length || typeof L === 'undefined') { return null; }
+    var s = el('section', 's');
+    el('h2', null, 'Les ventes les plus proches de chez vous', s);
+    var tw = el('div', 'tw', null, s), t = el('table', 'cmp', null, tw), hd = el('tr', null, null, el('thead', null, null, t));
+    ['Adresse', 'Maison', 'Terrain', 'Prix', '€ / m²', 'Vente', 'Distance', ''].forEach(function (x, i) { el('th', i > 0 && i < 7 ? 'r' : '', x, hd); });
+    var tb = el('tbody', null, null, t);
+    cp.items.forEach(function (o) {
+      var tr = el('tr', null, null, tb);
+      el('td', null, o.adresse, tr); el('td', 'r', o.sb + ' m²', tr); el('td', 'r', o.terr ? o.terr + ' m²' : '–', tr);
+      el('td', 'r', eur(o.prix), tr); el('td', 'r', eur(o.prix / o.sb), tr); el('td', 'r', moisFr(o.date), tr);
+      el('td', 'r', o.dist < 1000 ? o.dist + ' m' : (o.dist / 1000).toFixed(1).replace('.', ',') + ' km', tr);
+      var a = el('a', null, 'Satellite', el('td', null, null, tr)); a.target = '_blank'; a.rel = 'noopener';
+      a.href = 'https://www.google.com/maps/@?api=1&map_action=map&basemap=satellite&zoom=19&center=' + o.y + ',' + o.x;
+    });
+    el('p', 'src', 'Source : Demandes de valeurs foncières (DVF, données publiques de l’État). Adresses approximatives, déduites de l’emplacement des parcelles vendues.', s);
+    var m = el('div', null, null, s); m.id = 'map';
+    compsEl = s; compsEl._cp = cp; compsEl._m = m;
+    return s;
+  }
+  function initMap() {
+    if (map || !compsEl) { return; }
+    var cp = compsEl._cp;
+    map = L.map(compsEl._m, { scrollWheelZoom: false });
+    var plan = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© les contributeurs d’OpenStreetMap' });
+    var sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, attribution: 'Imagerie © Esri' });
+    plan.addTo(map); L.control.layers({ 'Plan': plan, 'Satellite': sat }, null, { collapsed: false }).addTo(map);
+    var pts = [[cp.y, cp.x]];
+    L.circleMarker([cp.y, cp.x], { radius: 11, color: '#fff', weight: 3, fillColor: '#4b3be0', fillOpacity: 1 }).addTo(map).bindTooltip('Votre bien', { permanent: true, direction: 'top' });
+    cp.items.forEach(function (o) {
+      var box = el('div'); el('b', null, eur(o.prix), box);
+      el('span', null, o.adresse, box); box.appendChild(document.createElement('br'));
+      el('span', null, o.sb + ' m² · terrain ' + (o.terr || '–') + ' m² · ' + eur(o.prix / o.sb) + ' / m² · ' + moisFr(o.date), box);
+      L.circleMarker([o.y, o.x], { radius: 9, color: '#fff', weight: 2, fillColor: '#e0632b', fillOpacity: 1 }).addTo(map).bindPopup(box);
+      pts.push([o.y, o.x]);
+    });
+    map.fitBounds(pts, { padding: [30, 30], maxZoom: 18 });
+  }
+
   function render() {
     var lo = num(low.value), hi = num(high.value), ok = lo > 0 && hi >= lo;
     var surf = num(data.surface);
@@ -57,6 +109,7 @@
       if (!p[1]) { return; }
       var kx = el('div', 'k', null, gr); el('span', null, p[0], kx); el('b', null, p[1], kx);
     });
+    if (compsEl) { doc.appendChild(compsEl); if (map) { map.invalidateSize(); } }
     var s2 = el('section', 's', null, doc); el('h2', null, 'Comment nous avons établi ce prix', s2);
     var ul = el('ul', 'h', null, s2);
     ['Analyse du marché local et des ventes récentes comparables.', 'Prise en compte de la surface, de l’étage, de l’état et des atouts du bien.', 'Fourchette volontairement large : seule une visite permet de la resserrer.'].forEach(function (t) { el('li', null, t, ul); });
@@ -76,21 +129,23 @@
 
   function setStatus(t, cls) { status.textContent = t; status.className = 'status' + (cls ? ' ' + cls : ''); }
 
-  if (!id || !k) { msg.textContent = 'Lien incomplet.'; return; }
-  fetch(SHEET_URL + '?id=' + encodeURIComponent(id) + '&k=' + encodeURIComponent(k))
-    .then(function (r) { return r.json(); })
+  var isDemo = qs.get('demo') === '1';
+  if (!isDemo && (!id || !k)) { msg.textContent = 'Lien incomplet.'; return; }
+  (isDemo ? Promise.resolve(DEMO) : fetch(SHEET_URL + '?id=' + encodeURIComponent(id) + '&k=' + encodeURIComponent(k)).then(function (r) { return r.json(); }))
     .then(function (d) {
       if (d.error) { msg.textContent = d.error === 'forbidden' ? 'Accès refusé.' : 'Fiche introuvable.'; return; }
       data = d; msg.hidden = true;
       low.value = d.fourchette_basse || ''; high.value = d.fourchette_haute || ''; note.value = d.note_cedric || '';
       if (!viewOnly) { panel.hidden = false; }
+      buildComps();
       if (d.statut === 'Validée') { setStatus('Estimation déjà validée. Vous pouvez la modifier et la valider de nouveau.', 'ok'); }
-      render();
+      render(); initMap();
     })
     .catch(function () { msg.textContent = 'Impossible de charger la fiche. Réessayez dans un instant.'; });
 
   [low, high, note].forEach(function (i) { i.addEventListener('input', function () { if (data) { data.note_cedric = note.value; render(); } }); });
   save.addEventListener('click', function () {
+    if (isDemo) { setStatus('Aperçu : la validation est désactivée.', 'err'); return; }
     var lo = num(low.value), hi = num(high.value);
     if (!(lo > 0 && hi >= lo)) { setStatus('Indiquez un prix bas et un prix haut (le haut doit être supérieur ou égal au bas).', 'err'); return; }
     save.disabled = true; setStatus('Enregistrement…');

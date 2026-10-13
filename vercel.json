@@ -34,7 +34,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://connect.facebook.net; style-src 'self'; img-src 'self' data: https://www.google-analytics.com https://www.facebook.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://api-eu1.hsforms.com https://api-adresse.data.gouv.fr https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.facebook.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://api-eu1.hsforms.com"
+          "value": "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://connect.facebook.net; style-src 'self'; img-src 'self' data: https://tile.openstreetmap.org https://server.arcgisonline.com https://www.google-analytics.com https://www.facebook.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://api-eu1.hsforms.com https://api-adresse.data.gouv.fr https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.facebook.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://api-eu1.hsforms.com"
         }
       ]
     },
