@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Fiche d’estimation – Immodrim</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/fiche.css?v=1">
+  <script src="/assets/fiche.js?v=1" defer></script>
+</head>
+<body>
+  <p id="msg" class="msg">Chargement de la fiche…</p>
+  <section id="panel" class="panel" hidden>
+    <h2>Validation de l’estimation</h2>
+    <p class="hint">Saisissez la fourchette de prix. Le document ci-dessous se met à jour en direct.</p>
+    <div class="row">
+      <label>Prix bas (€)<input id="low" type="number" inputmode="numeric" min="0" step="1000"></label>
+      <label>Prix haut (€)<input id="high" type="number" inputmode="numeric" min="0" step="1000"></label>
+    </div>
+    <label>Note pour le client (facultatif)<textarea id="note" rows="3" maxlength="600"></textarea></label>
+    <button id="save" type="button">Valider l’estimation</button>
+    <p id="status" class="status" role="status"></p>
+  </section>
+  <main id="doc" class="doc" hidden></main>
+</body>
+</html>
