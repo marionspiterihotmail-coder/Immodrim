@@ -1,7 +1,7 @@
-// Immodrim : registre des estimations (Google Apps Script) - v7
+// Immodrim : registre des estimations (Google Apps Script) - v8
 var KEY = 'kxDX_MSO_YTRtLpOKFfBEQ';   // clé secrète de Cédric (lien de validation)
 var SITE = 'https://immodrim-git-preprod-marions-projects-4766d9f0.vercel.app'; // passer à https://immodrim.com en production
-var COLS = ['id','date','statut','fiche','civilite','prenom','nom','email','telephone','type','adresse','cp','ville','surface','terrain','pieces','chambres','etage','etages','annee','etat','specs','prix','delai','fourchette_basse','fourchette_haute','note_cedric','validee_le','comparables','jeton','avis','commentaire_client','avis_le','envoi_mail','niveaux','mitoyennete','dpe','exceptionnel'];
+var COLS = ['id','date','statut','fiche','civilite','prenom','nom','email','telephone','type','adresse','cp','ville','surface','terrain','pieces','chambres','etage','etages','annee','etat','specs','prix','delai','fourchette_basse','fourchette_haute','note_cedric','validee_le','comparables','jeton','avis','commentaire_client','avis_le','envoi_mail','niveaux','mitoyennete','dpe','exceptionnel','ajustements'];
 var PUBLIC = ['id','date','statut','type','adresse','surface','terrain','pieces','chambres','etage','etages','annee','etat','specs','fourchette_basse','fourchette_haute','note_cedric','comparables','avis','niveaux','mitoyennete','dpe','exceptionnel'];
 
 function sheet_() {
@@ -54,7 +54,7 @@ function doPost(e) {
   d.jeton = Utilities.getUuid().replace(/-/g, '').slice(0, 16);
   d.fiche = SITE + '/fiche?id=' + encodeURIComponent(d.id) + '&k=' + KEY;
   d.comparables = comparables_(d);
-  var rg = range_(d); if (rg) { d.fourchette_basse = rg[0]; d.fourchette_haute = rg[1]; }
+  var rg = range_(d); if (rg) { d.fourchette_basse = rg[0]; d.fourchette_haute = rg[1]; d.ajustements = rg[2]; }
   sh.appendRow(COLS.map(function (c) { return d[c] === undefined ? '' : d[c]; }));
   if (CacheService.getScriptCache().get('mail_' + d.id)) { envoyerMail_(sh, rowOf_(sh, d.id)); }
   return json_({ ok: true, id: d.id, t: d.jeton });
@@ -73,15 +73,56 @@ function envoyerMail_(sh, r) {
   } catch (err) {}
 }
 
-// Première estimation : médiane du prix au m² des ventes proches x surface, -5 % / +5 %, arrondie à 5 000 €.
+// ===== Réglages : onglet "Réglages" du Sheet (modifiable à la main par Marion ou Cédric) =====
+// [clé, libellé, valeur par défaut en %]. Les valeurs de départ s'appuient sur des ordres de grandeur publiés (Meilleurtaux, PAP) : à valider par Cédric.
+var DEFAUTS = [
+  ['cap_max', 'RÉGLAGE : plafond du cumul des hausses (%)', 15],
+  ['cap_min', 'RÉGLAGE : plafond du cumul des baisses (%)', -25],
+  ['largeur', 'RÉGLAGE : largeur de la fourchette autour de la valeur centrale (± %)', 5],
+  ['etat|À rénover', 'État : à rénover', -15], ['etat|À rafraîchir', 'État : à rafraîchir', -7], ['etat|Bon état', 'État : bon état', 0], ['etat|Neuf ou refait à neuf (moins de 3 ans)', 'État : neuf ou refait à neuf', 8],
+  ['dpe|A', 'DPE A', 4], ['dpe|B', 'DPE B', 3], ['dpe|C', 'DPE C', 1], ['dpe|D', 'DPE D', 0], ['dpe|E', 'DPE E', -2], ['dpe|F', 'DPE F', -7], ['dpe|G', 'DPE G', -12],
+  ['exc|Vue exceptionnelle', 'Exceptionnel : vue exceptionnelle', 8], ['exc|Proche d’un monument ou site remarquable', 'Exceptionnel : proche d’un monument ou site remarquable', 4],
+  ['exc|Calme absolu, sans vis-à-vis', 'Exceptionnel : calme absolu, sans vis-à-vis', 4], ['exc|Luminosité exceptionnelle', 'Exceptionnel : luminosité exceptionnelle', 3],
+  ['exc|Prestations haut de gamme', 'Exceptionnel : prestations haut de gamme', 6], ['exc|Cachet ou caractère rare', 'Exceptionnel : cachet ou caractère rare', 5],
+  ['spec|Terrasse', 'Équipement : terrasse', 8], ['spec|Balcon', 'Appartement : balcon', 2.5], ['spec|Ascenseur', 'Appartement : ascenseur', 3], ['spec|Cave', 'Appartement : cave', 1],
+  ['spec|Parking', 'Appartement : parking', 3], ['spec|Box fermé', 'Appartement : box fermé', 4], ['spec|Gardien ou concierge', 'Appartement : gardien ou concierge', 1.5],
+  ['app|rdc', 'Appartement : rez-de-chaussée', -5], ['app|haut_sans_ascenseur', 'Appartement : 3e étage ou plus sans ascenseur', -6],
+  ['spec|Piscine', 'Maison : piscine', 8], ['spec|Garage', 'Maison : garage', 3], ['spec|Jardin', 'Maison : jardin', 2], ['spec|Cave ou sous-sol', 'Maison : cave ou sous-sol', 1],
+  ['spec|Dépendance (abri, atelier…)', 'Maison : dépendance', 1.5], ['spec|Cheminée ou poêle', 'Maison : cheminée ou poêle', 0.5],
+  ['mito|Mitoyenne d’un côté', 'Maison : mitoyenne d’un côté', -3], ['mito|Mitoyenne des deux côtés', 'Maison : mitoyenne des deux côtés', -6]
+];
+function num_(v) { var n = parseFloat(String(v).replace('%', '').replace(',', '.')); return isNaN(n) ? 0 : n; }
+function reglages_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet(), sh = ss.getSheetByName('Réglages');
+  if (!sh) { sh = ss.insertSheet('Réglages'); sh.appendRow(['Critère', 'Ajustement (%)', 'Clé technique (ne pas modifier)']); sh.setFrozenRows(1); sh.setColumnWidth(1, 460); sh.setColumnWidth(3, 330); }
+  var rows = sh.getLastRow() > 1 ? sh.getRange(2, 1, sh.getLastRow() - 1, 3).getValues() : [], map = {};
+  rows.forEach(function (r) { map[r[2]] = num_(r[1]); });
+  DEFAUTS.forEach(function (d) { if (!(d[0] in map)) { sh.appendRow([d[1], d[2], d[0]]); map[d[0]] = d[2]; } });
+  return map;
+}
+
+// Première estimation : médiane du prix au m² des ventes proches x surface, ajustée selon les critères du bien (onglet Réglages), avec fourchette ±.
 function range_(d) {
   try {
     var cp = JSON.parse(d.comparables), s = parseFloat(d.surface) || 0;
     if (!cp.items || cp.items.length < 3 || !s) return null;
     var pm = cp.items.map(function (o) { return o.prix / o.sb; }).sort(function (a, b) { return a - b; });
     var n = pm.length, mid = n % 2 ? pm[(n - 1) / 2] : (pm[n / 2 - 1] + pm[n / 2]) / 2;
-    var r5 = function (v) { return Math.round(v / 5000) * 5000; };
-    return [r5(mid * s * 0.95), r5(mid * s * 1.05)];
+    var R = reglages_(), items = [], add = function (cle, label) { if (cle in R && R[cle] !== 0) items.push([label, R[cle]]); };
+    add('etat|' + d.etat, 'état ' + String(d.etat).toLowerCase()); if (d.dpe) add('dpe|' + d.dpe, 'DPE ' + d.dpe);
+    String(d.specs || '').split(', ').forEach(function (x) { if (x) add('spec|' + x, x.toLowerCase()); });
+    String(d.exceptionnel || '').split(', ').forEach(function (x) { if (x) add('exc|' + x, x.toLowerCase()); });
+    if (d.type === 'Maison') { add('mito|' + d.mitoyennete, String(d.mitoyennete).toLowerCase()); }
+    else {
+      var et = parseInt(d.etage, 10), asc = String(d.specs || '').indexOf('Ascenseur') >= 0;
+      if (et === 0) add('app|rdc', 'rez-de-chaussée'); else if (et >= 3 && !asc) add('app|haut_sans_ascenseur', 'étage élevé sans ascenseur');
+    }
+    var total = items.reduce(function (q, it) { return q + it[1]; }, 0), brut = total;
+    total = Math.max(R.cap_min, Math.min(R.cap_max, total));
+    var w = (R.largeur || 5) / 100, centre = mid * s * (1 + total / 100), r5 = function (v) { return Math.round(v / 5000) * 5000; };
+    var txt = items.map(function (it) { return it[0] + ' ' + (it[1] > 0 ? '+' : '') + it[1] + ' %'; }).join(', ');
+    txt = 'Médiane ' + Math.round(mid) + ' €/m²' + (txt ? ' ; ' + txt : '') + ' ; total ' + (total > 0 ? '+' : '') + total + ' %' + (total !== brut ? ' (plafonné, cumul brut ' + brut + ' %)' : '');
+    return [r5(centre * (1 - w)), r5(centre * (1 + w)), txt];
   } catch (err) { return null; }
 }
 

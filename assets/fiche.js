@@ -144,7 +144,7 @@
     if (compsEl) { doc.appendChild(compsEl); if (map) { map.invalidateSize(); } }
     var s2 = el('section', 's', null, doc); el('h2', null, 'Comment nous avons établi ce prix', s2);
     var ul = el('ul', 'h', null, s2);
-    ['Analyse du marché local et des ventes récentes comparables.', 'Prise en compte de la surface, de l’étage, de l’état et des atouts du bien.', 'Fourchette volontairement large : seule une visite permet de la resserrer.'].forEach(function (t) { el('li', null, t, ul); });
+    ['Analyse du marché local et des ventes récentes comparables.', 'Ajustement selon l’état, le DPE, les équipements et les atouts de votre bien.', 'Fourchette volontairement large : seule une visite permet de la resserrer.'].forEach(function (t) { el('li', null, t, ul); });
     var s3 = el('section', 's', null, doc); el('h2', null, 'Pour aller plus loin', s3);
     var ol = el('ol', 'next', null, s3);
     ['Visite de votre bien pour affiner l’estimation.', 'Avis de valeur définitif et stratégie de mise en vente.', 'Diffusion et accompagnement jusqu’à la signature.'].forEach(function (t) { el('li', null, t, ol); });
@@ -179,6 +179,7 @@
       low.value = d.fourchette_basse || ''; high.value = d.fourchette_haute || ''; note.value = d.note_cedric || '';
       buildComps();
       suggest();
+      if (d.ajustements) { document.getElementById('adj').textContent = 'Détail du calcul : ' + d.ajustements; }
       if (!viewOnly) { panel.hidden = false; }
       if (d.statut === 'Validée') { setStatus('Estimation déjà validée. Vous pouvez la modifier et la valider de nouveau.', 'ok'); }
       render(); initMap();

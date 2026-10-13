@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="/assets/vendor/leaflet/leaflet.css">
   <link rel="stylesheet" href="/assets/fiche.css?v=7">
   <script src="/assets/vendor/leaflet/leaflet.js" defer></script>
-  <script src="/assets/fiche.js?v=10" defer></script>
+  <script src="/assets/fiche.js?v=11" defer></script>
 </head>
 <body>
   <header class="site-bar">
@@ -20,6 +20,7 @@
   <section id="panel" class="panel" hidden>
     <h2>Validation de l’estimation</h2>
     <p class="hint" id="hint">Saisissez la fourchette de prix. Le document ci-dessous se met à jour en direct.</p>
+    <p class="hint" id="adj"></p>
     <div class="row">
       <label>Prix bas (€)<input id="low" type="number" inputmode="numeric" min="0" step="1000"></label>
       <label>Prix haut (€)<input id="high" type="number" inputmode="numeric" min="0" step="1000"></label>
