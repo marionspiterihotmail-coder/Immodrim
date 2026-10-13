@@ -145,9 +145,9 @@
       if (d.error) { msg.textContent = d.error === 'forbidden' ? 'Accès refusé.' : 'Fiche introuvable.'; return; }
       data = d; msg.hidden = true;
       low.value = d.fourchette_basse || ''; high.value = d.fourchette_haute || ''; note.value = d.note_cedric || '';
+      buildComps();
       suggest();
       if (!viewOnly) { panel.hidden = false; }
-      buildComps();
       if (d.statut === 'Validée') { setStatus('Estimation déjà validée. Vous pouvez la modifier et la valider de nouveau.', 'ok'); }
       render(); initMap();
     })
