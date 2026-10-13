@@ -1,7 +1,7 @@
 // Immodrim : registre des estimations (Google Apps Script) - v2
 var KEY = 'kxDX_MSO_YTRtLpOKFfBEQ';   // clé secrète : fait partie du lien envoyé à Cédric
 var SITE = 'https://immodrim-git-preprod-marions-projects-4766d9f0.vercel.app'; // passer à https://immodrim.com en production
-var COLS = ['id','date','statut','fiche','civilite','prenom','nom','email','telephone','type','adresse','cp','ville','surface','pieces','chambres','etage','etages','annee','etat','specs','prix','delai','fourchette_basse','fourchette_haute','note_cedric','validee_le'];
+var COLS = ['id','date','statut','fiche','civilite','prenom','nom','email','telephone','type','adresse','cp','ville','surface','terrain','pieces','chambres','etage','etages','annee','etat','specs','prix','delai','fourchette_basse','fourchette_haute','note_cedric','validee_le'];
 function sheet_() {
   var sh = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
   if (sh.getLastRow() === 0) { sh.appendRow(COLS); sh.setFrozenRows(1); }

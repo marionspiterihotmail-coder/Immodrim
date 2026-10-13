@@ -10,7 +10,7 @@
   };
 
   /* ===== Numéro de version (discret, pied de page) : à mettre à jour à chaque mise en ligne ===== */
-  var VERSION = 'v2.2 · 13 oct. 2026';
+  var VERSION = 'v2.3 · 13 oct. 2026';
   var note = document.querySelector('.legal-note');
   if (note) {
     var ver = document.createElement('span');
@@ -247,6 +247,15 @@
       var first = steps[i].querySelector('input[type="text"],input[type="email"]');
       if (first && window.matchMedia('(min-width: 800px)').matches) { first.focus(); }
     };
+    var floors = document.getElementById('e-floors'), terBox = document.getElementById('e-terrain-box');
+    var terIn = document.getElementById('e-terrain');
+    var syncType = function () {
+      var t = est.querySelector('input[name="type"]:checked'), house = !!t && t.value === 'Maison';
+      terBox.hidden = !house; terIn.required = house;
+      floors.hidden = house;
+      floors.querySelectorAll('input').forEach(function (x) { x.required = !house; if (house) { x.value = '0'; } });
+    };
+    est.querySelectorAll('input[name="type"]').forEach(function (r) { r.addEventListener('change', syncType); });
     var validStep = function (i) {
       var ok = true;
       steps[i].querySelectorAll('input,select').forEach(function (el) {
@@ -327,8 +336,8 @@
       var lines = [
         "DEMANDE D'ESTIMATION (simulateur)",
         'Type : ' + g('type'), 'Adresse : ' + g('adresse'),
-        'Surface : ' + g('surface') + ' m²', 'Pièces : ' + g('pieces') + ' · Chambres : ' + g('chambres'),
-        'Étage : ' + g('etage') + ' (immeuble de ' + g('etages') + ' étages)',
+        'Surface : ' + g('surface') + ' m²' + (g('terrain') ? ' · Terrain : ' + g('terrain') + ' m²' : ''), 'Pièces : ' + g('pieces') + ' · Chambres : ' + g('chambres'),
+        (g('terrain') ? 'Maison individuelle' : 'Étage : ' + g('etage') + ' (immeuble de ' + g('etages') + ' étages)'),
         'Construction : ' + (g('annee') || 'non précisé'), 'État : ' + g('etat'),
         'Spécificités : ' + (specs.join(', ') || 'aucune'),
         'Prix souhaité : ' + (g('prix') ? g('prix') + ' €' : 'non précisé'),
@@ -341,7 +350,7 @@
       fields.push({ name: 'phone', value: g('telephone') });
       var payload = { fields: fields, context: { pageUri: location.href, pageName: document.title } };
       if (SHEET_URL) {
-        var row = { id: 'EST-' + Date.now().toString(36).toUpperCase(), date: new Date().toISOString(), civilite: g('civilite'), prenom: g('prenom'), nom: g('nom'), email: g('email'), telephone: g('telephone'), type: g('type'), adresse: g('adresse'), cp: g('cp'), ville: g('ville'), surface: g('surface'), pieces: g('pieces'), chambres: g('chambres'), etage: g('etage'), etages: g('etages'), annee: g('annee'), etat: g('etat'), specs: specs.join(', '), prix: g('prix'), delai: g('delai') };
+        var row = { id: 'EST-' + Date.now().toString(36).toUpperCase(), date: new Date().toISOString(), civilite: g('civilite'), prenom: g('prenom'), nom: g('nom'), email: g('email'), telephone: g('telephone'), type: g('type'), adresse: g('adresse'), cp: g('cp'), ville: g('ville'), surface: g('surface'), terrain: g('terrain'), pieces: g('pieces'), chambres: g('chambres'), etage: g('etage'), etages: g('etages'), annee: g('annee'), etat: g('etat'), specs: specs.join(', '), prix: g('prix'), delai: g('delai') };
         try { fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(row) }); } catch (x) {}
       }
       fetch(HUBSPOT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })

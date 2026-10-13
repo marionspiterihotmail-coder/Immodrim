@@ -34,7 +34,7 @@
     var hero = el('div', 'hero', null, doc);
     el('small', null, 'Estimation indicative de votre bien', hero);
     el('h1', null, data.adresse || 'Votre bien', hero);
-    var typ = (data.type || 'Bien') + (data.pieces ? ' · ' + data.pieces + ' pièces' : '') + (surf ? ' · ' + surf + ' m²' : '') + (data.etage && data.etages ? ' · étage ' + data.etage + ' sur ' + data.etages : '');
+    var typ = (data.type || 'Bien') + (data.pieces ? ' · ' + data.pieces + ' pièces' : '') + (surf ? ' · ' + surf + ' m²' : '') + (data.terrain ? ' · terrain ' + data.terrain + ' m²' : '') + (!data.terrain && data.etages ? ' · étage ' + data.etage + ' sur ' + data.etages : '');
     el('p', null, typ, hero);
     var price = el('div', 'price', null, hero);
     el('div', 'lab', 'Fourchette de prix estimée', price);
@@ -53,7 +53,7 @@
     }
     var s1 = el('section', 's', null, doc); el('h2', null, 'Votre bien en un coup d’œil', s1);
     var gr = el('div', 'grid', null, s1);
-    [['Surface', surf ? surf + ' m²' : ''], ['Pièces', data.pieces], ['Chambres', data.chambres], ['Étage', data.etage && data.etages ? data.etage + ' / ' + data.etages : data.etage], ['Année', data.annee], ['État', data.etat], ['Atouts', data.specs]].forEach(function (p) {
+    [['Surface', surf ? surf + ' m²' : ''], ['Terrain', data.terrain ? data.terrain + ' m²' : ''], ['Pièces', data.pieces], ['Chambres', data.chambres], ['Étage', data.etage && data.etages ? data.etage + ' / ' + data.etages : data.etage], ['Année', data.annee], ['État', data.etat], ['Atouts', data.specs]].forEach(function (p) {
       if (!p[1]) { return; }
       var kx = el('div', 'k', null, gr); el('span', null, p[0], kx); el('b', null, p[1], kx);
     });
