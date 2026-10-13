@@ -10,7 +10,7 @@
   };
 
   /* ===== Numéro de version (discret, pied de page) : à mettre à jour à chaque mise en ligne ===== */
-  var VERSION = 'v1.8 · 13 oct. 2026';
+  var VERSION = 'v1.9 · 13 oct. 2026';
   var note = document.querySelector('.legal-note');
   if (note) {
     var ver = document.createElement('span');
@@ -269,8 +269,8 @@
     est.querySelectorAll('[data-stepper]').forEach(function (s) {
       var inp = s.querySelector('input'), mn = +s.dataset.min, mx = +s.dataset.max;
       var set = function (v) { inp.value = Math.max(mn, Math.min(mx, v)); };
-      s.querySelector('[data-inc]').addEventListener('click', function () { set((parseInt(inp.value, 10) || (mn - 1)) + 1); });
-      s.querySelector('[data-dec]').addEventListener('click', function () { set((parseInt(inp.value, 10) || mn + 1) - 1); });
+      s.querySelector('[data-inc]').addEventListener('click', function () { var v = parseInt(inp.value, 10); set(isNaN(v) ? Math.max(mn, 1) : v + 1); });
+      s.querySelector('[data-dec]').addEventListener('click', function () { var v = parseInt(inp.value, 10); set(isNaN(v) ? mn : v - 1); });
       inp.addEventListener('input', function () { inp.value = inp.value.replace(/[^0-9]/g, ''); });
     });
     ['surface', 'prix'].forEach(function (n) { est.elements[n].addEventListener('input', function (e) { e.target.value = e.target.value.replace(/[^0-9]/g, ''); }); });
@@ -337,7 +337,7 @@
         { name: 'firstname', value: g('prenom') }, { name: 'lastname', value: g('nom') },
         { name: 'email', value: g('email') }, { name: 'message', value: lines.join('\n') }
       ];
-      if (g('telephone')) { fields.push({ name: 'phone', value: g('telephone') }); }
+      fields.push({ name: 'phone', value: g('telephone') });
       var payload = { fields: fields, context: { pageUri: location.href, pageName: document.title } };
       fetch(HUBSPOT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
         .then(function (r) {
