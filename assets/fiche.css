@@ -72,3 +72,10 @@ table.cmp{min-width:700px}
 .avis-btn[aria-pressed="true"]{background:var(--brand);color:var(--paper);border-color:var(--brand)}
 section.s textarea{margin-bottom:12px}
 [hidden]{display:none !important}
+
+section.avis{background:linear-gradient(135deg,var(--soft),var(--paper));border-top:0 !important}
+.avis-sub{margin:-6px 0 16px;color:var(--muted);font-size:15px}
+.avis-btn{display:flex;align-items:center;gap:8px;border-radius:16px;padding:12px 16px;transition:transform .15s}
+.avis-btn:hover{transform:translateY(-2px)}
+.avis-emo{font-size:22px;line-height:1}
+@media(prefers-reduced-motion:reduce){.avis-btn{transition:none}.avis-btn:hover{transform:none}}

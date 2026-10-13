@@ -10,7 +10,7 @@
   };
 
   /* ===== Numéro de version (discret, pied de page) : à mettre à jour à chaque mise en ligne ===== */
-  var VERSION = 'v2.6 · 13 oct. 2026';
+  var VERSION = 'v2.7 · 13 oct. 2026';
   var note = document.querySelector('.legal-note');
   if (note) {
     var ver = document.createElement('span');
@@ -247,6 +247,30 @@
       var first = steps[i].querySelector('input[type="text"],input[type="email"]');
       if (first && window.matchMedia('(min-width: 800px)').matches) { first.focus(); }
     };
+    /* Écran d'attente : cycliste (jambes calculées) + messages */
+    var waitBox = document.getElementById('estim-wait'), waitRaf = 0, waitTimer = 0;
+    var legPts = function (hx, hy, px, py) {
+      var L1 = 46, L2 = 46, dx = px - hx, dy = py - hy, d = Math.min(Math.sqrt(dx * dx + dy * dy), L1 + L2 - 0.5);
+      var a = (L1 * L1 - L2 * L2 + d * d) / (2 * d), hh = Math.sqrt(Math.max(0, L1 * L1 - a * a));
+      var ux = dx / d, uy = dy / d, mx = hx + a * ux, my = hy + a * uy;
+      return hx + ',' + hy + ' ' + (mx + hh * uy).toFixed(1) + ',' + (my - hh * ux).toFixed(1) + ' ' + px.toFixed(1) + ',' + py.toFixed(1);
+    };
+    var startWait = function () {
+      if (!waitBox) { return; }
+      est.hidden = true; waitBox.hidden = false;
+      var l1 = document.getElementById('w-leg1'), l2 = document.getElementById('w-leg2'), msg = document.getElementById('wait-msg');
+      var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var draw = function (t) {
+        var an = t / 1000 * 5;
+        l1.setAttribute('points', legPts(136, 98, 152 + 17 * Math.cos(an), 150 + 17 * Math.sin(an)));
+        l2.setAttribute('points', legPts(136, 98, 152 + 17 * Math.cos(an + Math.PI), 150 + 17 * Math.sin(an + Math.PI)));
+      };
+      if (still) { draw(0); } else { var loop = function (t) { draw(t); waitRaf = requestAnimationFrame(loop); }; waitRaf = requestAnimationFrame(loop); }
+      var msgs = ['Nous cherchons les ventes autour de chez vous…', 'Nous comparons les prix au m²…', 'Nous repérons les biens les plus proches du vôtre…', 'Nous préparons votre fiche d\u2019estimation…', 'Encore un petit coup de pédale…'], i = 0;
+      msg.textContent = msgs[0];
+      waitTimer = setInterval(function () { i = (i + 1) % msgs.length; msg.classList.add('fade'); setTimeout(function () { msg.textContent = msgs[i]; msg.classList.remove('fade'); }, 300); }, 3800);
+    };
+    var stopWait = function () { if (waitBox) { waitBox.hidden = true; } cancelAnimationFrame(waitRaf); clearInterval(waitTimer); };
     var floors = document.getElementById('e-floors'), terBox = document.getElementById('e-terrain-box');
     var terIn = document.getElementById('e-terrain');
     var syncType = function () {
@@ -352,7 +376,7 @@
       var sheetP = Promise.resolve(null);
       if (SHEET_URL) {
         var row = { id: 'EST-' + Date.now().toString(36).toUpperCase(), date: new Date().toISOString(), civilite: g('civilite'), prenom: g('prenom'), nom: g('nom'), email: g('email'), telephone: g('telephone'), type: g('type'), adresse: g('adresse'), cp: g('cp'), ville: g('ville'), surface: g('surface'), terrain: g('terrain'), pieces: g('pieces'), chambres: g('chambres'), etage: g('etage'), etages: g('etages'), annee: g('annee'), etat: g('etat'), specs: specs.join(', '), prix: g('prix'), delai: g('delai') };
-        estStatus.textContent = 'Calcul de votre estimation en cours… (jusqu\u2019à 20 secondes)';
+        estStatus.textContent = ''; startWait();
         sheetP = Promise.race([
           fetch(SHEET_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(row) }).then(function (r) { return r.json(); }),
           new Promise(function (res) { setTimeout(function () { res(null); }, 28000); })
@@ -366,11 +390,11 @@
           if (window.gtag && getConsent().audience) { window.gtag('event', 'generate_lead', { form: 'estimation' }); }
           var s = res[1];
           if (s && s.ok && s.id && s.t) { location.href = '/fiche?id=' + encodeURIComponent(s.id) + '&t=' + encodeURIComponent(s.t); return; }
-          est.hidden = true;
+          stopWait(); est.hidden = true;
           var t = document.getElementById('estim-thanks');
           t.hidden = false; t.focus();
         })
-        .catch(function () { estStatus.textContent = "L'envoi a échoué. Merci de réessayer dans un instant."; estStatus.className = 'form-status err'; })
+        .catch(function () { stopWait(); est.hidden = false; estStatus.textContent = "L'envoi a échoué. Merci de réessayer dans un instant."; estStatus.className = 'form-status err'; })
         .then(function () { btn.disabled = false; });
     });
   }

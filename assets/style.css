@@ -537,3 +537,36 @@ h2 { font-size: clamp(2.1rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; 
 .stepper button { height: 52px; }
 .estim-actions { flex-wrap: nowrap; }
 .estim-actions .btn { flex: 1 1 0; min-width: 0; padding-left: .8rem; padding-right: .8rem; }
+
+/* ===== Attente de l'estimation : cycliste qui alimente le moteur de recherche ===== */
+.estim-wait { text-align: center; padding: 1rem 0 .5rem; }
+.estim-wait h2 { font-size: clamp(1.3rem, 4.5vw, 1.8rem); margin: 0 0 1rem; text-wrap: balance; }
+.wait-svg { width: min(100%, 460px); height: auto; display: block; margin: 0 auto; overflow: visible; }
+.w-ground { stroke: var(--brand-line); stroke-width: 2; }
+.w-cable { fill: none; stroke: var(--frost); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 7 9; animation: wflow .7s linear infinite; }
+.w-tire { fill: none; stroke: var(--ink); stroke-width: 4; }
+.w-line { stroke: var(--muted); stroke-width: 1.6; stroke-linecap: round; }
+.w-fill { fill: var(--brand); stroke: none; }
+.w-belt { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.w-frame { fill: none; stroke: var(--brand); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.w-body { stroke: var(--brand-dark); stroke-width: 9; stroke-linecap: round; }
+.w-head { fill: var(--brand-dark); }
+.w-arm { fill: none; stroke: var(--brand-dark); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+.w-leg1, .w-leg2 { fill: none; stroke: var(--brand-dark); stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+.w-leg2 { opacity: .55; }
+.w-mon { fill: #fff; stroke: var(--brand); stroke-width: 3; }
+.w-bar { fill: var(--brand-soft); stroke: var(--brand-line); }
+.w-lens { fill: none; stroke: var(--brand); stroke-width: 2; stroke-linecap: round; }
+.w-row { fill: var(--brand-line); opacity: 0; animation: wpop 3.6s ease-in-out infinite; }
+.w-row.r2 { animation-delay: .9s; } .w-row.r3 { animation-delay: 1.8s; }
+.w-track { fill: var(--brand-soft); }
+.w-prog { fill: var(--brand); transform-box: fill-box; transform-origin: left center; animation: wfill 20s cubic-bezier(.2, .6, .3, 1) forwards; transform: scaleX(0); }
+.w-spin { transform-box: fill-box; transform-origin: center; animation: wspin .9s linear infinite; }
+.wait-msg { margin: 1rem 0 .2rem; font-weight: 700; font-size: 1.05rem; color: var(--brand-dark); min-height: 1.6em; transition: opacity .3s; }
+.wait-msg.fade { opacity: 0; }
+.wait-note { margin: 0; font-size: .9rem; color: var(--muted); }
+@keyframes wspin { to { transform: rotate(360deg); } }
+@keyframes wflow { to { stroke-dashoffset: -16; } }
+@keyframes wpop { 0%, 15% { opacity: 0; } 30%, 80% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes wfill { to { transform: scaleX(.96); } }
+@media (prefers-reduced-motion: reduce) { .w-cable, .w-row, .w-spin, .w-prog { animation: none; } .w-row { opacity: 1; } .w-prog { transform: scaleX(.6); } }

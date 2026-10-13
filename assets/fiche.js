@@ -74,15 +74,18 @@
 
 
   function avisBlock() {
-    var s = el('section', 's', null, doc); el('h2', null, 'Que pensez-vous de cette estimation ?', s);
-    if (data.avis) { el('p', 'note', 'Merci, votre réponse a bien été transmise à Cédric : « ' + data.avis + ' ».', s); return; }
-    var opts = ['Elle me semble juste', 'Je m’attendais à plus', 'Je m’attendais à moins'], chosen = '', row = el('div', 'avis-opts', null, s);
-    opts.forEach(function (t) {
-      var b = el('button', 'avis-btn', t, row); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
-      b.addEventListener('click', function () { chosen = t; row.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); }); send.disabled = false; });
+    var s = el('section', 's avis', null, doc);
+    el('h2', null, 'Et vous, qu’en pensez-vous ? 🤔', s);
+    el('p', 'avis-sub', 'Dites-le à Cédric avant qu’il vous appelle : ça lui permet de préparer l’échange.', s);
+    if (data.avis) { el('p', 'note', '🎉 Merci ! Votre réponse a bien été transmise à Cédric : « ' + data.avis + ' ».', s); return; }
+    var opts = [['🎯', 'Elle me semble juste'], ['🚀', 'Je m’attendais à plus'], ['🧐', 'Je m’attendais à moins']], chosen = '', row = el('div', 'avis-opts', null, s);
+    opts.forEach(function (o) {
+      var b = el('button', 'avis-btn', null, row); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+      el('span', 'avis-emo', o[0], b); el('span', null, o[1], b);
+      b.addEventListener('click', function () { chosen = o[1]; row.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); }); send.disabled = false; });
     });
-    var ta = el('textarea', null, null, s); ta.rows = 3; ta.maxLength = 1000; ta.placeholder = 'Un commentaire pour Cédric (facultatif)'; ta.setAttribute('aria-label', 'Commentaire');
-    var send = el('button', null, 'Envoyer mon avis', s); send.type = 'button'; send.disabled = true;
+    var ta = el('textarea', null, null, s); ta.rows = 3; ta.maxLength = 1000; ta.placeholder = 'Un petit mot pour Cédric ? (facultatif) ✍️'; ta.setAttribute('aria-label', 'Commentaire');
+    var send = el('button', null, 'Envoyer mon avis ✉️', s); send.type = 'button'; send.disabled = true;
     var st = el('p', 'status', null, s); st.setAttribute('role', 'status');
     send.addEventListener('click', function () {
       send.disabled = true; st.textContent = 'Envoi…'; st.className = 'status';
@@ -131,6 +134,7 @@
     if (ok && data.note_cedric) {
       var sn = el('section', 's', null, doc); el('h2', null, 'Le mot de Cédric', sn); el('p', 'note', data.note_cedric, sn);
     }
+    if (clientMode) { avisBlock(); }
     var s1 = el('section', 's', null, doc); el('h2', null, 'Votre bien en un coup d’œil', s1);
     var gr = el('div', 'grid', null, s1);
     [['Surface', surf ? surf + ' m²' : ''], ['Terrain', data.terrain ? data.terrain + ' m²' : ''], ['Pièces', data.pieces], ['Chambres', data.chambres], ['Étage', data.terrain ? '' : (data.etage && data.etages ? data.etage + ' / ' + data.etages : data.etage)], ['Année', data.annee], ['État', data.etat], ['Atouts', data.specs]].forEach(function (p) {
@@ -144,7 +148,6 @@
     var s3 = el('section', 's', null, doc); el('h2', null, 'Pour aller plus loin', s3);
     var ol = el('ol', 'next', null, s3);
     ['Visite de votre bien pour affiner l’estimation.', 'Avis de valeur définitif et stratégie de mise en vente.', 'Diffusion et accompagnement jusqu’à la signature.'].forEach(function (t) { el('li', null, t, ol); });
-    if (clientMode) { avisBlock(); }
     var s4 = el('section', 's', null, doc); var ced = el('div', 'ced', null, s4);
     var ph = el('img', null, null, ced); ph.src = '/assets/img/cedric-brachet.webp'; ph.alt = 'Cédric Brachet';
     var cd = el('div', null, null, ced);
