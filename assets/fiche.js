@@ -154,7 +154,7 @@
     var p1 = el('p', null, null, cd); el('b', null, 'Cédric Brachet', p1);
     el('p', null, 'Votre interlocuteur Immodrim', cd).style.color = 'var(--muted)';
     el('p', null, '06 83 09 70 95 · cbrachet@immodrim.com', cd);
-    var cta = el('a', 'cta', 'Prendre rendez-vous', cd); cta.href = 'https://immodrim.com/#contact';
+    var cta = el('a', 'cta', 'Prendre rendez-vous', cd); cta.href = 'https://calendar.app.google/qUj4kktypTnpNeL46'; cta.target = '_blank'; cta.rel = 'noopener noreferrer';
     el('footer', 'legal', 'Estimation indicative, non contractuelle, établie à partir des informations que vous avez communiquées et de l’analyse du marché local. Elle ne constitue pas une expertise. Immodrim, SARL au capital de 2 500 € – carte professionnelle « Transactions sur immeubles et fonds de commerce » – sans détention de fonds.', doc);
     doc.hidden = false;
   }
