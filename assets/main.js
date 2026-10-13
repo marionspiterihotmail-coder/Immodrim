@@ -10,7 +10,7 @@
   };
 
   /* ===== Numéro de version (discret, pied de page) : à mettre à jour à chaque mise en ligne ===== */
-  var VERSION = 'v2.0 · 13 oct. 2026';
+  var VERSION = 'v2.1 · 13 oct. 2026';
   var note = document.querySelector('.legal-note');
   if (note) {
     var ver = document.createElement('span');
@@ -182,7 +182,7 @@
   }
 
   /* ===== Formulaire de contact ===== */
-  var SHEET_URL = ''; /* URL du script Google Apps Script (registre des estimations) */
+  var SHEET_URL = 'https://script.google.com/macros/s/AKfycbwMcsamgpuW_ZAoOqLFvPkqVxczaZQ_w4KVcns5D6pJ995gKr7jLV5eIL6bmombUYB7/exec'; /* URL du script Google Apps Script (registre des estimations) */
   var HUBSPOT_URL = 'https://api-eu1.hsforms.com/submissions/v3/integration/submit/149488423/6660e385-b2ea-47ee-ad42-4515968c87e8';
   var form = document.getElementById('contact-form');
   if (form) {
