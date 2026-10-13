@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  var SHEET_URL = 'https://script.google.com/macros/s/AKfycbwMcsamgpuW_ZAoOqLFvPkqVxczaZQ_w4KVcns5D6pJ995gKr7jLV5eIL6bmombUYB7/exec';
+  var SHEET_URL = 'https://script.google.com/macros/s/AKfycbygs1WZYLfGrk5Ck1CdbRle-MC4G7F86mM_5bEAir6wjYl6URcg-rRpKQ6EBS6LEHeM/exec';
   var qs = new URLSearchParams(location.search);
   var id = qs.get('id') || '', k = qs.get('k') || '', viewOnly = qs.get('vue') === '1';
   var msg = document.getElementById('msg'), panel = document.getElementById('panel'), doc = document.getElementById('doc');
