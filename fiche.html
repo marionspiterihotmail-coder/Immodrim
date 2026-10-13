@@ -7,11 +7,15 @@
   <title>Fiche d’estimation – Immodrim</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="/assets/fiche.css?v=6">
+  <link rel="stylesheet" href="/assets/fiche.css?v=7">
   <script src="/assets/vendor/leaflet/leaflet.js" defer></script>
   <script src="/assets/fiche.js?v=9" defer></script>
 </head>
 <body>
+  <header class="site-bar">
+    <a class="sb-logo" href="/" aria-label="Immodrim, retour à l’accueil"><img class="lg-l" src="/assets/img/immodrim-logo.png" alt="Immodrim"><img class="lg-d" src="/assets/img/immodrim-logo-white.png" alt=""></a>
+    <nav aria-label="Navigation du site"><a href="/">Accueil</a><a href="/acheter-neuf">Acheter neuf</a><a href="/vendre">Vendre</a><a href="/investir">Investir</a><a class="sb-cta" href="/estimation">Nouvelle estimation</a></nav>
+  </header>
   <p id="msg" class="msg">Chargement de la fiche…</p>
   <section id="panel" class="panel" hidden>
     <h2>Validation de l’estimation</h2>
@@ -25,5 +29,10 @@
     <p id="status" class="status" role="status"></p>
   </section>
   <main id="doc" class="doc" hidden></main>
+  <footer class="site-foot">
+    <p><a href="/">← Retour au site Immodrim</a></p>
+    <p class="sf-links"><a href="/mentions-legales">Mentions légales</a> · <a href="/confidentialite">Confidentialité</a> · <a href="/cookies">Cookies</a> · <a href="/conditions-generales">Conditions générales</a></p>
+    <p>© Immodrim</p>
+  </footer>
 </body>
 </html>

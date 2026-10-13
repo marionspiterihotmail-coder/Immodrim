@@ -1,7 +1,7 @@
-// Immodrim : registre des estimations (Google Apps Script) - v5
+// Immodrim : registre des estimations (Google Apps Script) - v6
 var KEY = 'kxDX_MSO_YTRtLpOKFfBEQ';   // clé secrète de Cédric (lien de validation)
 var SITE = 'https://immodrim-git-preprod-marions-projects-4766d9f0.vercel.app'; // passer à https://immodrim.com en production
-var COLS = ['id','date','statut','fiche','civilite','prenom','nom','email','telephone','type','adresse','cp','ville','surface','terrain','pieces','chambres','etage','etages','annee','etat','specs','prix','delai','fourchette_basse','fourchette_haute','note_cedric','validee_le','comparables','jeton','avis','commentaire_client','avis_le'];
+var COLS = ['id','date','statut','fiche','civilite','prenom','nom','email','telephone','type','adresse','cp','ville','surface','terrain','pieces','chambres','etage','etages','annee','etat','specs','prix','delai','fourchette_basse','fourchette_haute','note_cedric','validee_le','comparables','jeton','avis','commentaire_client','avis_le','envoi_mail'];
 var PUBLIC = ['id','date','statut','type','adresse','surface','terrain','pieces','chambres','etage','etages','annee','etat','specs','fourchette_basse','fourchette_haute','note_cedric','comparables','avis'];
 
 function sheet_() {
@@ -44,6 +44,11 @@ function doPost(e) {
     col_(sh, r, 'avis', String(d.avis || '').slice(0, 60)); col_(sh, r, 'commentaire_client', String(d.commentaire || '').slice(0, 1000)); col_(sh, r, 'avis_le', new Date());
     return json_({ ok: true });
   }
+  if (d.action === 'mail') {
+    r = rowOf_(sh, d.id);
+    if (r) { envoyerMail_(sh, r); } else { CacheService.getScriptCache().put('mail_' + d.id, '1', 600); }
+    return json_({ ok: true });
+  }
   // nouvelle demande d'estimation
   d.statut = 'Estimation auto';
   d.jeton = Utilities.getUuid().replace(/-/g, '').slice(0, 16);
@@ -51,7 +56,21 @@ function doPost(e) {
   d.comparables = comparables_(d);
   var rg = range_(d); if (rg) { d.fourchette_basse = rg[0]; d.fourchette_haute = rg[1]; }
   sh.appendRow(COLS.map(function (c) { return d[c] === undefined ? '' : d[c]; }));
+  if (CacheService.getScriptCache().get('mail_' + d.id)) { envoyerMail_(sh, rowOf_(sh, d.id)); }
   return json_({ ok: true, id: d.id, t: d.jeton });
+}
+
+// E-mail au visiteur avec le lien de sa fiche (uniquement s'il a choisi de la recevoir par e-mail).
+function envoyerMail_(sh, r) {
+  try {
+    if (!r || val_(sh, r, 'envoi_mail')) return;
+    var to = String(val_(sh, r, 'email')), id = val_(sh, r, 'id'), t = val_(sh, r, 'jeton'), pre = val_(sh, r, 'prenom');
+    var lien = SITE + '/fiche?id=' + encodeURIComponent(id) + '&t=' + t;
+    var html = '<p>Bonjour ' + String(pre).replace(/[<>&]/g, '') + ',</p><p>Voici votre estimation indicative Immodrim : <a href="' + lien + '">consulter mon estimation</a>.</p>' +
+      '<p>Cédric Brachet, votre interlocuteur, vous contactera pour l\'affiner avec vous.</p><p>À très vite,<br>Immodrim</p>';
+    MailApp.sendEmail({ to: to, subject: 'Votre estimation Immodrim', htmlBody: html, name: 'Immodrim', replyTo: 'cbrachet@immodrim.com' });
+    col_(sh, r, 'envoi_mail', new Date());
+  } catch (err) {}
 }
 
 // Première estimation : médiane du prix au m² des ventes proches x surface, -5 % / +5 %, arrondie à 5 000 €.
@@ -91,4 +110,4 @@ function comparables_(d) {
   } catch (err) { return JSON.stringify({ err: String(err) }); }
 }
 // À exécuter UNE fois à la main si Google redemande des autorisations.
-function autoriser() { UrlFetchApp.fetch('https://api-adresse.data.gouv.fr/search/?q=test&limit=1'); }
+function autoriser() { UrlFetchApp.fetch('https://api-adresse.data.gouv.fr/search/?q=test&limit=1'); MailApp.getRemainingDailyQuota(); }

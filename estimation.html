@@ -17,8 +17,8 @@
   <meta property="og:url" content="https://immodrim.com/estimation">
   <meta property="og:image" content="https://immodrim.com/assets/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="/assets/style.css?v=20">
-  <script src="/assets/main.js?v=27" defer></script>
+  <link rel="stylesheet" href="/assets/style.css?v=21">
+  <script src="/assets/main.js?v=28" defer></script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -238,11 +238,22 @@
             </svg>
             <p class="wait-msg" id="wait-msg">Nous cherchons les ventes autour de chez vous…</p>
             <p class="wait-note">Cela prend quelques instants. Merci de ne pas fermer cette page.</p>
+            <div id="wait-choice" class="wait-choice" hidden>
+              <p><strong>C’est un peu plus long que prévu.</strong> Que préférez-vous ?</p>
+              <div class="wait-btns"><button type="button" class="btn btn-ghost" id="wait-more">Patienter encore un peu</button><button type="button" class="btn btn-primary" id="wait-mail">Recevoir mon estimation par e-mail</button></div>
+            </div>
+          </div>
+
+          <div id="estim-thanks-mail" class="estim-thanks" hidden tabindex="-1">
+            <h2>C’est noté, votre estimation arrive par e-mail</h2>
+            <p>Nous finalisons votre estimation et vous l’envoyons à l’adresse indiquée dans quelques minutes. Pensez à regarder dans vos courriers indésirables.</p>
+            <p>Cédric Brachet, votre interlocuteur Immodrim, vous contactera ensuite pour l’affiner avec vous.</p>
+            <a class="btn btn-ghost" href="/">Retour à l’accueil</a>
           </div>
 
           <div id="estim-thanks" class="estim-thanks" hidden tabindex="-1">
             <h2>Merci, votre demande est bien reçue</h2>
-            <p>Un conseiller Immodrim étudie votre bien et revient vers vous sous 24 h ouvrées.</p>
+            <p>Cédric Brachet, votre interlocuteur Immodrim, étudie votre bien et revient vers vous sous 24 h ouvrées.</p>
             <p>Pour aller plus vite, vous pouvez aussi réserver un échange :</p>
             <a class="btn btn-primary" href="https://calendar.app.google/qUj4kktypTnpNeL46" target="_blank" rel="noopener noreferrer">Réserver un créneau<span class="sr-only"> (nouvel onglet)</span></a>
           </div>

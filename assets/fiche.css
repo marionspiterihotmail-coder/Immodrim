@@ -79,3 +79,14 @@ section.avis{background:linear-gradient(135deg,var(--soft),var(--paper));border-
 .avis-btn:hover{transform:translateY(-2px)}
 .avis-emo{font-size:22px;line-height:1}
 @media(prefers-reduced-motion:reduce){.avis-btn{transition:none}.avis-btn:hover{transform:none}}
+
+body{padding-top:0}
+.site-bar{max-width:760px;margin:0 auto 16px;display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;padding:16px 4px}
+.sb-logo img{height:30px;width:auto}
+.site-bar nav{display:flex;align-items:center;gap:6px 18px;flex-wrap:wrap}
+.site-bar nav a{color:var(--ink);text-decoration:none;font-weight:600;font-size:15px}
+.site-bar nav a:hover{color:var(--brand)}
+.site-bar .sb-cta{background:var(--brand);color:var(--paper);padding:8px 16px;border-radius:99px}
+.site-bar .sb-cta:hover{color:var(--paper);opacity:.9}
+.site-foot{max-width:760px;margin:24px auto 0;padding:16px 4px;text-align:center;font-size:14px;color:var(--muted)}
+.site-foot p{margin:4px 0}.site-foot a{color:var(--brand);font-weight:600}

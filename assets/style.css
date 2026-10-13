@@ -570,3 +570,7 @@ h2 { font-size: clamp(2.1rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; 
 @keyframes wpop { 0%, 15% { opacity: 0; } 30%, 80% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes wfill { to { transform: scaleX(.96); } }
 @media (prefers-reduced-motion: reduce) { .w-cable, .w-row, .w-spin, .w-prog { animation: none; } .w-row { opacity: 1; } .w-prog { transform: scaleX(.6); } }
+
+.wait-choice { margin: 1.4rem auto 0; max-width: 34rem; padding: 1rem 1.1rem; border-radius: var(--radius); background: var(--brand-soft); border: 1px solid var(--brand-line); }
+.wait-choice p { margin: 0 0 .8rem; }
+.wait-btns { display: flex; gap: .7rem; flex-wrap: wrap; justify-content: center; }
