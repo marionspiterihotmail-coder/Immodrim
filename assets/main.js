@@ -10,7 +10,7 @@
   };
 
   /* ===== Numéro de version (discret, pied de page) : à mettre à jour à chaque mise en ligne ===== */
-  var VERSION = 'v1.9 · 13 oct. 2026';
+  var VERSION = 'v2.0 · 13 oct. 2026';
   var note = document.querySelector('.legal-note');
   if (note) {
     var ver = document.createElement('span');
@@ -182,6 +182,7 @@
   }
 
   /* ===== Formulaire de contact ===== */
+  var SHEET_URL = ''; /* URL du script Google Apps Script (registre des estimations) */
   var HUBSPOT_URL = 'https://api-eu1.hsforms.com/submissions/v3/integration/submit/149488423/6660e385-b2ea-47ee-ad42-4515968c87e8';
   var form = document.getElementById('contact-form');
   if (form) {
@@ -339,6 +340,10 @@
       ];
       fields.push({ name: 'phone', value: g('telephone') });
       var payload = { fields: fields, context: { pageUri: location.href, pageName: document.title } };
+      if (SHEET_URL) {
+        var row = { id: 'EST-' + Date.now().toString(36).toUpperCase(), date: new Date().toISOString(), civilite: g('civilite'), prenom: g('prenom'), nom: g('nom'), email: g('email'), telephone: g('telephone'), type: g('type'), adresse: g('adresse'), cp: g('cp'), ville: g('ville'), surface: g('surface'), pieces: g('pieces'), chambres: g('chambres'), etage: g('etage'), etages: g('etages'), annee: g('annee'), etat: g('etat'), specs: specs.join(', '), prix: g('prix'), delai: g('delai') };
+        try { fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(row) }); } catch (x) {}
+      }
       fetch(HUBSPOT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
         .then(function (r) {
           if (!r.ok) { throw new Error('http ' + r.status); }
