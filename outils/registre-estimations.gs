@@ -17,7 +17,7 @@ function comparables_(d) {
   try {
     var get = function (u) { return JSON.parse(UrlFetchApp.fetch(u, { muteHttpExceptions: true }).getContentText()); };
     var g = get('https://api-adresse.data.gouv.fr/search/?limit=1&q=' + encodeURIComponent(d.adresse || ''));
-    var f = g.features && g.features[0]; if (!f) return '';
+    var f = g.features && g.features[0]; if (!f) return JSON.stringify({ err: 'adresse introuvable' });
     var x0 = f.geometry.coordinates[0], y0 = f.geometry.coordinates[1], code = f.properties.citycode;
     var type = d.type === 'Maison' ? '111' : '121';
     var an = new Date().getFullYear() - 5, s = parseFloat(d.surface) || 0;
@@ -32,8 +32,10 @@ function comparables_(d) {
     items.forEach(function (o) { var r = get('https://api-adresse.data.gouv.fr/reverse/?limit=1&lon=' + o.x + '&lat=' + o.y), rf = r.features && r.features[0];
       o.adresse = rf ? rf.properties.name + ', ' + rf.properties.postcode + ' ' + rf.properties.city : ''; delete o.vefa; delete o.nb; });
     return JSON.stringify({ x: x0, y: y0, items: items });
-  } catch (err) { return ''; }
+  } catch (err) { return JSON.stringify({ err: String(err) }); }
 }
+// À exécuter UNE fois à la main dans l'éditeur (menu Exécuter) pour autoriser les appels vers les bases publiques.
+function autoriser() { UrlFetchApp.fetch('https://api-adresse.data.gouv.fr/search/?q=test&limit=1'); }
 function json_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
 function doGet(e) {
   if (!e.parameter || e.parameter.k !== KEY) return json_({ error: 'forbidden' });
