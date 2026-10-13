@@ -10,7 +10,7 @@
   };
 
   /* ===== Numéro de version (discret, pied de page) : à mettre à jour à chaque mise en ligne ===== */
-  var VERSION = 'v2.8 · 13 oct. 2026';
+  var VERSION = 'v2.9 · 13 oct. 2026';
   var note = document.querySelector('.legal-note');
   if (note) {
     var ver = document.createElement('span');
@@ -283,27 +283,52 @@
         est.hidden = true; var t = document.getElementById('estim-thanks-mail'); t.hidden = false; t.focus();
       });
     }
-    var floors = document.getElementById('e-floors'), terBox = document.getElementById('e-terrain-box');
-    var terIn = document.getElementById('e-terrain');
     var syncType = function () {
-      var t = est.querySelector('input[name="type"]:checked'), house = !!t && t.value === 'Maison';
-      terBox.hidden = !house; terIn.required = house;
-      floors.hidden = house;
-      floors.querySelectorAll('input').forEach(function (x) { x.required = !house; if (house) { x.value = '0'; } });
+      var t = est.querySelector('input[name="type"]:checked'), ty = t ? t.value : '';
+      est.querySelectorAll('[data-for]').forEach(function (blk) {
+        var on = blk.dataset.for === ty; blk.hidden = !on;
+        blk.querySelectorAll('input,select').forEach(function (x) {
+          x.disabled = !on;
+          if (!on) { if (x.type === 'checkbox') { x.checked = false; } else { x.value = ''; } }
+        });
+      });
+      var l = document.getElementById('l-surface');
+      if (l) { l.textContent = ty === 'Appartement' ? 'Surface (loi Carrez, en m²)' : 'Surface habitable (en m²)'; }
     };
     est.querySelectorAll('input[name="type"]').forEach(function (r) { r.addEventListener('change', syncType); });
+    syncType();
+    var manual = false;
+    var rules = {
+      email: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? '' : 'Adresse e-mail invalide. Format attendu : prenom.nom@exemple.fr'; },
+      telephone: function (v) {
+        var s = v.replace(/[\s.\-()]/g, '');
+        return (/^(?:\+33|0033|0)[1-9]\d{8}$/.test(s) || /^\+(?!33)\d{8,14}$/.test(s)) ? '' : 'Numéro invalide. Format attendu : 06 12 34 56 78 ou +33 6 12 34 56 78';
+      },
+      surface: function (v) { var n = +v; return n >= 9 && n <= 2000 ? '' : 'Indiquez une surface comprise entre 9 et 2 000 m².'; },
+      terrain: function (v) { var n = +v; return n >= 1 && n <= 100000 ? '' : 'Indiquez une surface de terrain comprise entre 1 et 100 000 m².'; },
+      cp_manuel: function (v) { return /^\d{5}$/.test(v) ? '' : 'Code postal à 5 chiffres, par exemple 78000.'; },
+      adresse: function () { return (manual || est.elements.cp.value) ? '' : 'Merci de choisir votre adresse dans la liste proposée (tapez le numéro et la rue, puis cliquez sur la bonne ligne).'; }
+    };
+    var errBox = function (el) {
+      var box = el.closest('.field'); if (!box) { return null; }
+      var m = box.querySelector('.field-err');
+      if (!m) { m = document.createElement('small'); m.className = 'field-err'; m.setAttribute('role', 'alert'); box.appendChild(m); }
+      return m;
+    };
+    est.addEventListener('input', function (e) { var m = e.target.closest && e.target.closest('.field') && e.target.closest('.field').querySelector('.field-err'); if (m && e.target.name !== 'adresse') { m.textContent = ''; } });
     var validStep = function (i) {
       var ok = true;
       steps[i].querySelectorAll('input,select').forEach(function (el) {
-        if (el.type === 'hidden') { return; }
-        var bad = !el.checkValidity();
-        var box = el.closest('.field') || el.closest('.opts');
+        if (el.type === 'hidden' || el.disabled || !ok) { return; }
+        var box = el.closest('.field') || el.closest('.opts'), v = (el.value || '').trim(), msg = '';
+        if (el.type !== 'radio' && el.type !== 'checkbox' && rules[el.name] && (v || el.name === 'adresse')) { msg = rules[el.name](v); }
+        var bad = !!msg || !el.checkValidity();
         if (box) { box.classList.toggle('invalid', bad); }
-        if (bad && ok) {
-          ok = false;
-          if (el.type === 'radio') { estStatus.textContent = 'Merci de choisir une réponse.'; estStatus.className = 'form-status err'; }
-          else { el.reportValidity(); }
-        }
+        if (!bad) { return; }
+        ok = false;
+        if (msg) { var eb = errBox(el); if (eb) { eb.textContent = msg; } el.setAttribute('aria-invalid', 'true'); el.focus(); }
+        else if (el.type === 'radio') { estStatus.textContent = 'Merci de choisir une réponse.'; estStatus.className = 'form-status err'; }
+        else { el.reportValidity(); }
       });
       return ok;
     };
@@ -319,16 +344,23 @@
       s.querySelector('[data-dec]').addEventListener('click', function () { var v = parseInt(inp.value, 10); set(isNaN(v) ? mn : v - 1); });
       inp.addEventListener('input', function () { inp.value = inp.value.replace(/[^0-9]/g, ''); });
     });
-    ['surface', 'prix'].forEach(function (n) { est.elements[n].addEventListener('input', function (e) { e.target.value = e.target.value.replace(/[^0-9]/g, ''); }); });
+    ['surface', 'prix', 'terrain', 'cp_manuel'].forEach(function (n) { est.elements[n].addEventListener('input', function (e) { e.target.value = e.target.value.replace(/[^0-9]/g, ''); }); });
 
     /* Suggestions d'adresse : Base Adresse Nationale (service public) */
     var adr = est.elements.adresse, list = document.getElementById('ac-list'), acT, acI = -1;
+    var manBtn = document.getElementById('ac-manual-btn'), manBox = document.getElementById('ac-manual');
+    var setManual = function (on) {
+      manual = on; manBox.hidden = !on; manBtn.hidden = true;
+      manBox.querySelectorAll('input').forEach(function (x) { x.disabled = !on; });
+    };
+    manBtn.addEventListener('click', function () { var eb = errBox(adr); if (eb) { eb.textContent = ''; } setManual(true); est.elements.cp_manuel.focus(); });
     var acClose = function () { list.hidden = true; adr.setAttribute('aria-expanded', 'false'); acI = -1; };
     var acPick = function (li) {
-      adr.value = li.dataset.label; est.elements.cp.value = li.dataset.cp; est.elements.ville.value = li.dataset.city; acClose();
+      setManual(false); var eb0 = errBox(adr); if (eb0) { eb0.textContent = ''; } adr.value = li.dataset.label; est.elements.cp.value = li.dataset.cp; est.elements.ville.value = li.dataset.city; acClose();
     };
     adr.addEventListener('input', function () {
-      est.elements.cp.value = ''; est.elements.ville.value = '';
+      est.elements.cp.value = ''; est.elements.ville.value = ''; manBtn.hidden = true;
+      var eb1 = errBox(adr); if (eb1) { eb1.textContent = ''; }
       clearTimeout(acT);
       var q = adr.value.trim();
       if (q.length < 4) { acClose(); return; }
@@ -345,6 +377,7 @@
               list.appendChild(li);
             });
             list.hidden = !list.children.length; adr.setAttribute('aria-expanded', String(!list.hidden));
+            if (!list.children.length && !manual) { var eb2 = errBox(adr); if (eb2) { eb2.textContent = 'Nous ne trouvons pas cette adresse. Vérifiez l’orthographe ou ajoutez le numéro et la rue.'; } manBtn.hidden = false; }
           }).catch(acClose);
       }, 250);
     });
@@ -367,14 +400,25 @@
       var btn = est.querySelector('button[type="submit"]');
       btn.disabled = true;
       estStatus.textContent = 'Envoi en cours…'; estStatus.className = 'form-status';
-      var g = function (n) { var el = est.elements[n]; return el ? (el.value || '').trim() : ''; };
+      var g = function (n) {
+        if (manual) {
+          if (n === 'cp') { return (est.elements.cp_manuel.value || '').trim(); }
+          if (n === 'ville') { return (est.elements.ville_manuel.value || '').trim(); }
+          if (n === 'adresse') { return (est.elements.adresse.value || '').trim() + ', ' + (est.elements.cp_manuel.value || '').trim() + ' ' + (est.elements.ville_manuel.value || '').trim(); }
+        }
+        var el = est.elements[n]; return el ? (el.value || '').trim() : '';
+      };
+      var exc = Array.prototype.map.call(est.querySelectorAll('input[name="exc"]:checked'), function (x) { return x.value; });
+      if (g('exc_note')) { exc.push('Précision : ' + g('exc_note')); }
+      var isMaison = g('type') === 'Maison';
       var specs = Array.prototype.map.call(est.querySelectorAll('input[name="spec"]:checked'), function (x) { return x.value; });
       var lines = [
         "DEMANDE D'ESTIMATION (simulateur)",
         'Type : ' + g('type'), 'Adresse : ' + g('adresse'),
-        'Surface : ' + g('surface') + ' m²' + (g('terrain') ? ' · Terrain : ' + g('terrain') + ' m²' : ''), 'Pièces : ' + g('pieces') + ' · Chambres : ' + g('chambres'),
-        (g('terrain') ? 'Maison individuelle' : 'Étage : ' + g('etage') + ' (immeuble de ' + g('etages') + ' étages)'),
-        'Construction : ' + (g('annee') || 'non précisé'), 'État : ' + g('etat'),
+        'Surface : ' + g('surface') + ' m²' + (isMaison ? ' · Terrain : ' + g('terrain') + ' m²' : ''), 'Pièces : ' + g('pieces') + ' · Chambres : ' + g('chambres'),
+        (isMaison ? 'Niveaux : ' + g('niveaux') + ' · ' + g('mitoyennete') : 'Étage : ' + g('etage') + ' (immeuble de ' + g('etages') + ' étages)'),
+        'Construction : ' + (g('annee') || 'non précisé'), 'État : ' + g('etat'), 'DPE : ' + (g('dpe') || 'non précisé'),
+        'Atouts exceptionnels : ' + (exc.join(', ') || 'aucun'),
         'Spécificités : ' + (specs.join(', ') || 'aucune'),
         'Prix souhaité : ' + (g('prix') ? g('prix') + ' €' : 'non précisé'),
         'Projet de vente : ' + g('delai'), 'Civilité : ' + (g('civilite') || 'non précisée')
@@ -387,7 +431,7 @@
       var payload = { fields: fields, context: { pageUri: location.href, pageName: document.title } };
       var sheetP = Promise.resolve(null);
       if (SHEET_URL) {
-        var row = { id: 'EST-' + Date.now().toString(36).toUpperCase(), date: new Date().toISOString(), civilite: g('civilite'), prenom: g('prenom'), nom: g('nom'), email: g('email'), telephone: g('telephone'), type: g('type'), adresse: g('adresse'), cp: g('cp'), ville: g('ville'), surface: g('surface'), terrain: g('terrain'), pieces: g('pieces'), chambres: g('chambres'), etage: g('etage'), etages: g('etages'), annee: g('annee'), etat: g('etat'), specs: specs.join(', '), prix: g('prix'), delai: g('delai') };
+        var row = { id: 'EST-' + Date.now().toString(36).toUpperCase(), date: new Date().toISOString(), civilite: g('civilite'), prenom: g('prenom'), nom: g('nom'), email: g('email'), telephone: g('telephone'), type: g('type'), adresse: g('adresse'), cp: g('cp'), ville: g('ville'), surface: g('surface'), terrain: g('terrain'), niveaux: g('niveaux'), mitoyennete: g('mitoyennete'), dpe: g('dpe'), exceptionnel: exc.join(', '), pieces: g('pieces'), chambres: g('chambres'), etage: g('etage'), etages: g('etages'), annee: g('annee'), etat: g('etat'), specs: specs.join(', '), prix: g('prix'), delai: g('delai') };
         pendingId = row.id; wantMail = false; estStatus.textContent = ''; startWait();
         sheetP = Promise.race([
           fetch(SHEET_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(row) }).then(function (r) { return r.json(); }),
