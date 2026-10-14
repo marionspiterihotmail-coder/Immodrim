@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="fr" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <!-- Généré par src/build.mjs à partir de src/ptz.template.html : ne pas éditer directement -->
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Figtree"; font-weight: 500; src: url("assets/fonts/figtree-latin-500-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Figtree"; font-weight: 600; src: url("assets/fonts/figtree-latin-600-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Figtree"; font-weight: 700; src: url("assets/fonts/figtree-latin-700-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Figtree"; font-weight: 800; src: url("assets/fonts/figtree-latin-800-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Figtree"; font-weight: 900; src: url("assets/fonts/figtree-latin-900-normal.woff2") format("woff2"); }
+
+      :root {
+        /* Charte Immodrim (assets/style.css du site) */
+        --brand: #4b3be0;
+        --brand-dark: #2e2394;
+        --brand-soft: #eef4ff;
+        --brand-line: #d5e4fb;
+        --ink: #14122b;
+        --muted: #2d3158;
+        --frost: #7fd6ff;
+        --white: #fff;
+        /* Zone utile : marges hautes/basses pour l'interface Reels/Stories */
+        --top: 250px;
+        --bottom: 520px;
+        --side: 84px;
+        --side-r: 120px; /* colonne d'icônes Reels à droite */
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--brand); }
+      body { font-family: "Figtree", system-ui, sans-serif; color: var(--white); -webkit-font-smoothing: antialiased; }
+
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      .clip { position: absolute; inset: 0; overflow: hidden; }
+      .scene.is-brand { background: var(--brand); }
+      .scene.is-dark { background: var(--brand-dark); }
+      .scene.is-soft { background: var(--brand-soft); color: var(--ink); }
+      .scene.is-white { background: var(--white); color: var(--ink); }
+
+      .stage {
+        position: absolute; left: var(--side); right: var(--side-r);
+        top: var(--top); bottom: var(--bottom);
+        display: flex; flex-direction: column;
+      }
+      .logo { height: 88px; width: auto; display: block; flex: none; align-self: flex-start; }
+      .kicker { font-weight: 800; font-size: 34px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brand); margin-top: 44px; }
+      .is-brand .kicker, .is-dark .kicker { color: var(--frost); }
+      .title { font-weight: 800; font-size: 104px; line-height: 1.0; letter-spacing: -0.035em; margin-top: 18px; }
+      .title .line { display: block; }
+      .accent { color: var(--brand); }
+      .is-brand .accent, .is-dark .accent { color: var(--frost); }
+      .note { font-weight: 600; font-size: 26px; opacity: 0.75; }
+      .word { display: inline-block; }
+
+      /* Maison : motif de la charte (toit à 2 pans) */
+      .house { clip-path: polygon(50% 0, 100% 34%, 100% 100%, 0 100%, 0 34%); overflow: hidden; }
+      .house img, .house video { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .house-line { position: absolute; overflow: visible; pointer-events: none; }
+      .house-line path { fill: none; stroke: rgba(255, 255, 255, 0.85); stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+
+      /* S1 — accroche */
+      #s1 .pre { font-weight: 800; font-size: 120px; letter-spacing: -0.035em; margin-top: 60px; line-height: 1; }
+      #s1 .zero { font-weight: 900; font-size: 480px; line-height: 0.86; letter-spacing: -0.06em; margin-left: -12px; transform-origin: 20% 60%; white-space: nowrap; }
+      #s1 .zero .pct { font-size: 330px; letter-spacing: -0.02em; }
+      #s1 .yes { font-weight: 800; font-size: 104px; letter-spacing: -0.035em; margin-top: 34px; line-height: 1; }
+      #s1 .photo { position: absolute; right: -60px; bottom: -40px; width: 660px; height: 720px; }
+      #s1 .s1-house-line { right: -100px; bottom: -40px; width: 740px; height: 790px; }
+      .feed #s1 .photo { width: 520px; height: 560px; right: -50px; }
+      .feed #s1 .s1-house-line { width: 590px; height: 620px; right: -90px; }
+
+      /* S2 — c'est quoi */
+      #s2 .bar { display: flex; height: 260px; border-radius: 34px; overflow: hidden; width: 100%; }
+      #s2 .seg { display: flex; flex-direction: column; justify-content: center; padding: 0 34px; transform-origin: left center; }
+      #s2 .seg b { font-weight: 900; font-size: 64px; letter-spacing: -0.03em; line-height: 1; }
+      #s2 .seg span { font-weight: 700; font-size: 32px; margin-top: 10px; opacity: 0.9; }
+      #s2 .seg-ptz { background: var(--brand); color: #fff; width: 42%; }
+      #s2 .seg-bank { background: var(--brand-dark); color: #fff; width: 58%; }
+      #s2 .bar-label { display: flex; justify-content: space-between; font-weight: 800; font-size: 34px; color: var(--muted); margin-bottom: 22px; }
+      #s2 .plus { position: absolute; font-weight: 900; font-size: 90px; color: var(--brand); }
+      #s2 .sum { margin-top: 30px; font-weight: 800; font-size: 46px; letter-spacing: -0.02em; color: var(--ink); }
+      #s2 .sum em { font-style: normal; color: var(--brand); }
+      #s2 .lead { margin-top: 34px; font-weight: 600; font-size: 40px; line-height: 1.25; color: var(--muted); max-width: 860px; }
+      #s2 .spacer { flex: 1; }
+      #s2 .spacer.small { flex: 0.5; }
+
+      /* S3 — pour qui */
+      #s3 .chips { display: flex; flex-direction: column; gap: 22px; margin-top: 46px; }
+      #s3 .chip { display: flex; align-items: center; gap: 26px; background: rgba(255, 255, 255, 0.12); border-radius: 30px; padding: 26px 30px; }
+      #s3 .chip .n { flex: none; width: 76px; height: 76px; border-radius: 50%; background: var(--frost); color: var(--brand-dark); display: grid; place-items: center; font-weight: 900; font-size: 44px; }
+      #s3 .chip b { display: block; font-weight: 800; font-size: 46px; letter-spacing: -0.02em; line-height: 1.05; }
+      #s3 .chip span { display: block; font-weight: 600; font-size: 32px; opacity: 0.85; margin-top: 6px; }
+      #s3 .photo-wrap { position: relative; flex: 1; min-height: 0; margin-top: 40px; }
+      #s3 .photo { position: absolute; right: 0; bottom: 0; height: 100%; aspect-ratio: 1 / 1.02; max-width: 100%; }
+
+      /* S4 — quel bien */
+      #s4 .top, #s4 .bottom { position: absolute; left: 0; right: 0; }
+      #s4 .top { top: 0; height: 52%; background: var(--white); }
+      #s4 .bottom { bottom: 0; height: 48%; color: #fff; overflow: hidden; }
+      #s4 .bottom img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      #s4 .bottom .veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(46, 35, 148, 0.92) 0%, rgba(46, 35, 148, 0.72) 60%, rgba(20, 18, 43, 0.82) 100%); }
+      #s4 .top .inner { position: absolute; left: var(--side); right: var(--side-r); top: var(--top); bottom: 40px; display: flex; flex-direction: column; justify-content: flex-end; }
+      #s4 .bottom .inner { position: absolute; left: var(--side); right: var(--side-r); top: 54px; bottom: var(--bottom); display: flex; flex-direction: column; }
+      #s4 .logo-top { position: absolute; left: var(--side); top: var(--top); }
+      #s4 .big { font-weight: 900; font-size: 250px; line-height: 0.8; letter-spacing: -0.06em; }
+      #s4 .neuf { color: var(--brand); }
+      #s4 .ancien { color: rgba(255, 255, 255, 0.14); -webkit-text-stroke: 4px #fff; }
+      #s4 .desc { font-weight: 700; font-size: 40px; line-height: 1.25; margin-top: 26px; max-width: 900px; }
+      #s4 .desc b { font-weight: 900; }
+      #s4 .top .desc { color: var(--muted); }
+      .feed #s4 .big { font-size: 200px; }
+      .feed #s4 .desc { font-size: 34px; margin-top: 16px; }
+
+      /* S5 — combien */
+      #s5 .count { font-weight: 900; font-size: 440px; line-height: 0.82; letter-spacing: -0.06em; margin-left: -14px; white-space: nowrap; transform-origin: 0% 60%; margin-top: 40px; }
+      #s5 .count .pct { font-size: 290px; color: var(--frost); letter-spacing: -0.02em; }
+      #s5 .sub { font-weight: 800; font-size: 60px; letter-spacing: -0.03em; line-height: 1.05; margin-top: 40px; }
+      #s5 .foot { margin-top: auto; font-weight: 600; font-size: 30px; opacity: 0.85; line-height: 1.3; }
+      #s5 .ghost { position: absolute; left: 50%; top: 50%; width: 760px; height: 810px; margin: -380px 0 0 -380px; opacity: 0.16; }
+      .feed #s5 .count { font-size: 400px; }
+      .feed #s5 .count .pct { font-size: 270px; }
+      .feed #s5 .sub { font-size: 52px; margin-top: 24px; }
+
+      /* S6 — à retenir */
+      #s6 .rows { margin-top: 60px; display: flex; flex-direction: column; }
+      #s6 .row { display: flex; align-items: center; gap: 34px; padding: 40px 0; border-top: 3px solid var(--brand-line); }
+      #s6 .row:last-child { border-bottom: 3px solid var(--brand-line); }
+      #s6 .ico { flex: none; width: 96px; height: 96px; border-radius: 28px; background: var(--brand); display: grid; place-items: center; }
+      #s6 .ico svg { width: 52px; height: 52px; }
+      #s6 .row b { font-weight: 800; font-size: 60px; letter-spacing: -0.03em; line-height: 1.05; color: var(--ink); }
+      .feed #s6 .rows { margin-top: 36px; }
+      .feed #s6 .row { padding: 28px 0; }
+
+      /* S7 — éligible ? */
+      #s7 .video-wrap { position: relative; flex: 1; min-height: 0; margin-top: 40px; }
+      #s7 .house { position: absolute; left: 50%; top: 0; height: 100%; aspect-ratio: 0.92 / 1; transform: translateX(-50%); max-width: 100%; }
+      #s7 .q { font-weight: 900; font-size: 110px; letter-spacing: -0.045em; line-height: 0.95; margin-top: 46px; }
+      #s7 .a { font-weight: 700; font-size: 48px; letter-spacing: -0.02em; line-height: 1.2; margin-top: 26px; }
+      #s7 .pill { align-self: flex-start; margin-top: 30px; background: var(--frost); color: var(--brand-dark); font-weight: 900; font-size: 42px; padding: 18px 36px; border-radius: 999px; letter-spacing: -0.01em; }
+      .feed #s7 .q { font-size: 92px; margin-top: 30px; }
+      .feed #s7 .a { font-size: 42px; margin-top: 16px; }
+      .feed #s7 .pill { margin-top: 20px; font-size: 36px; }
+
+      /* S8 — carte de fin */
+      #s8 { background: radial-gradient(120% 80% at 50% 30%, #5a4bf0 0%, var(--brand) 45%, var(--brand-dark) 100%); }
+      #s8 .stage { align-items: center; text-align: center; justify-content: center; }
+      #s8 .logo-big { width: 620px; height: auto; }
+      #s8 .claim { font-weight: 800; font-size: 96px; letter-spacing: -0.04em; line-height: 1; margin-top: 70px; }
+      #s8 .cta { margin-top: 70px; background: #fff; color: var(--brand); font-weight: 900; font-size: 52px; padding: 30px 64px; border-radius: 999px; box-shadow: 0 24px 60px rgba(20, 18, 43, 0.35); }
+      #s8 .url { margin-top: 34px; font-weight: 800; font-size: 44px; color: var(--frost); letter-spacing: 0.01em; }
+      #s8 .legal { position: absolute; left: var(--side); right: var(--side-r); bottom: calc(var(--bottom) - 40px); font-weight: 600; font-size: 24px; line-height: 1.35; opacity: 0.8; text-align: center; }
+      .feed #s8 .legal { bottom: 60px; }
+      .feed #s8 .claim { margin-top: 50px; font-size: 84px; }
+      .feed #s8 .cta { margin-top: 50px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" class="story" data-composition-id="main" data-start="0" data-duration="30" data-width="1080" data-height="1920">
+
+      <!-- S1 · 0 – 3 s · « Un prêt à 0 %. Oui, ça existe. » -->
+      <section id="s1" class="clip scene is-brand" data-start="0" data-duration="3.4" data-track-index="0" style="z-index:1">
+        <svg class="house-line s1-house-line" viewBox="0 0 740 790" preserveAspectRatio="none"><path id="s1-line" pathLength="1" d="M 30 790 L 30 290 L 370 20 L 710 290 L 710 790" /></svg>
+        <div class="photo house"><img src="assets/img/hero-salon-1200.webp" alt="" /></div>
+        <div class="stage">
+          <img class="logo" src="assets/img/immodrim-logo-white.png" alt="Immodrim" />
+          <div class="pre" id="s1-pre">Un prêt à</div>
+          <div class="zero" id="s1-zero">0<span class="pct">&#8239;%</span></div>
+          <div class="yes"><span class="word">Oui,</span> <span class="word">ça</span> <span class="word">existe.</span></div>
+        </div>
+      </section>
+
+      <!-- S2 · 3 – 8 s · Un prêt de l'État, sans intérêts -->
+      <section id="s2" class="clip scene is-soft" data-start="3" data-duration="5.4" data-track-index="1" style="z-index:2">
+        <div class="stage">
+          <img class="logo" src="assets/img/immodrim-logo.png" alt="Immodrim" />
+          <div class="kicker">C'est quoi, le PTZ ?</div>
+          <div class="title"><span class="line">Un prêt de l'État,</span><span class="line accent">sans intérêts.</span></div>
+          <div class="lead">Il s'ajoute à votre prêt bancaire et réduit le coût total de votre crédit.</div>
+          <div class="spacer"></div>
+          <div class="bar-label"><span>Votre financement</span></div>
+          <div class="bar">
+            <div class="seg seg-ptz"><b>PTZ</b><span>0&#8239;% d'intérêts</span></div>
+            <div class="seg seg-bank"><b>Prêt bancaire</b><span>avec intérêts</span></div>
+          </div>
+          <div class="sum">= un crédit <em>moins cher</em> au total</div>
+          <div class="spacer small"></div>
+        </div>
+      </section>
+
+      <!-- S3 · 8 – 11,5 s · Pour les primo-accédants -->
+      <section id="s3" class="clip scene is-dark" data-start="8" data-duration="3.9" data-track-index="2" style="z-index:3">
+        <div class="stage">
+          <img class="logo" src="assets/img/immodrim-logo-white.png" alt="Immodrim" />
+          <div class="kicker">Pour qui ?</div>
+          <div class="title"><span class="line">Les primo-</span><span class="line accent">accédants.</span></div>
+          <div class="chips">
+            <div class="chip"><div class="n">1</div><div><b>Un premier achat</b><span>pas propriétaire de sa résidence principale depuis 2 ans</span></div></div>
+            <div class="chip"><div class="n">2</div><div><b>Sous plafond de revenus</b><span>selon la zone et la taille du foyer</span></div></div>
+          </div>
+          <div class="photo-wrap"><div class="photo house"><img src="assets/img/card-acheter.webp" alt="" /></div></div>
+        </div>
+      </section>
+
+      <!-- S4 · 11,5 – 14,5 s · Neuf / ancien -->
+      <section id="s4" class="clip scene is-white" data-start="11.5" data-duration="3.4" data-track-index="3" style="z-index:4">
+        <div class="top">
+          <img class="logo logo-top" src="assets/img/immodrim-logo.png" alt="Immodrim" />
+          <div class="inner">
+            <div class="big neuf">NEUF</div>
+            <div class="desc"><b>Toutes zones.</b> En VEFA, ou achevé depuis moins de 5&#8239;ans et jamais habité.</div>
+          </div>
+        </div>
+        <div class="bottom">
+          <img src="assets/img/card-vendre.webp" alt="" />
+          <div class="veil"></div>
+          <div class="inner">
+            <div class="big ancien">ANCIEN</div>
+            <div class="desc"><b>Avec travaux</b> (au moins 25&#8239;% du coût total), en zones B2 et C.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- S5 · 14,5 – 18 s · Jusqu'à 50 % -->
+      <section id="s5" class="clip scene is-brand" data-start="14.5" data-duration="3.9" data-track-index="4" style="z-index:5">
+        <svg class="house-line ghost" viewBox="0 0 760 810" preserveAspectRatio="none"><path pathLength="1" d="M 20 790 L 20 290 L 380 20 L 740 290 L 740 790 Z" style="stroke-width:10" /></svg>
+        <div class="stage">
+          <img class="logo" src="assets/img/immodrim-logo-white.png" alt="Immodrim" />
+          <div class="kicker">Combien ?</div>
+          <div class="title" style="font-size:84px">Le PTZ finance jusqu'à</div>
+          <div class="count" id="s5-count"><span id="s5-num">0</span><span class="pct">&#8239;%</span></div>
+          <div class="sub">du coût de votre achat*</div>
+          <div class="foot">*Dans la limite d'un plafond, selon vos revenus, la zone et la composition du foyer.</div>
+        </div>
+      </section>
+
+      <!-- S6 · 18 – 20,5 s · À retenir -->
+      <section id="s6" class="clip scene is-soft" data-start="18" data-duration="2.9" data-track-index="5" style="z-index:6">
+        <div class="stage">
+          <img class="logo" src="assets/img/immodrim-logo.png" alt="Immodrim" />
+          <div class="kicker">À retenir</div>
+          <div class="title"><span class="line">Bon à</span><span class="line accent">savoir.</span></div>
+          <div class="rows">
+            <div class="row"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 21V10l8-6 8 6v11h-5v-6H9v6z" fill="#fff" /></svg></div><b>Résidence principale uniquement</b></div>
+            <div class="row"><div class="ico"><svg viewBox="0 0 24 24"><path d="M5 19 19 5M7.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm9 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none" /></svg></div><b>Jamais 100&#8239;% de l'achat</b></div>
+            <div class="row"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Zm0-9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" fill="#fff" /></svg></div><b>Plafonds selon la zone</b></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- S7 · 20,5 – 25,5 s · Éligible ? -->
+      <!-- Section non minutée (la vidéo porte son propre data-start) : visibilité pilotée par la timeline -->
+      <section id="s7" class="scene is-brand" style="position:absolute; inset:0; overflow:hidden; z-index:7; visibility:hidden">
+        <div class="stage">
+          <img class="logo" src="assets/img/immodrim-logo-white.png" alt="Immodrim" />
+          <div class="video-wrap">
+            <div class="house" id="s7-house">
+              <video id="s7-video" src="assets/video/hero.mp4" muted playsinline data-start="20.5" data-duration="5.4" data-media-start="0.5" data-track-index="9"></video>
+            </div>
+          </div>
+          <div class="q"><span class="word">Vous</span> <span class="word">êtes</span> <span class="word accent">éligible&#8239;?</span></div>
+          <div class="a">Un conseiller Immodrim étudie votre projet avec vous.</div>
+          <div class="pill">Sans engagement</div>
+        </div>
+      </section>
+
+      <!-- S8 · 25,5 – 30 s · Carte de fin -->
+      <section id="s8" class="clip scene" data-start="25.5" data-duration="4.5" data-track-index="7" style="z-index:8">
+        <div class="stage">
+          <img class="logo-big" src="assets/img/immodrim-logo-white.png" alt="Immodrim" />
+          <div class="claim">Parlons de<br />votre projet.</div>
+          <div class="cta">Contactez-nous</div>
+          <div class="url">immodrim.com</div>
+        </div>
+        <div class="legal">PTZ soumis à conditions. Un crédit vous engage et doit être remboursé. Vérifiez vos capacités de remboursement avant de vous engager.</div>
+      </section>
+
+      <audio id="vo" src="assets/audio/vo.wav" data-start="0" data-duration="30" data-track-index="10"></audio>
+      <audio id="bed" src="assets/audio/bed.wav" data-start="0" data-duration="30" data-track-index="11"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const q = (s) => document.querySelector(s);
+      const qa = (s) => document.querySelectorAll(s);
+
+      // Entrée de scène : volet montant (clip-path) sur le tempo
+      const wipeIn = (sel, at, from = "inset(100% 0% 0% 0%)") =>
+        tl.fromTo(sel, { clipPath: from }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.4, ease: "power3.inOut" }, at);
+
+      // ---------- S1 ----------
+      tl.fromTo("#s1-line", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.1, ease: "power2.inOut" }, 0.05);
+      tl.fromTo("#s1 .photo", { y: 260, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: "power3.out" }, 0.25);
+      tl.fromTo("#s1 .photo img", { scale: 1.25 }, { scale: 1.05, duration: 3.2, ease: "none" }, 0);
+      tl.fromTo("#s1 .logo", { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.4 }, 0.05);
+      tl.fromTo("#s1-pre", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 0.2);
+      tl.fromTo("#s1-zero", { scale: 2.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.32, ease: "power4.in" }, 0.63);
+      tl.to("#s1 .stage", { keyframes: [{ x: -14, y: 6 }, { x: 12, y: -4 }, { x: -6, y: 2 }, { x: 0, y: 0 }], duration: 0.22 }, 0.95);
+      tl.fromTo("#s1 .yes .word", { y: 70, opacity: 0, rotation: 4 }, { y: 0, opacity: 1, rotation: 0, duration: 0.3, ease: "back.out(2)", stagger: 0.14 }, 1.45);
+      tl.to("#s1 .stage", { scale: 1.04, duration: 1.0, ease: "power1.in", transformOrigin: "30% 40%" }, 2.2);
+
+      // ---------- S2 ----------
+      wipeIn("#s2", 3.0);
+      tl.fromTo("#s2 .logo", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 3.1);
+      tl.fromTo("#s2 .kicker", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, 3.15);
+      tl.fromTo("#s2 .title .line", { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out", stagger: 0.45 }, 3.3);
+      tl.fromTo("#s2 .lead", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35 }, 4.6);
+      tl.fromTo("#s2 .bar-label", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 4.1);
+      tl.fromTo("#s2 .seg-ptz", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "power3.out" }, 4.2);
+      tl.fromTo("#s2 .seg-ptz > *", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.3, stagger: 0.08 }, 4.45);
+      tl.fromTo("#s2 .seg-bank", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power3.out" }, 5.75);
+      tl.fromTo("#s2 .seg-bank > *", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.3, stagger: 0.08 }, 6.05);
+      tl.fromTo("#s2 .sum", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "back.out(1.8)" }, 6.7);
+
+      // ---------- S3 ----------
+      wipeIn("#s3", 8.0, "inset(0% 0% 0% 100%)");
+      tl.fromTo("#s3 .kicker", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, 8.1);
+      tl.fromTo("#s3 .title .line", { x: 120, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: "power3.out", stagger: 0.18 }, 8.2);
+      tl.fromTo("#s3 .chip", { y: 60, opacity: 0, scale: 0.94 }, { y: 0, opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.6)", stagger: 0.55 }, 9.3);
+      tl.fromTo("#s3 .photo", { y: 200, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 8.6);
+      tl.fromTo("#s3 .photo img", { scale: 1.2 }, { scale: 1.04, duration: 3.6, ease: "none" }, 8.0);
+
+      // ---------- S4 ----------
+      wipeIn("#s4", 11.5, "inset(0% 100% 0% 0%)");
+      tl.fromTo("#s4 .neuf", { x: -500, opacity: 0 }, { x: 0, opacity: 1, duration: 0.42, ease: "expo.out" }, 11.55);
+      tl.fromTo("#s4 .top .desc", { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35 }, 11.95);
+      tl.fromTo("#s4 .bottom", { yPercent: 100 }, { yPercent: 0, duration: 0.45, ease: "power3.inOut" }, 12.65);
+      tl.fromTo("#s4 .bottom img", { scale: 1.25 }, { scale: 1.05, duration: 2.3, ease: "none" }, 12.65);
+      tl.fromTo("#s4 .ancien", { x: 500, opacity: 0 }, { x: 0, opacity: 1, duration: 0.42, ease: "expo.out" }, 12.95);
+      tl.fromTo("#s4 .bottom .desc", { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35 }, 13.3);
+
+      // ---------- S5 ----------
+      wipeIn("#s5", 14.5);
+      tl.fromTo("#s5 .ghost", { rotation: -2, scale: 0.92 }, { rotation: 2, scale: 1.06, duration: 3.9, ease: "none" }, 14.5);
+      tl.fromTo("#s5 .kicker", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, 14.6);
+      tl.fromTo("#s5 .title", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "power3.out" }, 14.7);
+      tl.fromTo("#s5-count", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.3 }, 14.9);
+      const counter = { v: 0 };
+      tl.fromTo(counter, { v: 0 }, { v: 50, duration: 1.85, ease: "power2.in", onUpdate: () => { q("#s5-num").textContent = Math.round(counter.v); } }, 15.0);
+      tl.fromTo("#s5-count", { scale: 1.08 }, { scale: 1, duration: 0.35, ease: "back.out(3)", immediateRender: false }, 16.85);
+      tl.fromTo("#s5 .sub", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35 }, 16.95);
+      tl.fromTo("#s5 .foot", { opacity: 0 }, { opacity: 0.85, duration: 0.35 }, 17.05);
+
+      // ---------- S6 ----------
+      wipeIn("#s6", 18.0, "inset(0% 0% 0% 100%)");
+      tl.fromTo("#s6 .title .line", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "power3.out", stagger: 0.12 }, 18.05);
+      tl.fromTo("#s6 .row", { x: -120, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "power3.out", stagger: 0.32 }, 18.3);
+      tl.fromTo("#s6 .ico", { scale: 0, rotation: -30 }, { scale: 1, rotation: 0, duration: 0.35, ease: "back.out(2.5)", stagger: 0.32 }, 18.35);
+
+      // ---------- S7 ----------
+      tl.set("#s7", { visibility: "hidden" }, 0);
+      tl.set("#s7", { visibility: "visible" }, 20.5);
+      tl.set("#s7", { visibility: "hidden" }, 25.9);
+      wipeIn("#s7", 20.5);
+      tl.fromTo("#s7-house", { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 20.5);
+      tl.fromTo("#s7-video", { scale: 1.0 }, { scale: 1.12, duration: 5.4, ease: "none" }, 20.5);
+      tl.fromTo("#s7 .q .word", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "back.out(2)", stagger: 0.16 }, 20.75);
+      tl.fromTo("#s7 .a", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, 21.9);
+      tl.fromTo("#s7 .pill", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2.5)", transformOrigin: "left center" }, 23.85);
+
+      // ---------- S8 ----------
+      tl.fromTo("#s8", { clipPath: "circle(0% at 50% 45%)" }, { clipPath: "circle(120% at 50% 45%)", duration: 0.45, ease: "power3.out" }, 25.5);
+      tl.fromTo("#s8 .logo-big", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, 25.6);
+      tl.fromTo("#s8 .claim", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 26.2);
+      tl.fromTo("#s8 .cta", { y: 40, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: "back.out(2)" }, 26.8);
+      tl.to("#s8 .cta", { scale: 1.06, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut" }, 27.8);
+      tl.fromTo("#s8 .url", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 27.1);
+      tl.fromTo("#s8 .legal", { opacity: 0 }, { opacity: 0.8, duration: 0.4 }, 27.2);
+
+      tl.set({}, {}, 30);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
