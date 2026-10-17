@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Immodrim – Immobilier neuf (VEFA) en Île-de-France</title>
-  <meta name="description" content="Immodrim, conseiller en immobilier neuf (VEFA) en Île-de-France : acheter, investir ou vendre avec un interlocuteur unique, sans engagement.">
+  <title>Immodrim – Immobilier neuf et ancien en Île-de-France</title>
+  <meta name="description" content="Immodrim, conseiller en immobilier en Île-de-France : acheter dans le neuf (VEFA), investir ou vendre un bien ancien avec un interlocuteur unique, sans engagement.">
   <link rel="canonical" href="https://immodrim.com/">
   <meta name="theme-color" content="#4b3be0">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -13,7 +13,7 @@
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_FR">
   <meta property="og:site_name" content="Immodrim">
-  <meta property="og:title" content="Immodrim – Immobilier neuf (VEFA) en Île-de-France">
+  <meta property="og:title" content="Immodrim – Immobilier neuf et ancien en Île-de-France">
   <meta property="og:description" content="Acheter, investir ou vendre : une approche experte, transparente et humaine, de la réservation à la remise des clés.">
   <meta property="og:url" content="https://immodrim.com/">
   <meta property="og:image" content="https://immodrim.com/assets/og-image.jpg">
@@ -21,9 +21,9 @@
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="preload" as="image" href="/assets/img/hero-salon-700.webp" imagesrcset="/assets/img/hero-salon-700.webp 700w, /assets/img/hero-salon-1200.webp 1200w" imagesizes="(min-width: 900px) 480px, 92vw">
   <link rel="stylesheet" href="/assets/style.css?v=22">
-  <script src="/assets/main.js?v=29" defer></script>
+  <link rel="stylesheet" href="/assets/refonte.css?v=3">
+  <script src="/assets/main.js?v=30" defer></script>
 
   <script type="application/ld+json">
   {
@@ -111,7 +111,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="logo" href="/" aria-label="Immodrim, accueil">
-        <img src="/assets/img/immodrim-logo.png" alt="Immodrim" width="101" height="36">
+        <img src="/assets/img/immodrim-logo-white.png" alt="Immodrim" width="101" height="36">
       </a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Menu">
         <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
@@ -135,10 +135,9 @@
         <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="/assets/video/hero-poster.webp"><source src="/assets/video/hero.webm" type="video/webm"><source src="/assets/video/hero.mp4" type="video/mp4"></video>
       </div>
       <div class="container hero-grid">
-        <div>
-          <span class="eyebrow">Immobilier · Île-de-France</span>
-          <h1 id="titre-hero">Faites avancer vos projets <span class="rotator"><span class="sr-only">immobiliers</span><span class="rot-words" aria-hidden="true"><span>immobiliers</span><span>d'achat</span><span>d'investissement</span><span>de vente</span></span></span></h1>
-          <p class="lead">Une approche experte, transparente et humaine pour acheter, investir ou vendre, avec un interlocuteur unique du premier échange à la remise des clés.</p>
+        <div class="hero-copy">
+          <h1 id="titre-hero"><span class="ln"><span>Neuf ou ancien,</span></span> <span class="ln"><span>faites avancer vos projets</span></span> <span class="ln"><span class="rotator"><span class="sr-only">immobiliers</span><span class="rot-words" aria-hidden="true"><span>immobiliers</span><span>d'achat</span><span>d'investissement</span><span>de vente</span></span></span></span></h1>
+          <p class="lead">Un seul interlocuteur pour acheter dans le neuf, investir ou vendre votre bien, du premier échange à la signature.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="https://calendar.app.google/qUj4kktypTnpNeL46" target="_blank" rel="noopener noreferrer">Parler à un expert<span class="sr-only"> (nouvel onglet)</span></a>
             <a class="btn btn-ghost" href="/estimation">Estimer mon bien</a>
@@ -148,17 +147,6 @@
             <li>Plus de 500 clients accompagnés</li>
           </ul>
         </div>
-        <div class="hero-visual">
-          <div class="glass-frame">
-            <img class="hero-photo" src="/assets/img/hero-salon-1200.webp"
-                 srcset="/assets/img/hero-salon-700.webp 700w, /assets/img/hero-salon-1200.webp 1200w"
-                 sizes="(min-width: 900px) 480px, 92vw" width="1200" height="800"
-                 alt="Salon lumineux d'un appartement, avec canapé en cuir et plantes" fetchpriority="high" decoding="async">
-          </div>
-          <span class="chip-float c1">Acheter · Investir · Vendre</span>
-          <span class="chip-float c2">Sans engagement</span>
-          <span class="chip-float c3">Île-de-France</span>
-        </div>
       </div>
     </section>
 
@@ -166,12 +154,13 @@
       <div class="container">
         <div class="section-head">
           <h2 id="titre-projets">Quel est votre projet ?</h2>
-          <p>Trois façons de faire avancer votre situation, une seule méthode : clarté, transparence et suivi.</p>
+          <p>Neuf ou ancien, trois façons de faire avancer votre situation, une seule méthode : clarté, transparence et suivi.</p>
         </div>
         <div class="tiles">
           <article class="tile">
             <img class="tile-img" data-parallax src="/assets/img/card-acheter.webp" alt="Jeune femme détendue sur un canapé, dans un salon lumineux" width="867" height="571" loading="lazy">
             <div class="tile-body">
+              <span class="chip">Neuf</span>
               <h3>Acheter dans le neuf</h3>
               <p>Trouvez un logement neuf adapté à votre budget, à votre quartier et à votre mode de vie.</p>
               <div class="tile-actions">
@@ -181,24 +170,26 @@
             </div>
           </article>
           <article class="tile">
+            <img class="tile-img" data-parallax src="/assets/img/card-investir.webp" alt="Séjour moderne et lumineux d'un appartement à louer" width="400" height="500" loading="lazy">
+            <div class="tile-body">
+              <span class="chip">Neuf et ancien</span>
+              <h3>Investir pour louer</h3>
+              <p>Étudiez un investissement, dans le neuf ou dans l'ancien, en fonction de votre situation et des dispositifs en vigueur.</p>
+              <div class="tile-actions">
+                <a class="btn btn-light" href="/investir">En savoir plus<span class="sr-only"> : investir pour louer</span></a>
+                <a class="tile-link" href="#contact" data-projet="investir">C'est parti !</a>
+              </div>
+            </div>
+          </article>
+          <article class="tile">
             <img class="tile-img" data-parallax src="/assets/img/card-vendre.webp" alt="Immeuble haussmannien en pierre de taille sous un ciel bleu" width="400" height="500" loading="lazy">
             <div class="tile-body">
+              <span class="chip chip-alt">Ancien</span>
               <h3>Vendre son bien</h3>
               <p>Connaissez la valeur de votre bien et préparez sereinement votre vente.</p>
               <div class="tile-actions">
                 <a class="btn btn-light" href="/vendre">En savoir plus<span class="sr-only"> : vendre son bien</span></a>
                 <a class="tile-link" href="/estimation">Estimer mon bien</a>
-              </div>
-            </div>
-          </article>
-          <article class="tile">
-            <img class="tile-img" data-parallax src="/assets/img/card-investir.webp" alt="Séjour moderne et lumineux d'un appartement à louer" width="400" height="500" loading="lazy">
-            <div class="tile-body">
-              <h3>Investir pour louer</h3>
-              <p>Étudiez un investissement neuf en fonction de votre situation et des dispositifs en vigueur.</p>
-              <div class="tile-actions">
-                <a class="btn btn-light" href="/investir">En savoir plus<span class="sr-only"> : investir pour louer</span></a>
-                <a class="tile-link" href="#contact" data-projet="investir">C'est parti !</a>
               </div>
             </div>
           </article>
@@ -454,7 +445,7 @@
       <div class="footer-grid">
         <div>
           <img class="footer-logo-img" src="/assets/img/immodrim-logo-white.png" alt="Immodrim" width="126" height="45" loading="lazy">
-          <p>Conseiller en immobilier neuf (VEFA) en Île-de-France : acheter, investir, vendre.</p>
+          <p>Conseiller en immobilier en Île-de-France, dans le neuf (VEFA) et l'ancien : acheter, investir, vendre.</p>
           <p>1 rue de Stockholm, 75008 Paris</p>
         </div>
         <div>
@@ -483,6 +474,8 @@
       <p class="legal-note">© 2026 Immodrim. Les informations présentées sont données à titre indicatif et ne constituent pas un conseil fiscal ou juridique personnalisé. Tout investissement immobilier comporte des risques, notamment de perte en capital et de vacance locative. Les dispositifs fiscaux sont soumis à conditions et peuvent évoluer.</p>
     </div>
   </footer>
+
+  <div class="sticky-cta" aria-label="Contact rapide"><a class="btn btn-primary" href="https://calendar.app.google/qUj4kktypTnpNeL46" target="_blank" rel="noopener noreferrer">Parler à un expert<span class="sr-only"> (nouvel onglet)</span></a><a class="btn btn-ghost" href="/estimation">Estimer</a></div>
 
   <div id="cookie-banner" class="cookie-banner" role="region" aria-labelledby="cookie-title" hidden>
     <div class="container">

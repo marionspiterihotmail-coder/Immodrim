@@ -1,0 +1,141 @@
+/* Immodrim — refonte du design (violet de marque + jaune d'accent réservé aux actions).
+   Chargée après style.css : elle redéfinit les couleurs et restyle la page d'accueil. */
+
+@font-face { font-family: "Figtree"; font-style: normal; font-weight: 400; font-display: swap; src: url("/assets/fonts/figtree-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Figtree"; font-style: normal; font-weight: 500; font-display: swap; src: url("/assets/fonts/figtree-latin-500-normal.woff2") format("woff2"); }
+
+:root {
+  --brand: #4b3be0;
+  --brand-dark: #1b1259;
+  --brand-mid: #2a1d8a;
+  --brand-soft: #ece9fd;
+  --brand-line: #dcd8f2;
+  --ice-50: #f6f4fb;
+  --ice-100: #ece9fd;
+  --ice-200: #dcd7f5;
+  --frost: #cfc6ff;
+  --ink: #17133a;
+  --muted: #3d3a66;
+  --navy: #14123a;
+  --paper: #fbfaf6;
+  --y: #ffc93c;
+  --y-ink: #1b1259;
+  --shadow: 0 12px 32px rgba(27, 18, 89, .14);
+  --shadow-soft: 0 6px 22px rgba(27, 18, 89, .07);
+}
+body { font-family: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-weight: 500; background: var(--paper); }
+.alt { background: #f3f1fb; }
+
+/* Boutons : violet uni ; le jaune est réservé aux actions principales */
+.btn-primary { background: var(--brand); box-shadow: none; }
+.btn-primary:hover { background: var(--brand-dark); box-shadow: none; }
+.btn-ghost { backdrop-filter: none; }
+.form-card .btn-primary { background: var(--y); color: var(--y-ink); }
+.form-card .btn-primary:hover { background: #ffd966; color: var(--y-ink); }
+
+/* En-tête sombre */
+.site-header { background: rgba(20, 18, 58, .94); border-bottom: 1px solid rgba(255, 255, 255, .1); }
+.site-header .nav-toggle { background: transparent; border-color: rgba(255, 255, 255, .5); color: #fff; }
+.main-nav { background: #1a1550; border-bottom: 1px solid rgba(255, 255, 255, .1); }
+.main-nav a { color: #fff; }
+.main-nav a:hover { background: rgba(255, 255, 255, .1); }
+.site-header .btn-primary { background: transparent; border-color: rgba(255, 255, 255, .7); color: #fff; }
+.site-header .btn-primary:hover { background: #fff; color: var(--brand-dark); }
+@media (min-width: 900px) {
+  .main-nav { background: none; border: 0; }
+  .main-nav a { border-bottom: 2px solid transparent; border-radius: 0; padding-inline: .6rem; }
+  .main-nav a:hover { background: none; border-bottom-color: var(--y); }
+}
+
+/* Hero : vidéo en fond, voile bleu nuit, titre blanc */
+.hero.hero-home {
+  background: var(--navy); color: #fff; display: flex; align-items: center;
+  min-height: min(88vh, 820px); padding: clamp(3rem, 9vw, 6rem) 0 clamp(3rem, 8vw, 5rem);
+}
+.hero-home .hero-bg::after { background: linear-gradient(90deg, rgba(18, 16, 52, .8), rgba(18, 16, 52, .52) 60%, rgba(18, 16, 52, .36)); }
+.hero-home .hero-grid { grid-template-columns: 1fr; width: min(1120px, 100% - 2rem); }
+.hero-home h1 { color: #fff; font-size: clamp(2.2rem, 7.4vw, 5.4rem); line-height: 1.02; letter-spacing: -.035em; margin-bottom: 1.4rem; }
+.hero.hero-home p.lead { color: #ecebff; font-size: clamp(1.05rem, 2.2vw, 1.3rem); max-width: 34rem; margin-bottom: 0; }
+.hero-home .hero-points { color: #fff; font-size: .98rem; }
+.hero-home .hero-points li::before { color: #fff; }
+.hero-home .btn-primary { background: var(--y); color: var(--y-ink); }
+.hero-home .btn-primary:hover { background: #fff; color: var(--y-ink); }
+.hero-home .btn-ghost { background: transparent; color: #fff; border-color: rgba(255, 255, 255, .7); }
+.hero-home .btn-ghost:hover { background: #fff; color: var(--brand-dark); }
+
+/* Un seul moment fort à l'ouverture : le titre se compose ligne par ligne */
+.hero-home .ln { display: block; clip-path: inset(0 0 -.2em 0); }
+.hero-home .ln > span { display: block; transform: translateY(110%); animation: ln-rise .9s cubic-bezier(.2, .8, .2, 1) forwards; }
+.hero-home .ln:nth-of-type(2) > span { animation-delay: .12s; }
+.hero-home .ln:nth-of-type(3) > span { animation-delay: .24s; }
+@keyframes ln-rise { to { transform: none; } }
+.hero-home .lead, .hero-home .hero-actions, .hero-home .hero-points { opacity: 0; animation: hero-fade .8s forwards; }
+.hero-home .lead { animation-delay: .7s; }
+.hero-home .hero-actions { animation-delay: .85s; }
+.hero-home .hero-points { animation-delay: 1s; }
+@keyframes hero-fade { to { opacity: 1; } }
+
+/* Mot qui tourne : jaune, avec un trait qui se redessine sous chaque mot */
+.rot-words > span {
+  color: var(--y); background: none; -webkit-background-clip: border-box; background-clip: border-box; -webkit-text-fill-color: currentColor;
+  justify-self: start; position: relative; white-space: nowrap;
+}
+.rot-words > span::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -.04em; height: .07em; border-radius: 9px; background: var(--y);
+  transform: scaleX(0); transform-origin: left; animation: rot-ul 12s infinite; animation-delay: inherit;
+}
+@keyframes rot-ul { 0%, 3% { transform: scaleX(0); } 12%, 22% { transform: scaleX(1); } 26%, 100% { transform: scaleX(0); } }
+
+/* Projets */
+.chip { justify-self: start; display: inline-block; background: #fff; color: var(--brand-mid); font-weight: 800; font-size: .85rem; line-height: 1.5; padding: .1rem .75rem; border-radius: 999px; }
+.chip-alt { background: var(--brand-soft); }
+.tile::after { background: linear-gradient(180deg, rgba(18, 16, 52, 0) 25%, rgba(18, 16, 52, .55) 62%, rgba(18, 16, 52, .92)); }
+
+/* Chiffres : bande claire */
+.band { background: #fff; color: var(--ink); border-block: 1px solid var(--brand-line); }
+.band .orb { display: none; }
+.band-stat strong { color: var(--brand-mid); }
+.band-stat > span { color: var(--muted); }
+
+/* Pourquoi le neuf : cartes unies */
+.why-card::after { display: none; }
+.tone-violet { background: var(--brand-mid); color: #fff; }
+.tone-ice { background: var(--brand-soft); color: var(--ink); }
+.tone-ink { background: var(--ink); color: #fff; }
+.tone-frost { background: #e4e0f6; color: var(--ink); }
+
+/* Parcours : ligne violette, étape atteinte en jaune */
+.timeline::after { background: var(--brand); }
+.timeline li.on::before { background: var(--y); color: var(--y-ink); border-color: var(--y); transform: scale(1.12); }
+.card .icon, .steps li::before, .review-avatar { background: var(--brand); box-shadow: none; }
+
+/* Fondateur : citation mot à mot (inchangée), couleurs adoucies */
+.js-words .w { color: #c9c4e4; }
+.js-words .w.on { color: var(--ink); }
+
+/* Vendre, avis, contact, pied de page */
+.panel { background: var(--brand-mid); box-shadow: var(--shadow); }
+.reviews { background: var(--paper); }
+.contact { background: var(--brand-dark); }
+.site-footer { background: var(--navy); }
+
+/* Barre d'appel fixe sur mobile */
+.sticky-cta {
+  display: flex; gap: .6rem; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+  padding: .7rem 1rem calc(.7rem + env(safe-area-inset-bottom, 0px)); background: rgba(20, 18, 58, .96);
+}
+.sticky-cta .btn { min-height: 48px; padding-inline: 1rem; white-space: nowrap; font-size: .95rem; }
+.sticky-cta .btn-primary { flex: 2; background: var(--y); color: var(--y-ink); }
+.sticky-cta .btn-ghost { flex: 1; background: transparent; color: #fff; border-color: rgba(255, 255, 255, .7); }
+body.home { padding-bottom: 4.6rem; }
+@media (min-width: 900px) { .sticky-cta { display: none; } body.home { padding-bottom: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-home .ln > span { animation: none; transform: none; }
+  .hero-home .lead, .hero-home .hero-actions, .hero-home .hero-points { animation: none; opacity: 1; }
+  .rot-words > span::after { animation: none; transform: scaleX(1); }
+  .rot-words > span:not(:first-child)::after { display: none; }
+}
+
+/* Lisibilité du formulaire de contact */
+.contact .form-card p, .contact .form-card .form-note { color: var(--muted); }
