@@ -139,3 +139,46 @@ body.home { padding-bottom: 4.6rem; }
 
 /* Lisibilité du formulaire de contact */
 .contact .form-card p, .contact .form-card .form-note { color: var(--muted); }
+
+/* ===== Animations : on retire les effets génériques, on garde ce qui informe ===== */
+.btn:hover, .card:hover { transform: none; }
+.chip-float { animation: none; }
+.js .reveal, .js .reveal.in, .js .card.reveal:not(.in), .js .steps li.reveal:not(.in) { opacity: 1; transform: none; transition: none; }
+.js .steps li.reveal:not(.in)::before, .steps li.in::before { transform: none; box-shadow: none; }
+.js .checks li { opacity: 1; transform: none; transition: none; }
+.js .section-head h2, .js .why-head h2 { clip-path: none; transform: none; transition: none; }
+
+/* Tuiles de projet : la tuile survolée s'élargit (ordinateur) */
+@media (min-width: 900px) and (hover: hover) {
+  .tiles { display: flex; align-items: stretch; }
+  .tile { flex: 1; min-height: 540px; transition: flex .55s cubic-bezier(.2, .8, .2, 1); }
+  .tile:hover, .tile:focus-within { flex: 1.55; }
+}
+@media (prefers-reduced-motion: reduce) { .tile { transition: none; } }
+
+/* Neuf ou ancien : deux blocs */
+.duo-grid { display: grid; gap: 1.25rem; }
+.duo-card { border-radius: 28px; padding: clamp(1.6rem, 4vw, 2.6rem); display: flex; flex-direction: column; align-items: flex-start; gap: .7rem; }
+.duo-card h3 { font-size: clamp(1.6rem, 3vw, 2.1rem); font-weight: 800; margin: 0; }
+.duo-card p { margin: 0 0 .8rem; max-width: 30rem; font-size: 1.05rem; }
+.duo-neuf { background: var(--brand-mid); color: #fff; }
+.duo-neuf h3 { color: #fff; }
+.duo-neuf p { color: #ecebff; }
+.duo-ancien { background: #fff; border: 1px solid var(--brand-line); color: var(--ink); }
+.duo-ancien h3 { color: var(--brand-dark); }
+.duo-ancien p { color: var(--muted); }
+.duo-ancien .chip { background: var(--brand-soft); }
+.duo .section-head { margin-bottom: 2rem; }
+@media (min-width: 800px) { .duo-grid { grid-template-columns: 1fr 1fr; } }
+
+/* Pages intérieures : en-tête clair uni, sans halos bleus */
+.hero:not(.hero-home) { background: #f3f1fb; }
+
+/* Bandeau cookies compact sur mobile */
+@media (max-width: 640px) {
+  .cookie-banner { padding: .8rem 0 calc(.8rem + env(safe-area-inset-bottom, 0px)); }
+  .cookie-banner h2 { font-size: 1rem; margin: 0 0 .3rem; }
+  .cookie-banner p { font-size: .82rem; line-height: 1.4; margin-bottom: .6rem; }
+  .cookie-actions { flex-wrap: nowrap; gap: .4rem; }
+  .cookie-actions .btn { flex: 1 1 0; min-height: 44px; padding: .5rem .3rem; font-size: .82rem; border-width: 1.5px; }
+}
