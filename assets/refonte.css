@@ -270,7 +270,7 @@ body.home { padding-bottom: 4.6rem; }
 .reviews { background: var(--gray); }
 .review { background: #fff; border: 0; border-radius: 28px; box-shadow: none; }
 .review h3 { font-size: 1.35rem; letter-spacing: -.02em; }
-.review-stars { color: var(--brand); }
+.review-stars { color: #f5b301; }
 
 /* ===== Accueil v3.6 : hiérarchie Acheter / Investir / Vendre ===== */
 .kicker{display:inline-flex;align-items:center;gap:.6rem;font-weight:600;font-size:.9rem;color:var(--muted);margin:0 0 1rem}
@@ -287,7 +287,7 @@ body.home { padding-bottom: 4.6rem; }
 .invest-steps h3{color:#fff;margin:1rem 0 .4rem;font-size:1.2rem}
 .invest-steps p{color:rgba(255,255,255,.72);margin:0}
 .is-n{display:inline-grid;place-items:center;width:2.6rem;height:2.6rem;border-radius:50%;background:var(--brand);color:#fff;font-weight:700}
-@media(min-width:900px){.invest-steps{grid-template-columns:repeat(3,1fr)}.invest-head{grid-template-columns:1fr 1fr;align-items:end}}
+@media(min-width:900px){.invest-steps{grid-template-columns:repeat(3,1fr)}}
 .js .invest-steps li{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
 .js .invest-steps li.inview{opacity:1;transform:none}
 .js .invest-steps li:nth-child(2){transition-delay:.12s}.js .invest-steps li:nth-child(3){transition-delay:.24s}
@@ -311,3 +311,28 @@ body.home { padding-bottom: 4.6rem; }
 .logos-in{padding:1.5rem 0 0}
 .invest-steps li{padding:1.8rem}
 .invest-steps h3{margin-top:0;font-size:1.3rem}
+
+/* ===== v3.8 : haut de page = vidéo plein cadre + projets intégrés ===== */
+.hero.hero-home{position:relative;background:var(--black);color:#fff;padding:clamp(2.5rem,6vw,4.5rem) 0 clamp(2rem,5vw,3.5rem);overflow:hidden}
+.hero-home .hero-bg{position:absolute;inset:0;order:0;width:auto;height:auto;margin:0;border-radius:0;background:var(--black)}
+.hero-home .hero-bg::after{display:block;background:linear-gradient(180deg,rgba(8,8,14,.72) 0%,rgba(8,8,14,.55) 40%,rgba(8,8,14,.88) 100%)}
+.hero-home .hero-grid,.hero-home .hero-projects{position:relative;z-index:1}
+.hero-home h1{color:#fff}
+.hero.hero-home p.lead,.hero-home .hero-points{color:rgba(255,255,255,.82)}
+.hero-home .hero-points li::before{color:#fff}
+.hero-home .rot-words>span{color:#b9b0ff}
+.hero-home .btn-primary{background:#fff;color:var(--black)}
+.hero-home .btn-primary:hover{background:var(--brand-soft)}
+.hero-home .btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.7)}
+.hero-home .btn-ghost:hover{background:rgba(255,255,255,.12)}
+.hero-projects{width:min(1180px,100% - 2rem);margin:clamp(2rem,5vw,3.5rem) auto 0}
+.hero-q{color:#fff;font-size:clamp(1.3rem,2.6vw,1.8rem);margin:0 0 1.2rem;letter-spacing:-.02em}
+.hero-home .tile{border:1px solid rgba(255,255,255,.18)}
+.invest h2 em{font-style:normal;color:#b9b0ff}
+.invest-head{display:block}
+.invest-head p{margin-top:1rem}
+.panel{display:block;color:inherit;text-decoration:none;transition:transform .3s ease}
+.panel:hover{transform:translateY(-4px)}
+.panel .btn{pointer-events:none;margin-top:.5rem}
+.vendre-copy .mini-stats{margin-bottom:0}
+.hero-home .hero-projects{order:2}
