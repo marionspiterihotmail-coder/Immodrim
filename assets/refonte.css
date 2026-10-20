@@ -163,7 +163,7 @@ body.home { padding-bottom: 4.6rem; }
 /* Neuf ou ancien : deux grands blocs avec photo */
 .duo-grid { display: grid; gap: 1.25rem; }
 .duo-card { background: var(--gray); border-radius: 32px; overflow: hidden; display: flex; flex-direction: column; }
-.duo-img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+.duo-img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 28%; display: block; }
 .duo-body { padding: clamp(1.4rem, 3.5vw, 2.2rem); display: flex; flex-direction: column; align-items: flex-start; gap: .7rem; flex: 1; }
 .duo-card h3 { font-size: clamp(1.6rem, 3vw, 2.1rem); font-weight: 800; margin: 0; color: var(--black); }
 .duo-card p { margin: 0 0 .8rem; max-width: 30rem; font-size: 1.05rem; color: var(--muted); }
