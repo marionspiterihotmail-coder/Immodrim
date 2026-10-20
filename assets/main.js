@@ -10,7 +10,7 @@
   };
 
   /* ===== Numéro de version (discret, pied de page) : à mettre à jour à chaque mise en ligne ===== */
-  var VERSION = 'v4.0 · 20 oct. 2026';
+  var VERSION = 'v4.1 · 20 oct. 2026';
   var note = document.querySelector('.legal-note');
   if (note) {
     var ver = document.createElement('span');
@@ -567,4 +567,23 @@
     items.forEach(function(li){ li.classList.toggle('on', li.getBoundingClientRect().top<mid); });
   }
   f(); window.addEventListener('scroll',f,{passive:true}); window.addEventListener('resize',f);
+})();
+
+(function(){
+  var t=document.querySelector('[data-tabs]');
+  if(t){
+    var tabs=[].slice.call(t.querySelectorAll('.tab')), panels=[].slice.call(t.querySelectorAll('.tab-panel')), cur=0, timer=null;
+    var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function show(i){cur=i;tabs.forEach(function(b,k){var on=k===i;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1;panels[k].hidden=!on;var bar=b.querySelector('i');bar.style.animation='none';void bar.offsetWidth;bar.style.animation='';});}
+    function stop(){t.classList.add('paused');clearInterval(timer);}
+    function start(){if(reduce)return;timer=setInterval(function(){show((cur+1)%tabs.length);},5000);}
+    tabs.forEach(function(b,i){b.addEventListener('click',function(){stop();show(i);});b.addEventListener('keydown',function(e){if(e.key==='ArrowDown'||e.key==='ArrowRight'){stop();show((i+1)%tabs.length);tabs[cur].focus();}if(e.key==='ArrowUp'||e.key==='ArrowLeft'){stop();show((i+tabs.length-1)%tabs.length);tabs[cur].focus();}});});
+    if(reduce){t.classList.add('paused');} else { if('IntersectionObserver' in window){new IntersectionObserver(function(es,o){if(es[0].isIntersecting){start();o.disconnect();}}).observe(t);} else start(); }
+  }
+  var d=document.querySelector('[data-docs]');
+  if(d){
+    var bar=document.querySelector('[data-docs-bar]'),cnt=document.querySelector('[data-docs-count]'),boxes=d.querySelectorAll('input');
+    function upd(){var n=d.querySelectorAll('input:checked').length;cnt.textContent=n;bar.style.width=(n/boxes.length*100)+'%';}
+    boxes.forEach(function(b){b.addEventListener('change',upd);});upd();
+  }
 })();

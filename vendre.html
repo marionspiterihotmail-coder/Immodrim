@@ -18,8 +18,8 @@
   <meta property="og:image" content="https://immodrim.com/assets/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="/assets/style.css?v=22">
-  <link rel="stylesheet" href="/assets/refonte.css?v=15">
-  <script src="/assets/main.js?v=33" defer></script>
+  <link rel="stylesheet" href="/assets/refonte.css?v=18">
+  <script src="/assets/main.js?v=34" defer></script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -126,15 +126,15 @@
   </header>
 
   <main id="contenu">
-    <section class="hero" aria-labelledby="titre-page">
+    <section class="hero hero-dark" aria-labelledby="titre-page">
       <div class="container hero-grid">
         <div>
           <nav class="breadcrumb" aria-label="Fil d'Ariane"><ol><li><a href="/">Accueil</a></li><li aria-current="page">Vendre son bien</li></ol></nav>
-          <h1 id="titre-page">Vendre son bien au meilleur prix</h1>
+          <h1 id="titre-page">Vendre son bien <em>au meilleur prix</em></h1>
           <p class="lead">Valorisez votre bien, attirez les bons acheteurs et concrétisez votre vente. Immodrim vous accompagne de l'estimation à la signature chez le notaire.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="https://calendar.app.google/qUj4kktypTnpNeL46" target="_blank" rel="noopener noreferrer">Parler à un expert<span class="sr-only"> (nouvel onglet)</span></a>
-            <a class="btn btn-ghost" href="#contact">Estimer mon bien</a>
+            <a class="btn btn-ghost" href="/estimation">Estimer mon bien</a>
           </div>
           <ul class="hero-points">
             <li>Estimation de votre bien</li>
@@ -143,65 +143,67 @@
           </ul>
         </div>
         <div class="page-visual">
-          <div class="glass-frame">
-            <img class="page-photo" src="/assets/img/card-vendre.webp" alt="Immeuble haussmannien en pierre de taille sous un ciel bleu" width="400" height="500" fetchpriority="high" decoding="async">
-          </div>
+          <div class="hero-photo"><img src="/assets/img/vie-couple-senior.webp" alt="Couple souriant sur la terrasse de son appartement, au coucher du soleil" width="1400" height="1046" fetchpriority="high" decoding="async"></div>
         </div>
       </div>
     </section>
 
-    <section id="accompagnement" aria-labelledby="titre-vente-steps">
+    <section id="accompagnement" class="journey-section" aria-labelledby="titre-vente-steps">
       <div class="container">
         <div class="section-head">
           <h2 id="titre-vente-steps">Notre accompagnement pour votre vente</h2>
           <p>Notre équipe met à votre service son expertise pour valoriser votre bien, attirer les bons acheteurs et concrétiser votre vente au meilleur prix.</p>
         </div>
-        <ol class="steps">
-          <li><h3>Estimation</h3><p>Une estimation réaliste du prix de marché, appuyée sur les ventes récentes de votre secteur.</p></li>
-          <li><h3>Valorisation</h3><p>Conseils de préparation et mise en valeur du bien pour attirer les bons acheteurs.</p></li>
-          <li><h3>Acheteurs sélectionnés</h3><p>Un tri des candidats, avec une attention portée à la solidité de leur financement.</p></li>
-          <li><h3>Négociation</h3><p>Nous défendons votre prix et vos conditions jusqu'à la promesse de vente.</p></li>
-          <li><h3>Signature</h3><p>Suivi du dossier jusqu'à l'acte authentique chez le notaire.</p></li>
+        <ol class="journey" data-inview>
+          <li><span class="j-dot">1</span><h3>Estimation</h3><p>Une estimation réaliste du prix de marché, appuyée sur les ventes récentes de votre secteur.</p></li>
+          <li><span class="j-dot">2</span><h3>Valorisation</h3><p>Conseils de préparation et mise en valeur du bien pour attirer les bons acheteurs.</p></li>
+          <li><span class="j-dot">3</span><h3>Acheteurs sélectionnés</h3><p>Un tri des candidats, avec une attention portée à la solidité de leur financement.</p></li>
+          <li><span class="j-dot">4</span><h3>Négociation</h3><p>Nous défendons votre prix et vos conditions jusqu'à la promesse de vente.</p></li>
+          <li><span class="j-dot">5</span><h3>Signature</h3><p>Suivi du dossier jusqu'à l'acte authentique chez le notaire.</p></li>
         </ol>
-        <div class="mini-stats">
-          <div class="stat"><strong>28 jours</strong><span>délai de vente moyen</span></div>
-          <div class="stat"><strong>95 %</strong><span>dossiers financés</span></div>
+        <div class="big-stats">
+          <div class="big-stat"><strong><span data-count="28">28</span> jours</strong><span>délai de vente moyen</span></div>
+          <div class="big-stat"><strong><span data-count="95" data-suffix=" %">95 %</span></strong><span>dossiers financés</span></div>
         </div>
       </div>
     </section>
 
-    <section id="estimation" class="alt" aria-labelledby="titre-estimation">
+    <section id="estimation" class="est-band" aria-labelledby="titre-estimation">
       <div class="container split">
         <div>
-          <h2 id="titre-estimation">Estimer son bien</h2>
-          <p>Envoyez-nous une demande d'estimation : nous revenons vers vous pour échanger sur votre bien, puis confirmer la valeur après visite.</p>
-          <a class="btn btn-primary" href="#contact">Demander une estimation</a>
+          <h2 id="titre-estimation">Combien vaut votre bien ?</h2>
+          <p>Obtenez une première fourchette de valeur en quelques minutes. Nous revenons ensuite vers vous pour échanger sur votre bien et confirmer la valeur après visite.</p>
         </div>
-        <div class="panel">
-          <span class="badge">Nouveau</span>
-          <h3>Estimation en ligne</h3>
-          <p>Un outil simple pour obtenir une première fourchette de valeur de votre bien en quelques minutes.</p>
-          <a class="btn btn-light" href="/estimation">Estimer mon bien gratuitement</a>
-        </div>
+        <a class="panel" href="/estimation">
+          <img class="panel-img" src="/assets/img/vie-femme-cartons.webp" alt="Femme préparant son déménagement au milieu de cartons" width="900" height="1115" loading="lazy">
+          <div class="panel-body">
+            <h3>Estimation en ligne</h3>
+            <p>Un outil simple, gratuit et sans engagement.</p>
+            <span class="btn btn-light">Estimer mon bien</span>
+          </div>
+        </a>
       </div>
     </section>
 
-    <section aria-labelledby="titre-documents">
-      <div class="container prose">
-        <h2 id="titre-documents">Les documents à préparer</h2>
-        <p>Réunir ces pièces à l'avance accélère la vente et rassure les acheteurs.</p>
-        <ul class="checks">
-            <li>Votre titre de propriété</li>
-            <li>Le dossier de diagnostics techniques, dont le diagnostic de performance énergétique (DPE)</li>
-            <li>Votre attestation de propriété</li>
-            <li>Le dernier avis de taxe foncière</li>
-            <li>Si le bien est en copropriété : le montant des charges de copropriété</li>
-            <li>Les factures de travaux</li>
-            <li>Votre pièce d'identité et votre livret de famille</li>
-            <li>Le plan du logement</li>
-            <li>Le document sur l'assainissement</li>
-            <li>Les trois derniers procès-verbaux d'assemblée générale</li>
-        </ul>
+    <section class="docs-section" aria-labelledby="titre-documents">
+      <div class="container docs-grid">
+        <div>
+          <h2 id="titre-documents">Les documents à préparer</h2>
+          <p>Réunir ces pièces à l'avance accélère la vente et rassure les acheteurs. Cochez celles que vous avez déjà.</p>
+          <div class="docs-progress" aria-live="polite"><div class="dp-bar"><i data-docs-bar></i></div><p><strong data-docs-count>0</strong> / 10 documents prêts</p></div>
+        </div>
+        <ul class="doc-list" data-docs>
+            <li><label><input type="checkbox"><span>Votre titre de propriété</span></label></li>
+            <li><label><input type="checkbox"><span>Le dossier de diagnostics techniques, dont le diagnostic de performance énergétique (DPE)</span></label></li>
+            <li><label><input type="checkbox"><span>Votre attestation de propriété</span></label></li>
+            <li><label><input type="checkbox"><span>Le dernier avis de taxe foncière</span></label></li>
+            <li><label><input type="checkbox"><span>Si le bien est en copropriété : le montant des charges de copropriété</span></label></li>
+            <li><label><input type="checkbox"><span>Les factures de travaux</span></label></li>
+            <li><label><input type="checkbox"><span>Votre pièce d'identité et votre livret de famille</span></label></li>
+            <li><label><input type="checkbox"><span>Le plan du logement</span></label></li>
+            <li><label><input type="checkbox"><span>Le document sur l'assainissement</span></label></li>
+            <li><label><input type="checkbox"><span>Les trois derniers procès-verbaux d'assemblée générale</span></label></li>
+            </ul>
       </div>
     </section>
 
@@ -240,7 +242,6 @@
           <h2 id="titre-contact">Faisons estimer votre bien</h2>
           <p>Laissez-nous vos coordonnées : nous vous rappelons pour faire le point, gratuitement et sans engagement.</p>
           <p><a class="btn btn-light" href="https://calendar.app.google/qUj4kktypTnpNeL46" target="_blank" rel="noopener noreferrer">Prendre rendez-vous<span class="sr-only"> (nouvel onglet)</span></a></p>
-          <address class="address">1 rue de Stockholm<br>75008 Paris</address>
         </div>
         <div class="form-card">
           <!-- Remplacer l'action par l'adresse de votre service de formulaire (Formspree, Web3Forms, Cloudflare Pages Function…) -->

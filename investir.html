@@ -18,8 +18,8 @@
   <meta property="og:image" content="https://immodrim.com/assets/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="/assets/style.css?v=22">
-  <link rel="stylesheet" href="/assets/refonte.css?v=15">
-  <script src="/assets/main.js?v=33" defer></script>
+  <link rel="stylesheet" href="/assets/refonte.css?v=18">
+  <script src="/assets/main.js?v=34" defer></script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -126,11 +126,11 @@
   </header>
 
   <main id="contenu">
-    <section class="hero" aria-labelledby="titre-page">
+    <section class="hero hero-dark" aria-labelledby="titre-page">
       <div class="container hero-grid">
         <div>
           <nav class="breadcrumb" aria-label="Fil d'Ariane"><ol><li><a href="/">Accueil</a></li><li aria-current="page">Investir pour louer</li></ol></nav>
-          <h1 id="titre-page">Investir dans le neuf pour louer</h1>
+          <h1 id="titre-page">Investir dans le neuf <em>pour louer</em></h1>
           <p class="lead">Étudiez un investissement locatif dans le neuf en fonction de votre situation, avec un regard clair sur la rentabilité nette, les charges et les risques.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="https://calendar.app.google/qUj4kktypTnpNeL46" target="_blank" rel="noopener noreferrer">Parler à un expert<span class="sr-only"> (nouvel onglet)</span></a>
@@ -142,60 +142,85 @@
             <li>Gratuit et sans engagement</li>
           </ul>
         </div>
-        <div class="page-visual">
-          <div class="glass-frame">
-            <img class="page-photo" src="/assets/img/card-investir.webp" alt="Séjour moderne et lumineux d&#x27;un appartement à louer" width="400" height="500" fetchpriority="high" decoding="async">
-          </div>
+        <div class="page-visual float-wrap">
+          <div class="hero-photo"><img src="/assets/img/neuf-interieur.webp" alt="Séjour moderne et lumineux d'un appartement neuf à louer" width="1400" height="1046" fetchpriority="high" decoding="async"></div>
+          <span class="float-chip fc1">Rentabilité nette</span>
+          <span class="float-chip fc2">Charges comprises</span>
+          <span class="float-chip fc3">Risques expliqués</span>
         </div>
       </div>
     </section>
 
-    <section id="avantages" aria-labelledby="titre-avantages-inv">
+    <section id="avantages" class="why" aria-labelledby="titre-avantages-inv">
       <div class="container">
-        <div class="section-head">
+        <div class="why-head">
           <h2 id="titre-avantages-inv">Pourquoi investir dans le neuf ?</h2>
           <p>Le neuf présente des atouts pour un projet locatif, à mettre en regard d'un prix d'achat souvent plus élevé que dans l'ancien.</p>
         </div>
-        <div class="grid">
-          <article class="card"><h3>Moins de travaux</h3><p>Un logement neuf limite les travaux et les imprévus pendant les premières années.</p></article>
-          <article class="card"><h3>Normes énergétiques récentes</h3><p>Des logements conçus selon les dernières normes, appréciés des locataires pour leurs charges maîtrisées.</p></article>
-          <article class="card"><h3>Frais de notaire réduits</h3><p>Environ 2,5 % du prix, contre 7 à 8 % dans l'ancien.</p></article>
-          <article class="card"><h3>Des garanties légales</h3><p>Garantie financière d'achèvement, parfait achèvement, biennale, décennale et dommages-ouvrage.</p></article>
+        <div class="bento bento-2">
+          <article class="bx bx-orange" data-inview>
+            <span class="bx-tag">Tranquillité</span>
+            <h3>Moins de travaux</h3>
+            <p>Un logement neuf limite les travaux et les imprévus pendant les premières années.</p>
+          </article>
+          <article class="bx bx-photo" data-inview>
+            <img src="/assets/img/neuf-jardin.webp" alt="" width="1400" height="1046" loading="lazy">
+            <div class="bx-cap"><h3>Normes énergétiques récentes</h3><p>Des logements appréciés des locataires pour leurs charges maîtrisées.</p></div>
+          </article>
+          <article class="bx bx-violet" data-inview>
+            <span class="bx-tag">Frais de notaire</span>
+            <p class="bx-big">2,5&nbsp;%</p>
+            <p class="bx-sub">du prix, contre 7 à 8 % dans l'ancien.</p>
+          </article>
+          <article class="bx bx-garanties" data-inview>
+            <span class="bx-tag">Garanties légales</span>
+            <p class="bx-big">10&nbsp;ans</p>
+            <p class="bx-sub">de garantie décennale, avec la garantie financière d'achèvement, le parfait achèvement, la biennale et la dommages-ouvrage.</p>
+          </article>
         </div>
       </div>
     </section>
 
-    <section id="etude" class="alt" aria-labelledby="titre-etude">
+    <section id="etude" class="tabs-section" aria-labelledby="titre-etude">
       <div class="container">
         <div class="section-head">
           <h2 id="titre-etude">Ce que nous étudions avec vous</h2>
           <p>Un investissement se juge sur des chiffres réels, pas sur des promesses.</p>
         </div>
-        <ol class="steps">
-          <li><h3>Votre situation</h3><p>Revenus, fiscalité, capacité d'emprunt et objectifs.</p></li>
-          <li><h3>L'emplacement</h3><p>Demande locative, transports, services et dynamique du secteur.</p></li>
-          <li><h3>La rentabilité nette</h3><p>Loyer, charges, taxe foncière, frais de gestion et vacance locative : tout est pris en compte.</p></li>
-          <li><h3>Les dispositifs en vigueur</h3><p>Les dispositifs fiscaux changent régulièrement : nous vérifions avec vous ce qui s'applique à la date de votre achat.</p></li>
-          <li><h3>La gestion locative</h3><p>Gérer vous-même ou confier la gestion à un professionnel : nous abordons le choix dès le départ.</p></li>
-        </ol>
+        <div class="tabs" data-tabs>
+          <div class="tab-list" role="tablist" aria-label="Points étudiés">
+            <button class="tab" role="tab" type="button" aria-selected="true" aria-controls="tp1" id="t1"><span>Votre situation</span><i></i></button>
+            <button class="tab" role="tab" type="button" aria-selected="false" aria-controls="tp2" id="t2" tabindex="-1"><span>L'emplacement</span><i></i></button>
+            <button class="tab" role="tab" type="button" aria-selected="false" aria-controls="tp3" id="t3" tabindex="-1"><span>La rentabilité nette</span><i></i></button>
+            <button class="tab" role="tab" type="button" aria-selected="false" aria-controls="tp4" id="t4" tabindex="-1"><span>Les dispositifs en vigueur</span><i></i></button>
+            <button class="tab" role="tab" type="button" aria-selected="false" aria-controls="tp5" id="t5" tabindex="-1"><span>La gestion locative</span><i></i></button>
+          </div>
+          <div class="tab-panels">
+            <div class="tab-panel" role="tabpanel" id="tp1" aria-labelledby="t1"><h3>Votre situation</h3><p>Revenus, fiscalité, capacité d'emprunt et objectifs.</p></div>
+            <div class="tab-panel" role="tabpanel" id="tp2" aria-labelledby="t2" hidden><h3>L'emplacement</h3><p>Demande locative, transports, services et dynamique du secteur.</p></div>
+            <div class="tab-panel" role="tabpanel" id="tp3" aria-labelledby="t3" hidden><h3>La rentabilité nette</h3><p>Loyer, charges, taxe foncière, frais de gestion et vacance locative : tout est pris en compte.</p></div>
+            <div class="tab-panel" role="tabpanel" id="tp4" aria-labelledby="t4" hidden><h3>Les dispositifs en vigueur</h3><p>Les dispositifs fiscaux changent régulièrement : nous vérifions avec vous ce qui s'applique à la date de votre achat.</p></div>
+            <div class="tab-panel" role="tabpanel" id="tp5" aria-labelledby="t5" hidden><h3>La gestion locative</h3><p>Gérer vous-même ou confier la gestion à un professionnel : nous abordons le choix dès le départ.</p></div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section aria-labelledby="titre-vigilance">
-      <div class="container">
-        <div class="callout">
-          <h3 id="titre-vigilance">Les points de vigilance</h3>
-          <p>Aucun investissement n'est sans risque. Nous les passons en revue avec vous avant toute décision :</p>
-          <ul class="checks">
-            <li>Vacance locative et loyers impayés</li>
-            <li>Qualité du promoteur et du programme</li>
-            <li>Valeur de revente</li>
-            <li>Évolution de la fiscalité et des dispositifs</li>
-            <li>Taux d'emprunt et capacité de remboursement</li>
-          </ul>
+    <section class="vigil" aria-labelledby="titre-vigilance">
+      <div class="container vigil-grid">
+        <div>
+          <h2 id="titre-vigilance">Les points de vigilance</h2>
+          <p>Aucun investissement n'est sans risque. Nous les passons en revue avec vous avant toute décision.</p>
           <a class="btn btn-primary" href="#contact">C'est parti !</a>
           <p class="note-small">Les informations de cette page sont données à titre indicatif et ne constituent pas un conseil fiscal ou juridique personnalisé.</p>
         </div>
+        <ul class="tick-list" data-inview>
+          <li>Vacance locative et loyers impayés</li>
+          <li>Qualité du promoteur et du programme</li>
+          <li>Valeur de revente</li>
+          <li>Évolution de la fiscalité et des dispositifs</li>
+          <li>Taux d'emprunt et capacité de remboursement</li>
+        </ul>
       </div>
     </section>
 
@@ -234,7 +259,6 @@
           <h2 id="titre-contact">Parlons de votre investissement</h2>
           <p>Laissez-nous vos coordonnées : nous vous rappelons pour faire le point, gratuitement et sans engagement.</p>
           <p><a class="btn btn-light" href="https://calendar.app.google/qUj4kktypTnpNeL46" target="_blank" rel="noopener noreferrer">Prendre rendez-vous<span class="sr-only"> (nouvel onglet)</span></a></p>
-          <address class="address">1 rue de Stockholm<br>75008 Paris</address>
         </div>
         <div class="form-card">
           <!-- Remplacer l'action par l'adresse de votre service de formulaire (Formspree, Web3Forms, Cloudflare Pages Function…) -->
