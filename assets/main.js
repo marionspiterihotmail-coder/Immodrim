@@ -10,7 +10,7 @@
   };
 
   /* ===== Numéro de version (discret, pied de page) : à mettre à jour à chaque mise en ligne ===== */
-  var VERSION = 'v3.2 · 17 oct. 2026';
+  var VERSION = 'v3.5 · 20 oct. 2026';
   var note = document.querySelector('.legal-note');
   if (note) {
     var ver = document.createElement('span');
@@ -534,4 +534,19 @@
       el.addEventListener('click', function (e) { e.preventDefault(); prefs.hidden = false; openSettings(); });
     });
   }
+
+  /* Blocs qui s'animent à l'apparition (barres, étapes) */
+  (function () {
+    var els = document.querySelectorAll('[data-inview]');
+    if (!els.length) { return; }
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!('IntersectionObserver' in window) || reduce) {
+      els.forEach(function (el) { el.classList.add('inview'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('inview'); io.unobserve(e.target); } });
+    }, { threshold: 0.25 });
+    els.forEach(function (el) { io.observe(el); });
+  })();
 })();
