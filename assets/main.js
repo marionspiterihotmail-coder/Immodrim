@@ -10,7 +10,7 @@
   };
 
   /* ===== Numéro de version (discret, pied de page) : à mettre à jour à chaque mise en ligne ===== */
-  var VERSION = 'v3.8 · 20 oct. 2026';
+  var VERSION = 'v3.9 · 20 oct. 2026';
   var note = document.querySelector('.legal-note');
   if (note) {
     var ver = document.createElement('span');
@@ -549,4 +549,11 @@
     }, { threshold: 0.25 });
     els.forEach(function (el) { io.observe(el); });
   })();
+})();
+
+(function(){
+  if(!document.body.classList.contains('home')) return;
+  var h=document.querySelector('.site-header'); if(!h) return;
+  function f(){ h.classList.toggle('scrolled', window.scrollY>40); }
+  f(); window.addEventListener('scroll', f, {passive:true});
 })();

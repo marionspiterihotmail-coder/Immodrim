@@ -22,7 +22,7 @@
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="stylesheet" href="/assets/style.css?v=22">
-  <link rel="stylesheet" href="/assets/refonte.css?v=11">
+  <link rel="stylesheet" href="/assets/refonte.css?v=13">
   <script src="/assets/main.js?v=32" defer></script>
 
   <script type="application/ld+json">
@@ -113,12 +113,12 @@
         </div>
       </div>
       <div class="container hero-projects" id="projets">
-        <h2 class="hero-q">Quel est votre projet ?</h2>
+        <h2 class="sr-only">Quel est votre projet ?</h2>
         <div class="tiles">
           <article class="tile">
             <img class="tile-img" data-parallax src="/assets/img/neuf-facade.webp" alt="Résidence neuve à balcons filants et façade en pierre claire" width="900" height="1115" loading="lazy">
             <div class="tile-body">
-              <span class="chip">Neuf</span>
+              <span class="chip chip-violet">Neuf</span>
               <h3>Acheter dans le neuf</h3>
               <p>Trouvez un logement neuf adapté à votre budget, à votre quartier et à votre mode de vie.</p>
               <a class="btn btn-light tile-cta" href="/acheter-neuf">Découvrir le neuf<span class="sr-only"> : acheter dans le neuf</span></a>
@@ -127,7 +127,7 @@
           <article class="tile">
             <img class="tile-img" data-parallax src="/assets/img/neuf-interieur.webp" alt="Salon lumineux d'un appartement neuf prêt à être loué" width="900" height="1115" loading="lazy">
             <div class="tile-body">
-              <span class="chip">Neuf et ancien</span>
+              <span class="chip chip-orange">Neuf et ancien</span>
               <h3>Investir pour louer</h3>
               <p>Étudiez un investissement, dans le neuf ou dans l'ancien, en fonction de votre situation et des dispositifs en vigueur.</p>
               <a class="btn btn-light tile-cta" href="#contact" data-projet="investir">Parler à un expert<span class="sr-only"> : investir pour louer</span></a>
@@ -136,7 +136,7 @@
           <article class="tile">
             <img class="tile-img" data-parallax src="/assets/img/vie-femme-cartons.webp" alt="Femme préparant son déménagement au milieu de cartons" width="900" height="1115" loading="lazy">
             <div class="tile-body">
-              <span class="chip chip-alt">Ancien</span>
+              <span class="chip chip-pink">Ancien</span>
               <h3>Vendre son bien</h3>
               <p>Connaissez la valeur de votre bien et préparez sereinement votre vente.</p>
               <a class="btn btn-light tile-cta" href="/estimation">Estimation de bien<span class="sr-only"> : vendre son bien</span></a>
@@ -202,9 +202,9 @@
             <div class="bx-cap"><h3>Un logement à votre image</h3><p>Choix des finitions et personnalisation avant la livraison, selon les programmes.</p></div>
           </article>
           <article class="bx bx-contact" data-inview>
-            <img class="bx-avatar" src="/assets/img/cedric-brachet.webp" alt="" width="640" height="640" loading="lazy">
-            <h3>Un seul interlocuteur</h3>
-            <p>Tous les programmes, un seul contact, en toute transparence.</p>
+            <span class="bx-tag">Votre expert</span>
+            <h3>Tous les programmes, un seul expert.</h3>
+            <p>Une question sur un programme, un budget, un quartier ? Posez-la, on vous répond franchement.</p>
             <a class="btn btn-light" href="#contact">Parler de mon projet</a>
           </article>
         </div>
@@ -212,17 +212,18 @@
     </section>
 
     <section id="investir" class="invest" aria-labelledby="titre-investir">
-      <div class="container">
-        <div class="invest-head">
+      <div class="container invest-grid" data-inview>
+        <div class="invest-copy">
           <h2 id="titre-investir">Investir pour louer, <em>sans mauvaise surprise.</em></h2>
-          <p>Neuf ou ancien : on compare, on chiffre, et vous décidez en connaissance de cause.</p>
+          <p class="invest-lead">Neuf ou ancien : on compare, on chiffre, et vous décidez en connaissance de cause.</p>
+          <ul class="invest-steps">
+            <li data-inview><h3>Une rentabilité qui tient la route</h3><p>Chiffrée nette, charges et fiscalité comprises. Pas de rendement qui fait rêver sur le papier.</p></li>
+            <li data-inview><h3>Le bon bien, pas le bien du moment</h3><p>Neuf ou ancien : on retient celui qui colle à votre situation, pas à notre agenda.</p></li>
+            <li data-inview><h3>Un seul expert jusqu'au premier loyer</h3><p>Recherche, financement, acte : vous n'êtes jamais seul face au dossier.</p></li>
+          </ul>
+          <a class="btn btn-light" href="#contact" data-projet="investir">Parler à un expert</a>
         </div>
-        <ul class="invest-steps">
-          <li data-inview><h3>Une rentabilité qui tient la route</h3><p>Chiffrée nette, charges et fiscalité comprises. Pas de rendement qui fait rêver sur le papier.</p></li>
-          <li data-inview><h3>Le bon bien, pas le bien du moment</h3><p>Neuf ou ancien : on retient celui qui colle à votre situation, pas à notre agenda.</p></li>
-          <li data-inview><h3>Un seul interlocuteur jusqu'au premier loyer</h3><p>Recherche, financement, acte : vous n'êtes jamais seul face au dossier.</p></li>
-        </ul>
-        <a class="btn btn-light" href="#contact" data-projet="investir">Parler à un expert</a>
+        <figure class="invest-photo"><img src="/assets/img/neuf-angle.webp" alt="Immeuble neuf d'angle en briques claires et bois, avec loggias" width="900" height="1115" loading="lazy"></figure>
       </div>
     </section>
 
