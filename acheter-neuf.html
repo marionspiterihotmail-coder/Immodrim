@@ -18,8 +18,8 @@
   <meta property="og:image" content="https://immodrim.com/assets/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="/assets/style.css?v=22">
-  <link rel="stylesheet" href="/assets/refonte.css?v=8">
-  <script src="/assets/main.js?v=32" defer></script>
+  <link rel="stylesheet" href="/assets/refonte.css?v=15">
+  <script src="/assets/main.js?v=33" defer></script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -126,11 +126,11 @@
   </header>
 
   <main id="contenu">
-    <section class="hero" aria-labelledby="titre-page">
+    <section class="hero hero-dark" aria-labelledby="titre-page">
       <div class="container hero-grid">
         <div>
           <nav class="breadcrumb" aria-label="Fil d'Ariane"><ol><li><a href="/">Accueil</a></li><li aria-current="page">Acheter dans le neuf</li></ol></nav>
-          <h1 id="titre-page">Acheter dans le neuf en Île-de-France</h1>
+          <h1 id="titre-page">Acheter dans le neuf <em>en Île-de-France</em></h1>
           <p class="lead">Du choix du programme à la remise des clés, Immodrim vous accompagne pour acheter votre logement neuf en VEFA : une sélection adaptée à vos critères, un interlocuteur unique, sans engagement.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="https://calendar.app.google/qUj4kktypTnpNeL46" target="_blank" rel="noopener noreferrer">Parler à un expert<span class="sr-only"> (nouvel onglet)</span></a>
@@ -143,82 +143,97 @@
           </ul>
         </div>
         <div class="page-visual">
-          <div class="glass-frame">
-            <img class="page-photo" src="/assets/img/card-acheter.webp" alt="Jeune femme détendue sur un canapé, dans un salon lumineux" width="867" height="571" fetchpriority="high" decoding="async">
-          </div>
+          <div class="hero-photo"><img src="/assets/img/neuf-facade.webp" alt="Résidence neuve à balcons filants et façade en pierre claire" width="900" height="1115" fetchpriority="high" decoding="async"></div>
         </div>
       </div>
     </section>
 
-    <section id="avantages" aria-labelledby="titre-avantages">
+    <section id="avantages" class="why" aria-labelledby="titre-avantages">
       <div class="container">
-        <div class="section-head">
+        <div class="why-head">
           <h2 id="titre-avantages">Pourquoi acheter dans le neuf ?</h2>
           <p>Acheter en VEFA (vente en l'état futur d'achèvement), c'est acquérir un logement sur plan ou en cours de construction, avec des protections prévues par la loi.</p>
         </div>
-        <div class="grid">
-          <article class="card"><h3>Frais de notaire réduits</h3><p>Environ 2,5 % du prix, contre 7 à 8 % dans l'ancien.</p></article>
-          <article class="card"><h3>Des garanties légales</h3><p>Garantie financière d'achèvement, parfait achèvement (1 an), biennale (2 ans), décennale (10 ans) et dommages-ouvrage.</p></article>
-          <article class="card"><h3>Normes énergétiques récentes</h3><p>Des logements conçus selon les dernières normes énergétiques et environnementales, pour des charges mieux maîtrisées.</p></article>
-          <article class="card"><h3>Paiement échelonné</h3><p>Vous payez selon l'avancement du chantier, pas en une seule fois.</p></article>
-          <article class="card"><h3>Un logement à votre image</h3><p>Selon les programmes, choix des finitions et parfois des aménagements avant la livraison.</p></article>
-          <article class="card"><h3>Des aides selon votre situation</h3><p>Certaines aides à l'accession peuvent s'appliquer selon vos ressources, la zone et le logement. Nous les étudions avec vous.</p></article>
+        <div class="bento bento-6">
+          <article class="bx bx-violet" data-inview>
+            <span class="bx-tag">Frais de notaire</span>
+            <p class="bx-big">2,5&nbsp;%</p>
+            <p class="bx-sub">du prix d'achat, contre 7 à 8 % dans l'ancien.</p>
+          </article>
+          <article class="bx bx-garanties" data-inview>
+            <span class="bx-tag">Garanties légales</span>
+            <p class="bx-big">10&nbsp;ans</p>
+            <p class="bx-sub">de garantie décennale, après la garantie financière d'achèvement, le parfait achèvement (1 an) et la biennale (2 ans).</p>
+          </article>
+          <article class="bx bx-photo" data-inview>
+            <img src="/assets/img/neuf-interieur.webp" alt="" width="1400" height="1046" loading="lazy">
+            <div class="bx-cap"><h3>Normes énergétiques récentes</h3><p>Des charges mieux maîtrisées dans un logement conçu selon les dernières normes.</p></div>
+          </article>
+          <article class="bx bx-paiement" data-inview>
+            <h3>Paiement échelonné</h3>
+            <p>Vous payez selon l'avancement du chantier, pas en une seule fois.</p>
+            <ol class="stepper" aria-hidden="true"><li>Fondations</li><li>Structure</li><li>Hors d'eau</li><li>Clés</li></ol>
+          </article>
+          <article class="bx bx-photo" data-inview>
+            <img src="/assets/img/neuf-terrasse.webp" alt="" width="1400" height="1046" loading="lazy">
+            <div class="bx-cap"><h3>Un logement à votre image</h3><p>Selon les programmes, choix des finitions et parfois des aménagements avant la livraison.</p></div>
+          </article>
+          <article class="bx bx-orange" data-inview>
+            <span class="bx-tag">Aides</span>
+            <h3>Des aides selon votre situation</h3>
+            <p>Certaines aides à l'accession peuvent s'appliquer selon vos ressources, la zone et le logement. Nous les étudions avec vous.</p>
+          </article>
         </div>
       </div>
     </section>
 
-    <section id="etapes" class="alt" aria-labelledby="titre-etapes">
+    <section id="etapes" class="timeline-section" aria-labelledby="titre-etapes">
       <div class="container">
         <div class="section-head">
           <h2 id="titre-etapes">Les étapes de votre achat</h2>
           <p>Six étapes, un seul interlocuteur. Vous savez toujours où vous en êtes.</p>
         </div>
-        <ol class="steps">
-          <li><h3>Définir votre projet</h3><p>Budget, secteur, surface, calendrier : nous précisons vos critères.</p></li>
-          <li><h3>Choisir un programme</h3><p>Une sélection personnalisée parmi les programmes de promoteurs partenaires.</p></li>
-          <li><h3>Réserver</h3><p>Le contrat de réservation prévoit un dépôt de garantie plafonné : 5 % du prix au maximum si la livraison est prévue sous un an, 2 % sous deux ans, aucun au-delà.</p></li>
-          <li><h3>Financer</h3><p>Étude de financement et conseils fiscaux avant de vous engager.</p></li>
-          <li><h3>Signer chez le notaire</h3><p>Signature de l'acte de VEFA. Les appels de fonds suivent le chantier et sont plafonnés par la loi : 35 % à l'achèvement des fondations, 70 % à la mise hors d'eau, 95 % à l'achèvement, le solde à la livraison.</p></li>
-          <li><h3>Recevoir les clés</h3><p>Visite de réception, réserves éventuelles, puis remise des clés. Les garanties s'appliquent.</p></li>
+        <ol class="tl-list" data-timeline>
+          <li><span class="tl-n">1</span><div><h3>Définir votre projet</h3><p>Budget, secteur, surface, calendrier : nous précisons vos critères.</p></div></li>
+          <li><span class="tl-n">2</span><div><h3>Choisir un programme</h3><p>Une sélection personnalisée parmi les programmes de promoteurs partenaires.</p></div></li>
+          <li><span class="tl-n">3</span><div><h3>Réserver</h3><p>Le contrat de réservation prévoit un dépôt de garantie plafonné : 5 % du prix au maximum si la livraison est prévue sous un an, 2 % sous deux ans, aucun au-delà.</p></div></li>
+          <li><span class="tl-n">4</span><div><h3>Financer</h3><p>Étude de financement et conseils fiscaux avant de vous engager.</p></div></li>
+          <li><span class="tl-n">5</span><div><h3>Signer chez le notaire</h3><p>Signature de l'acte de VEFA. Les appels de fonds suivent le chantier et sont plafonnés par la loi : 35 % à l'achèvement des fondations, 70 % à la mise hors d'eau, 95 % à l'achèvement, le solde à la livraison.</p></div></li>
+          <li><span class="tl-n">6</span><div><h3>Recevoir les clés</h3><p>Visite de réception, réserves éventuelles, puis remise des clés. Les garanties s'appliquent.</p></div></li>
         </ol>
       </div>
     </section>
 
-    <section aria-labelledby="titre-accompagnement">
+    <section class="expert-band" aria-labelledby="titre-accompagnement">
       <div class="container">
-        <div class="callout">
-          <h3 id="titre-accompagnement">Un interlocuteur unique, sans pression commerciale</h3>
-          <p>Chez Immodrim, chaque client bénéficie d'un interlocuteur unique qui suit son projet de bout en bout :</p>
-          <ul class="checks">
-            <li>Sélection personnalisée des programmes neufs selon vos critères</li>
-            <li>Étude de financement et conseils fiscaux</li>
-            <li>Suivi du chantier et réception du bien</li>
-            <li>Assistance post-livraison</li>
-          </ul>
-          <a class="btn btn-primary" href="#contact">Être rappelé gratuitement</a>
-        </div>
+        <h2 id="titre-accompagnement">Un expert à vos côtés, <em>avant, pendant et après.</em></h2>
+        <ul class="moments" data-inview>
+          <li><span>Avant</span><h3>On cherche pour vous</h3><p>Une sélection personnalisée des programmes neufs selon vos critères.</p></li>
+          <li><span>Pendant</span><h3>On sécurise votre projet</h3><p>Étude de financement et conseils fiscaux, avant que vous vous engagiez.</p></li>
+          <li><span>À la remise</span><h3>On vérifie avec vous</h3><p>Suivi du chantier, visite de réception, réserves éventuelles.</p></li>
+          <li><span>Après</span><h3>On reste joignable</h3><p>Assistance post-livraison : vous savez à qui vous adresser.</p></li>
+        </ul>
+        <a class="btn btn-light" href="#contact">Être rappelé gratuitement</a>
       </div>
     </section>
 
-    <section class="alt" aria-labelledby="titre-villes">
+    <section class="cities-section" aria-labelledby="titre-villes">
       <div class="container">
         <div class="section-head">
           <h2 id="titre-villes">Acheter dans le neuf près de chez vous</h2>
-          <p>Découvrez le contexte local et la façon dont nous cherchons pour vous.</p>
+          <p>Choisissez votre département ou votre ville : contexte local et méthode de recherche, sur mesure.</p>
         </div>
-        <ul class="checks">
-          <li><a href="/acheter-neuf-paris">Paris (75)</a></li>
-          <li><a href="/acheter-neuf-seine-et-marne">Seine-et-Marne (77)</a></li>
-          <li><a href="/acheter-neuf-yvelines">Yvelines (78)</a></li>
-          <li><a href="/acheter-neuf-essonne">Essonne (91)</a></li>
-          <li><a href="/acheter-neuf-hauts-de-seine">Hauts-de-Seine (92)</a></li>
-          <li><a href="/acheter-neuf-seine-saint-denis">Seine-Saint-Denis (93)</a></li>
-          <li><a href="/acheter-neuf-val-de-marne">Val-de-Marne (94)</a></li>
-          <li><a href="/acheter-neuf-val-d-oise">Val-d'Oise (95)</a></li>
-          <li><a href="/acheter-neuf-bezons">Acheter dans le neuf à Bezons</a></li>
-          <li><a href="/acheter-neuf-colombes">Acheter dans le neuf à Colombes</a></li>
-          <li><a href="/acheter-neuf-poissy">Acheter dans le neuf à Poissy</a></li>
+        <ul class="city-grid">
+          <li><a class="city-card c1" href="/acheter-neuf-paris"><b>75</b><span>Paris</span></a></li>
+          <li><a class="city-card c2" href="/acheter-neuf-seine-et-marne"><b>77</b><span>Seine-et-Marne</span></a></li>
+          <li><a class="city-card c3" href="/acheter-neuf-yvelines"><b>78</b><span>Yvelines</span></a></li>
+          <li><a class="city-card c4" href="/acheter-neuf-essonne"><b>91</b><span>Essonne</span></a></li>
+          <li><a class="city-card c5" href="/acheter-neuf-hauts-de-seine"><b>92</b><span>Hauts-de-Seine</span></a></li>
+          <li><a class="city-card c6" href="/acheter-neuf-seine-saint-denis"><b>93</b><span>Seine-Saint-Denis</span></a></li>
+          <li><a class="city-card c7" href="/acheter-neuf-val-de-marne"><b>94</b><span>Val-de-Marne</span></a></li>
+          <li><a class="city-card c8" href="/acheter-neuf-val-d-oise"><b>95</b><span>Val-d'Oise</span></a></li>
         </ul>
+        <p class="city-more">Et aussi : <a href="/acheter-neuf-bezons">Bezons</a>, <a href="/acheter-neuf-colombes">Colombes</a>, <a href="/acheter-neuf-poissy">Poissy</a></p>
       </div>
     </section>
 

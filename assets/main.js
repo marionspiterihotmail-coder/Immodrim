@@ -10,7 +10,7 @@
   };
 
   /* ===== Numéro de version (discret, pied de page) : à mettre à jour à chaque mise en ligne ===== */
-  var VERSION = 'v3.9 · 20 oct. 2026';
+  var VERSION = 'v4.0 · 20 oct. 2026';
   var note = document.querySelector('.legal-note');
   if (note) {
     var ver = document.createElement('span');
@@ -556,4 +556,15 @@
   var h=document.querySelector('.site-header'); if(!h) return;
   function f(){ h.classList.toggle('scrolled', window.scrollY>40); }
   f(); window.addEventListener('scroll', f, {passive:true});
+})();
+
+(function(){
+  var tl=document.querySelector('[data-timeline]'); if(!tl) return;
+  var items=tl.querySelectorAll('li');
+  function f(){
+    var r=tl.getBoundingClientRect(), vh=window.innerHeight, mid=vh*0.6;
+    var p=Math.min(1,Math.max(0,(mid-r.top)/r.height)); tl.style.setProperty('--p',p);
+    items.forEach(function(li){ li.classList.toggle('on', li.getBoundingClientRect().top<mid); });
+  }
+  f(); window.addEventListener('scroll',f,{passive:true}); window.addEventListener('resize',f);
 })();
