@@ -271,3 +271,29 @@ body.home { padding-bottom: 4.6rem; }
 .review { background: #fff; border: 0; border-radius: 28px; box-shadow: none; }
 .review h3 { font-size: 1.35rem; letter-spacing: -.02em; }
 .review-stars { color: var(--brand); }
+
+/* ===== Accueil v3.6 : hiérarchie Acheter / Investir / Vendre ===== */
+.kicker{display:inline-flex;align-items:center;gap:.6rem;font-weight:600;font-size:.9rem;color:var(--muted);margin:0 0 1rem}
+.kicker span{display:inline-grid;place-items:center;min-width:2rem;height:2rem;padding:0 .5rem;border-radius:999px;background:var(--brand-soft);color:var(--brand);font-weight:700;font-size:.8rem}
+.proof .kicker-wide{grid-column:1/-1}
+.invest{background:var(--black);color:#fff;padding:clamp(3.5rem,8vw,6.5rem) 0}
+.invest .kicker{color:rgba(255,255,255,.7)}
+.invest .kicker span{background:var(--brand);color:#fff}
+.invest h2{color:#fff;max-width:20ch}
+.invest-head{display:grid;gap:1rem;margin-bottom:2.5rem}
+.invest-head p{color:rgba(255,255,255,.75);max-width:52ch;margin:0}
+.invest-steps{list-style:none;margin:0 0 2.5rem;padding:0;display:grid;gap:1rem;counter-reset:s}
+.invest-steps li{position:relative;padding:1.6rem;border-radius:28px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);overflow:hidden}
+.invest-steps h3{color:#fff;margin:1rem 0 .4rem;font-size:1.2rem}
+.invest-steps p{color:rgba(255,255,255,.72);margin:0}
+.is-n{display:inline-grid;place-items:center;width:2.6rem;height:2.6rem;border-radius:50%;background:var(--brand);color:#fff;font-weight:700}
+@media(min-width:900px){.invest-steps{grid-template-columns:repeat(3,1fr)}.invest-head{grid-template-columns:1fr 1fr;align-items:end}}
+.js .invest-steps li{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.js .invest-steps li.inview{opacity:1;transform:none}
+.js .invest-steps li:nth-child(2){transition-delay:.12s}.js .invest-steps li:nth-child(3){transition-delay:.24s}
+.sell-steps{list-style:none;display:flex;flex-wrap:wrap;gap:.5rem;padding:0;margin:0 0 1.5rem}
+.sell-steps li{padding:.5rem 1rem;border-radius:999px;border:1px solid var(--brand-line);font-weight:600;font-size:.9rem;background:#fff}
+.sell-steps li+li::before{content:"→ ";color:var(--brand)}
+.js .sell-steps li{opacity:0;transform:translateX(-12px);transition:.5s ease}
+.js .sell-steps.inview li{opacity:1;transform:none}
+.js .sell-steps.inview li:nth-child(2){transition-delay:.15s}.js .sell-steps.inview li:nth-child(3){transition-delay:.3s}
