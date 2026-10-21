@@ -1,6 +1,6 @@
 // Immodrim : registre des estimations (Google Apps Script) - v8
 var KEY = 'kxDX_MSO_YTRtLpOKFfBEQ';   // clé secrète de Cédric (lien de validation)
-var SITE = 'https://immodrim-git-preprod-marions-projects-4766d9f0.vercel.app'; // passer à https://immodrim.com en production
+var SITE = 'https://immodrim.com'; // production
 var COLS = ['id','date','statut','fiche','civilite','prenom','nom','email','telephone','type','adresse','cp','ville','surface','terrain','pieces','chambres','etage','etages','annee','etat','specs','prix','delai','fourchette_basse','fourchette_haute','note_cedric','validee_le','comparables','jeton','avis','commentaire_client','avis_le','envoi_mail','niveaux','mitoyennete','dpe','exceptionnel','ajustements'];
 var PUBLIC = ['id','date','statut','type','adresse','surface','terrain','pieces','chambres','etage','etages','annee','etat','specs','fourchette_basse','fourchette_haute','note_cedric','comparables','avis','niveaux','mitoyennete','dpe','exceptionnel'];
 
