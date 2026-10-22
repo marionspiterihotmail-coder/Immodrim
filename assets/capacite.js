@@ -20,6 +20,7 @@
   /* Zone PTZ retenue par département (la zone exacte dépend de la commune : on garde la plus prudente) */
   var ZONE = { '75': 'A', '92': 'A', '93': 'A', '94': 'A', '77': 'B1', '78': 'B1', '91': 'B1', '95': 'B1' };
   var CAL_URL = 'https://calendar.app.google/qUj4kktypTnpNeL46';
+  var SHEET_URL = 'https://script.google.com/macros/s/AKfycbygs1WZYLfGrk5Ck1CdbRle-MC4G7F86mM_5bEAir6wjYl6URcg-rRpKQ6EBS6LEHeM/exec'; /* même script que l'estimation : onglet « Simulations » */
   var HUBSPOT_URL = 'https://api-eu1.hsforms.com/submissions/v3/integration/submit/149488423/6660e385-b2ea-47ee-ad42-4515968c87e8';
 
   var $ = function (id) { return document.getElementById(id); };
@@ -333,6 +334,15 @@
     ];
     var payload = { fields: [{ name: 'firstname', value: g('prenom') }, { name: 'lastname', value: g('nom') }, { name: 'email', value: g('email') }, { name: 'phone', value: g('telephone') }, { name: 'message', value: lines.join('\n') }], context: { pageUri: location.href, pageName: document.title } };
     startWait();
+    /* Registre des simulations (Google Sheet) : une ligne par simulation, pour l'équipe commerciale. N'empêche jamais l'affichage du résultat. */
+    try {
+      var civ = form.querySelector('input[name="civilite"]:checked');
+      var row = { action: 'simulation', id: 'SIM-' + Date.now().toString(36).toUpperCase(), date: new Date().toISOString(), civilite: civ ? civ.value : '', prenom: g('prenom'), nom: g('nom'), email: g('email'), telephone: g('telephone'),
+        revenus: p.rev, charges: p.cha, apport: p.app, departement: g('dep'), zone_ptz: p.zone, personnes: p.nbp, residence_principale: p.rp ? 'oui' : 'non', primo_accedant: p.primo ? 'oui' : 'non', action_logement: { oui: 'oui', non: 'non', nsp: 'ne sait pas' }[p.alRaw],
+        duree: HYP.dureeDefaut, taux: HYP.taux, mensualite_max: Math.round(en.M), eligible_ptz: en.ptz.eligible ? 'oui' : 'non', ptz: Math.round(en.P), prix_max_neuf: Math.round(en.prix), budget_neuf: Math.round(en.total), prix_max_ancien: Math.round(ea.prix), budget_ancien: Math.round(ea.total),
+        ecart_neuf_ancien: Math.round(en.prix - ea.prix), page: location.pathname };
+      fetch(SHEET_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(row) }).catch(function () {});
+    } catch (x) { /* sans conséquence pour le visiteur */ }
     var hubP = fetch(HUBSPOT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
       .then(function (r) { if (!r.ok) { throw new Error('http ' + r.status); } return true; });
     var guard = new Promise(function (res) { setTimeout(function () { res('lent'); }, 12000); });

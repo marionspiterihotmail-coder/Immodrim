@@ -29,8 +29,19 @@ function doGet(e) {
   return json_(o);
 }
 
+var SIM_COLS = ['date', 'id', 'statut_suivi', 'civilite', 'prenom', 'nom', 'email', 'telephone', 'revenus', 'charges', 'apport', 'departement', 'zone_ptz', 'personnes', 'residence_principale', 'primo_accedant', 'action_logement', 'duree', 'taux', 'mensualite_max', 'eligible_ptz', 'ptz', 'prix_max_neuf', 'budget_neuf', 'prix_max_ancien', 'budget_ancien', 'ecart_neuf_ancien', 'page', 'note_commercial'];
+function simulation_(d) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet(), sh = ss.getSheetByName('Simulations');
+  if (!sh) { sh = ss.insertSheet('Simulations'); sh.appendRow(SIM_COLS); sh.setFrozenRows(1); }
+  d.statut_suivi = 'À rappeler'; d.note_commercial = '';
+  sh.appendRow(SIM_COLS.map(function (c) { return d[c] === undefined ? '' : d[c]; }));
+  return json_({ ok: true });
+}
+
 function doPost(e) {
-  var sh = sheet_(), d = JSON.parse(e.postData.contents), r;
+  var d = JSON.parse(e.postData.contents);
+  if (d.action === 'simulation') return simulation_(d);
+  var sh = sheet_(), r;
   if (d.action === 'valider') {
     if (d.k !== KEY) return json_({ error: 'forbidden' });
     r = rowOf_(sh, d.id); if (!r) return json_({ error: 'notfound' });
