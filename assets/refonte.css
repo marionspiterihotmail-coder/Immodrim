@@ -23,6 +23,8 @@
 }
 body { font-family: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-weight: 500; background: #fff; color: var(--ink); }
 .alt { background: var(--gray); }
+.estim-card .estim-step { display: none; }
+.estim-card .estim-step.is-active { display: block; }
 h1, h2, h3 { letter-spacing: -.025em; }
 
 /* Boutons : pilules noires */
