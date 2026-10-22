@@ -550,3 +550,22 @@ body.home { padding-bottom: 4.6rem; }
 .why .why-head{max-width:60rem}
 .why .why-head h2{text-wrap:balance}
 .big-stat strong{white-space:nowrap;font-size:clamp(1.9rem,8vw,4.6rem)}
+
+/* ===== Accueil : bandeau capacité d'emprunt ===== */
+.capband { padding: clamp(2.5rem, 6vw, 4.5rem) 0; background: #fff; }
+.capband-grid { display: grid; gap: 2rem; align-items: center; background: var(--gray); border-radius: 32px; padding: clamp(1.6rem, 4vw, 3rem); }
+.capband-copy h2 { margin: 0 0 1rem; font-size: clamp(1.7rem, 4.2vw, 2.7rem); line-height: 1.08; letter-spacing: -.035em; text-wrap: balance; }
+.capband-copy p { margin: 0 0 1.4rem; color: var(--muted); max-width: 32rem; }
+.capband-visual { background: #fff; border-radius: 24px; padding: 1.3rem; box-shadow: var(--shadow-soft); display: grid; gap: 1rem; }
+.cb-top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: .45rem; font-weight: 700; font-size: .95rem; }
+.cb-top strong { font-size: 1.3rem; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.cb-neuf .cb-top strong { color: var(--brand); }
+.cb-bar { display: flex; height: 20px; border-radius: 99px; overflow: hidden; background: #ececf2; }
+.cb-bar i { display: block; height: 100%; width: 0; transition: width 1s cubic-bezier(.3, .7, .2, 1); }
+.cb-neuf .cb-a { background: var(--black); } .cb-neuf .cb-b { background: var(--brand); } .cb-neuf .cb-c { background: #ff8a3d; } .cb-neuf .cb-d { background: #ff5d9e; }
+.cb-ancien .cb-a { background: var(--black); } .cb-ancien .cb-b { background: #6f6f86; }
+.inview .cb-neuf .cb-a, .no-js .cb-neuf .cb-a { width: 9%; } .inview .cb-neuf .cb-b { width: 57%; } .inview .cb-neuf .cb-c { width: 24%; } .inview .cb-neuf .cb-d { width: 10%; }
+.inview .cb-ancien .cb-a { width: 9%; } .inview .cb-ancien .cb-b { width: 74%; }
+.cb-note { margin: 0; font-size: .78rem; color: var(--muted); }
+@media (min-width: 860px) { .capband-grid { grid-template-columns: 1.1fr .9fr; } }
+@media (prefers-reduced-motion: reduce) { .cb-bar i { transition: none; } }
