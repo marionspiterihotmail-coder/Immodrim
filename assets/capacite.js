@@ -123,6 +123,8 @@
     else { mk('no', p.alRaw === 'nsp' ? 'Action Logement : à vérifier' : 'Pas de prêt Action Logement', p.alRaw === 'nsp' ? 'Il est réservé aux salariés d’entreprises privées de 10 salariés ou plus. Demandez à votre employeur : si vous y avez droit, votre capacité sera encore plus élevée.' : 'Il est réservé aux salariés d’entreprises privées de 10 salariés ou plus.'); }
   };
 
+  var top = function (f) { var r = f.getBoundingClientRect(); if (Math.abs(r.top - 84) > 24) { var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches; window.scrollTo({ top: Math.max(0, r.top + window.pageYOffset - 84), behavior: rm ? 'auto' : 'smooth' }); } };
+  var shown = false;
   var show = function (i) {
     cur = i;
     steps.forEach(function (st, k) { st.classList.toggle('is-active', k === i); });
@@ -131,7 +133,8 @@
     status.textContent = '';
     if (steps[i].dataset.step === '4') { verdict(); }
     var first = steps[i].querySelector('input[type="text"],input[type="email"]');
-    if (first && window.matchMedia('(min-width: 800px)').matches) { first.focus(); }
+    if (first && window.matchMedia('(min-width: 800px)').matches) { first.focus({ preventScroll: true }); }
+    if (shown) { top(form); } shown = true;
   };
 
   var rules = {

@@ -10,7 +10,7 @@
   };
 
   /* ===== Numéro de version (discret, pied de page) : à mettre à jour à chaque mise en ligne ===== */
-  var VERSION = 'v4.4 · 22 oct. 2026';
+  var VERSION = 'v4.5 · 25 oct. 2026';
   var note = document.querySelector('.legal-note');
   if (note) {
     var ver = document.createElement('span');
@@ -238,6 +238,8 @@
     var estStatus = document.getElementById('estim-status');
     var estCount = document.getElementById('estim-count');
     var cur = 0;
+    var top = function (f) { var r = f.getBoundingClientRect(); if (Math.abs(r.top - 84) > 24) { var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches; window.scrollTo({ top: Math.max(0, r.top + window.pageYOffset - 84), behavior: rm ? 'auto' : 'smooth' }); } };
+    var shown = false;
     var show = function (i) {
       cur = i;
       steps.forEach(function (st, k) { st.classList.toggle('is-active', k === i); });
@@ -245,7 +247,8 @@
       est.style.setProperty('--sp', i + 1);
       estStatus.textContent = '';
       var first = steps[i].querySelector('input[type="text"],input[type="email"]');
-      if (first && window.matchMedia('(min-width: 800px)').matches) { first.focus(); }
+      if (first && window.matchMedia('(min-width: 800px)').matches) { first.focus({ preventScroll: true }); }
+      if (shown) { top(est); } shown = true;
     };
     /* Écran d'attente : cycliste (jambes calculées) + messages */
     var waitBox = document.getElementById('estim-wait'), waitRaf = 0, waitTimer = 0, choiceTimer = 0, wantMail = false, pendingId = '';
