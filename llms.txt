@@ -1,8 +1,10 @@
 # Immodrim
 
-> Conseiller en immobilier neuf (VEFA) en Île-de-France, fondé par Cédric Brachet. Accompagnement des particuliers pour acheter dans le neuf, investir pour louer, vendre ou faire estimer un bien, avec un interlocuteur unique.
+> Immodrim (« Immodrim immobilier ») est une agence immobilière en Île-de-France, fondée par Cédric Brachet : achat dans le neuf (VEFA), investissement locatif, vente et estimation de biens anciens ou neufs, avec un interlocuteur unique.
 
-Immodrim travaille en partenariat avec de grands promoteurs et accompagne ses clients du premier échange à la remise des clés : sélection de programmes, étude de financement et conseils fiscaux, suivi du chantier, assistance post-livraison. Le service est gratuit et sans engagement pour le client.
+Dans le neuf, le service est gratuit pour l'acquéreur (rémunération par le promoteur). Pour la vente d'un bien ancien, les honoraires sont de 5 % TTC à la charge du vendeur (voir la page Honoraires).
+
+Immodrim travaille en partenariat avec de grands promoteurs et accompagne ses clients du premier échange à la remise des clés : sélection de programmes, étude de financement et conseils fiscaux, suivi du chantier, assistance post-livraison. Premier échange et estimation sans engagement.
 
 ## Pages principales
 
@@ -31,6 +33,7 @@ Immodrim travaille en partenariat avec de grands promoteurs et accompagne ses cl
 - [Acheter dans le neuf à Nanterre](https://immodrim.com/acheter-neuf-nanterre)
 - [Investir pour louer](https://immodrim.com/investir): investissement locatif dans le neuf, points de vigilance, questions fréquentes
 - [Vendre son bien](https://immodrim.com/vendre): estimation, accompagnement de la vente, documents à préparer, questions fréquentes
+- [Capacité d'emprunt](https://immodrim.com/capacite-emprunt): simulateur gratuit de capacité d'emprunt
 - [Estimation gratuite](https://immodrim.com/estimation): formulaire d'estimation de bien en Île-de-France, réponse sous 24 h ouvrées
 - [Mentions légales](https://immodrim.com/mentions-legales)
 - [Confidentialité (RGPD)](https://immodrim.com/confidentialite)
@@ -42,7 +45,7 @@ Immodrim travaille en partenariat avec de grands promoteurs et accompagne ses cl
 
 - Zone d'intervention : Île-de-France
 - Adresse : 1 rue de Stockholm, 75008 Paris
-- Spécialité : immobilier neuf en VEFA (vente en l'état futur d'achèvement)
+- Spécialités : immobilier neuf en VEFA (vente en l'état futur d'achèvement) et vente de biens anciens
 - Services : achat dans le neuf, investissement locatif, vente et estimation de biens
 - Fondateur : Cédric Brachet, expert contributeur BFM Immo
 - Prise de rendez-vous : https://calendar.app.google/qUj4kktypTnpNeL46
