@@ -583,3 +583,7 @@ h2 { font-size: clamp(2.1rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; 
 .estim-step textarea { width: 100%; font: inherit; color: var(--ink); background: #fff; border: 1.5px solid var(--brand-line); border-radius: 14px; padding: .8rem 1rem; }
 .estim-step textarea:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
 .estim-sub { margin: 0 0 1rem; }
+
+.site-footer .footer-social { display: flex; gap: 1.2rem; margin-top: 1rem; }
+.site-footer .footer-social a { display: inline-flex; align-items: center; gap: .5rem; color: #fff; text-decoration: none; }
+.site-footer .footer-social a:hover, .site-footer .footer-social a:focus-visible { text-decoration: underline; }
